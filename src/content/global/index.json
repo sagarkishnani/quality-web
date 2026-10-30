@@ -1,0 +1,30 @@
+{
+  "nav": {
+    "logoAlt": "Quality Sumprint",
+    "links": [
+      { "label": "Inicio", "url": "/" },
+      { "label": "Nosotros", "url": "/#features" },
+      { "label": "Contacto", "url": "/#cta" }
+    ],
+    "cta": { "label": "Conversemos", "url": "/#cta" }
+  },
+  "footer": {
+    "tagline": "Productos y servicios de impresión personalizados, con más de 14 años en el mercado.",
+    "columns": [
+      {
+        "title": "Sitio",
+        "links": [
+          { "label": "Inicio", "url": "/" },
+          { "label": "Contacto", "url": "/#cta" }
+        ]
+      }
+    ],
+    "social": [],
+    "legal": "© 2026 Quality Sumprint. Todos los derechos reservados."
+  },
+  "seo": {
+    "title": "Quality Sumprint",
+    "description": "Productos y servicios de impresión personalizados, con más de 14 años en el mercado."
+  },
+  "codeInjection": { "head": "", "bodyEnd": "" }
+}
