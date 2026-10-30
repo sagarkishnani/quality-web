@@ -1,11 +1,11 @@
 ---
 import BaseLayout from "../../../layouts/BaseLayout.astro";
-import ProductCard from "../../../components/shop/ProductCard.astro";
-import StockRefresher from "../../../components/shop/StockRefresher.astro";
-import client from "../../../../tina/__generated__/client";
+import Breadcrumbs from "../../../components/ui/Breadcrumbs";
+import ProductTile from "../../../components/ui/ProductTile";
 import { getAllProducts, getAllCategories } from "../../../lib/woo/rest";
-import { getLocale, localizeHref } from "../../../utils/i18n";
-import { isLocale } from "../../../i18n/config";
+import { toCatalogItem } from "../../../lib/woo/catalog";
+import { loadShopContent } from "../../../lib/content/shopSettings";
+import { productsPath } from "../../../lib/content/catalogNav";
 import type { WooProduct, WooCategory } from "../../../lib/woo/types";
 
 export async function getStaticPaths() {
@@ -21,38 +21,35 @@ export async function getStaticPaths() {
   }));
 }
 
-interface Props { category: WooCategory; products: WooProduct[] }
+interface Props {
+  category: WooCategory;
+  products: WooProduct[];
+}
 const { category, products } = Astro.props;
 
-const locale = isLocale(Astro.currentLocale) ? Astro.currentLocale : getLocale(Astro.url);
-const shop = await client.queries.shop({ relativePath: "index.json" });
-const lowStock = shop.data?.shop?.lowStockThreshold ?? 5;
+const { result, attributes } = await loadShopContent();
+const cardButtonLabel = result.data?.shop?.catalog?.cardButtonLabel || "Ver cotización";
+const items = products.map((product) => toCatalogItem(product, attributes));
+const root = productsPath();
+const home = import.meta.env.BASE_URL || "/";
 ---
 
-<BaseLayout
-  title={`${category.name} — Quality Sumprint`}
-  description={`Productos de la categoría ${category.name}.`}
->
-  <section class="section pt-[128px]">
-    <div class="container-xl">
-      <nav class="mb-6 text-sm text-content-subtle" aria-label="Miga de pan">
-        <a href={localizeHref("/tienda", locale, false)} class="hover:text-content">Tienda</a>
-        <span class="mx-2">/</span>
-        <span>{category.name}</span>
-      </nav>
-
-      <h1 class="text-heading-xl">{category.name}</h1>
-      <p class="mt-2 text-content-subtle">
-        {products.length} {products.length === 1 ? "producto" : "productos"}
+<BaseLayout title={`${category.name} — Quality Sumprint`} description={`${category.name}: equipos disponibles para cotizar con Quality Sumprint.`}>
+  <div class="container-xl pb-16 pt-8">
+    <Breadcrumbs items={[{ label: "Inicio", href: home }, { label: "Productos", href: root }, { label: category.name }]} />
+    <div class="mt-10 flex flex-wrap items-end justify-between gap-4">
+      <h1 class="text-heading-lg">{category.name}</h1>
+      <p class="text-body-md text-content-muted">
+        {items.length} {items.length === 1 ? "producto" : "productos"}
       </p>
-
-      <div class="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {products.map((product) => (
-          <ProductCard product={product} locale={locale} lowStockThreshold={lowStock} />
-        ))}
-      </div>
     </div>
-  </section>
+  </div>
 
-  <StockRefresher lowStockThreshold={lowStock} />
+  <div class="sheet bg-surface-raised">
+    <div class="container-xl grid gap-6 py-14 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      {items.map((item) => (
+        <ProductTile item={item} href={`${root}/${item.slug}`} buttonLabel={cardButtonLabel} tone="sunken" />
+      ))}
+    </div>
+  </div>
 </BaseLayout>

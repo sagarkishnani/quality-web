@@ -1,0 +1,16 @@
+{
+  "name": "Abastecimiento continuo de suministros",
+  "shortName": "Abastecimiento de suministros",
+  "summary": "Tóner y repuestos entregados a tiempo, antes de que se agoten.",
+  "description": "Quality Sumprint S.A.C. tiene como visión ser la empresa elegida por su innovación, soluciones, confiabilidad, servicios y productos, además de ser reconocida por la calidad profesional de su gente y por su contribución al medio ambiente. Tóner y repuestos entregados a tiempo, antes de que se agoten.",
+  "includes": [
+    "Monitoreo de niveles de tóner",
+    "Entrega antes de agotarse",
+    "Suministros originales",
+    "Recojo de cartuchos vacíos"
+  ],
+  "image": "/images/servicios/suministros.webp",
+  "detailImage": "/images/medioambiente/impresora-2.webp",
+  "order": 5,
+  "showOnHome": true
+}

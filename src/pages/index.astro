@@ -1,20 +1,53 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import Hero from "../components/home/Hero.astro";
-import Features from "../components/home/Features.astro";
-import CTA from "../components/home/CTA.astro";
+import HeroSliderReact from "../components/home/HeroSliderReact";
+import { HomeProducts, HomeServices, HomeExperience, HomeEcoBanner, HomeTestimonials } from "../components/home/HomeSections";
+import Partners from "../components/shared/Partners.astro";
 import client from "../../tina/__generated__/client";
-import { getLocale } from "../utils/i18n";
-import { isLocale } from "../i18n/config";
+import { getAllProducts, getFeaturedProducts } from "../lib/woo/rest";
+import { toCatalogItem } from "../lib/woo/catalog";
+import { loadShopContent } from "../lib/content/shopSettings";
+import { loadServices } from "../lib/content/services";
+import { productsPath } from "../lib/content/catalogNav";
 
-const locale = isLocale(Astro.currentLocale) ? Astro.currentLocale : getLocale(Astro.url);
-const result = await client.queries.home({ relativePath: "index.json" });
+const HOME_PRODUCTS = 4;
+
+const [result, shop, services, featured] = await Promise.all([
+  client.queries.home({ relativePath: "index.json" }),
+  loadShopContent(),
+  loadServices(),
+  getFeaturedProducts(HOME_PRODUCTS),
+]);
 const { query, variables, data } = result;
 const seo = data?.home?.seo;
+
+const source = featured.length ? featured : (await getAllProducts()).slice(0, HOME_PRODUCTS);
+const products = source.map((product) => toCatalogItem(product, shop.attributes));
+const cardButtonLabel = shop.result.data?.shop?.catalog?.cardButtonLabel || "Ver cotización";
+const homeServices = services.filter((service) => service.showOnHome);
+const tina = { query, variables, data };
 ---
 
 <BaseLayout title={seo?.title} description={seo?.description}>
-  <Hero query={query} variables={variables} data={data} locale={locale} />
-  <Features query={query} variables={variables} data={data} locale={locale} />
-  <CTA query={query} variables={variables} data={data} locale={locale} />
+  <HeroSliderReact {...tina} client:load />
+  <div class="sheet">
+    <div class="reveal">
+      <HomeProducts {...tina} products={products} productsPath={productsPath()} buttonLabel={cardButtonLabel} client:tina />
+    </div>
+    <div class="reveal">
+      <HomeServices {...tina} services={homeServices.length ? homeServices : services} client:tina />
+    </div>
+    <div class="reveal">
+      <HomeExperience {...tina} client:tina />
+    </div>
+    <div class="reveal">
+      <Partners />
+    </div>
+    <div class="reveal">
+      <HomeEcoBanner {...tina} client:tina />
+    </div>
+    <div class="reveal">
+      <HomeTestimonials {...tina} client:tina />
+    </div>
+  </div>
 </BaseLayout>

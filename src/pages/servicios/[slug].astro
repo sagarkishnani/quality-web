@@ -1,0 +1,50 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { ServiceHero, ServiceBody, OtherServices } from "../../components/services/ServiceDetailReact";
+import { ServicesCta } from "../../components/services/ServicesSections";
+import client from "../../../tina/__generated__/client";
+import { loadServices, type ServiceEntry } from "../../lib/content/services";
+
+const OTHERS_COUNT = 3;
+
+export async function getStaticPaths() {
+  const services = await loadServices();
+  return services.map((service) => ({ params: { slug: service.slug }, props: { service, services } }));
+}
+
+interface Props {
+  service: ServiceEntry;
+  services: ServiceEntry[];
+}
+const { service, services } = Astro.props;
+
+const [result, page] = await Promise.all([
+  client.queries.service({ relativePath: service.relativePath }),
+  client.queries.servicesPage({ relativePath: "index.json" }),
+]);
+const detail = page.data?.servicesPage?.detail;
+const labels = {
+  heroButtonLabel: detail?.heroButtonLabel || "Solicitar servicio",
+  consistsEyebrow: detail?.consistsEyebrow || "¿En qué consiste?",
+  includesTitle: detail?.includesTitle || "¿Qué incluye?",
+  requestLabel: detail?.requestLabel || "Solicitar este servicio",
+  othersTitle: detail?.othersTitle || "Otros servicios",
+  othersLinkLabel: detail?.othersLinkLabel || "Ver todos",
+  requestMessage: detail?.requestMessage || "Hola, quisiera solicitar el servicio: {servicio}.",
+};
+
+const index = services.findIndex((entry) => entry.slug === service.slug);
+const others = Array.from({ length: Math.min(OTHERS_COUNT, services.length - 1) }, (_, step) => services[(index + step + 1) % services.length]);
+const servicesHref = `${(import.meta.env.BASE_URL || "/").replace(/\/?$/, "/")}servicios`;
+const tina = { query: result.query, variables: result.variables, data: result.data };
+const pageTina = { query: page.query, variables: page.variables, data: page.data };
+---
+
+<BaseLayout title={`${service.name} — Quality Sumprint`} description={service.summary}>
+  <ServiceHero {...tina} labels={labels} servicesHref={servicesHref} servicesLabel="Servicios" client:tina />
+  <div class="sheet">
+    <div class="reveal"><ServiceBody {...tina} labels={labels} client:tina /></div>
+    <div class="reveal"><OtherServices labels={labels} others={others} servicesHref={servicesHref} /></div>
+    <div class="reveal"><ServicesCta {...pageTina} client:tina /></div>
+  </div>
+</BaseLayout>

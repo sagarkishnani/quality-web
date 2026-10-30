@@ -1,30 +1,175 @@
 {
   "nav": {
+    "logo": "/images/brand/logo.svg",
     "logoAlt": "Quality Sumprint",
     "links": [
-      { "label": "Inicio", "url": "/" },
-      { "label": "Nosotros", "url": "/#features" },
-      { "label": "Contacto", "url": "/#cta" }
+      {
+        "label": "Nosotros",
+        "url": "/nosotros",
+        "menu": "none"
+      },
+      {
+        "label": "Servicios",
+        "url": "/servicios",
+        "menu": "services"
+      },
+      {
+        "label": "Productos",
+        "url": "/productos",
+        "menu": "products"
+      },
+      {
+        "label": "Medioambiente",
+        "url": "/medioambiente",
+        "menu": "none"
+      }
     ],
-    "cta": { "label": "Conversemos", "url": "/#cta" }
+    "cta": {
+      "label": "Contáctanos",
+      "url": "/contacto"
+    },
+    "servicesMenu": {
+      "title": "Nuestros servicios",
+      "quickLinks": [
+        {
+          "label": "Ver todos los servicios",
+          "url": "/servicios"
+        },
+        {
+          "label": "Medioambiente",
+          "url": "/medioambiente"
+        },
+        {
+          "label": "Solicitar información",
+          "url": "/contacto"
+        }
+      ],
+      "promoTitle": "Outsourcing de impresión",
+      "promoText": "Dirigido a empresas que buscan reducir sus costos de impresión, copia y escaneo.",
+      "promoUrl": "/servicios",
+      "promoImage": "/images/banners/inicio.webp"
+    },
+    "productsMenu": {
+      "title": "Encuentra tu próxima impresora",
+      "segmentsTitle": "Por segmento",
+      "categoriesTitle": "Por tipo",
+      "brandsTitle": "Marcas"
+    },
+    "search": {
+      "placeholder": "Buscar por modelo o marca",
+      "popularTitle": "Productos populares"
+    }
+  },
+  "contact": {
+    "email": "ventas@qualitysumprint.com",
+    "phone": "(+51) 940-294-820",
+    "phoneHref": "+51940294820",
+    "address": "C. Luis Galvani 187, Santiago de Surco 15038",
+    "mapsUrl": "https://maps.google.com/?q=C.+Luis+Galvani+187,+Santiago+de+Surco",
+    "whatsappNumber": "51940294820",
+    "whatsappMessage": "Hola, quisiera información sobre sus productos y servicios.",
+    "whatsappLabel": "Comunícate con un asesor"
+  },
+  "partners": {
+    "title": "Nuestros proveedores y aliados",
+    "logos": [
+      {
+        "name": "Xerox",
+        "image": "/images/marcas/xerox.webp"
+      },
+      {
+        "name": "HP",
+        "image": "/images/marcas/hp.webp"
+      },
+      {
+        "name": "Epson",
+        "image": "/images/marcas/epson.webp"
+      },
+      {
+        "name": "Lenovo",
+        "image": "/images/marcas/lenovo.webp"
+      }
+    ]
   },
   "footer": {
     "tagline": "Productos y servicios de impresión personalizados, con más de 14 años en el mercado.",
     "columns": [
       {
-        "title": "Sitio",
+        "title": "Productos",
         "links": [
-          { "label": "Inicio", "url": "/" },
-          { "label": "Contacto", "url": "/#cta" }
+          {
+            "label": "Home & Home Office",
+            "url": "/productos?segmento=home-home-office"
+          },
+          {
+            "label": "Small Business",
+            "url": "/productos?segmento=small-business"
+          },
+          {
+            "label": "Enterprise",
+            "url": "/productos?segmento=enterprise"
+          }
+        ]
+      },
+      {
+        "title": "Servicios",
+        "links": [
+          {
+            "label": "Instalación de equipos",
+            "url": "/servicios/instalacion"
+          },
+          {
+            "label": "Mantenimiento preventivo",
+            "url": "/servicios/mantenimiento-preventivo"
+          },
+          {
+            "label": "Control de tus impresiones",
+            "url": "/servicios/control-de-impresiones"
+          },
+          {
+            "label": "Equipos de respaldo",
+            "url": "/servicios/equipos-de-respaldo"
+          }
+        ]
+      },
+      {
+        "title": "Empresa",
+        "links": [
+          {
+            "label": "Nosotros",
+            "url": "/nosotros"
+          },
+          {
+            "label": "Medioambiente",
+            "url": "/medioambiente"
+          }
         ]
       }
     ],
-    "social": [],
-    "legal": "© 2026 Quality Sumprint. Todos los derechos reservados."
+    "social": [
+      {
+        "network": "facebook",
+        "url": ""
+      },
+      {
+        "network": "instagram",
+        "url": ""
+      },
+      {
+        "network": "linkedin",
+        "url": ""
+      }
+    ],
+    "legal": "© 2026 Quality Sumprint. Todos los derechos reservados",
+    "creditLabel": "Hecho por TWNSTUDIOS",
+    "creditUrl": "https://twnstudios.com"
   },
   "seo": {
     "title": "Quality Sumprint",
     "description": "Productos y servicios de impresión personalizados, con más de 14 años en el mercado."
   },
-  "codeInjection": { "head": "", "bodyEnd": "" }
+  "codeInjection": {
+    "head": "",
+    "bodyEnd": ""
+  }
 }

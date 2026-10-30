@@ -31,9 +31,13 @@ export interface WooProduct {
   stock_quantity: number | null;
   average_rating: string;
   rating_count: number;
+  featured: boolean;
   categories: WooTermRef[];
+  tags: WooTermRef[];
   images: WooImage[];
   attributes: { name: string; options: string[] }[];
+  related_ids: number[];
+  cross_sell_ids: number[];
 }
 
 export interface WooCategory {

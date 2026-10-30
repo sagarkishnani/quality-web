@@ -1,18 +1,28 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import DynamicForm from "../components/dynamic-form/DynamicForm.astro";
+import ContactIntroReact from "../components/contact/ContactIntroReact";
+import client from "../../tina/__generated__/client";
+
+const [result, global] = await Promise.all([
+  client.queries.contactPage({ relativePath: "index.json" }),
+  client.queries.global({ relativePath: "index.json" }),
+]);
+const page = result.data?.contactPage;
+const contact = global.data?.global?.contact ?? {};
 ---
 
-<BaseLayout title="Contacto — Quality Sumprint" description="Escríbenos y te respondemos pronto.">
-  <section class="section pt-[128px]">
-    <div class="container-lg">
-      <h1 class="text-heading-lg">Contacto</h1>
-      <p class="mt-3 max-w-xl text-body-lg text-content-muted">
-        Escríbenos y te respondemos el mismo día.
-      </p>
-
-      <div class="mt-10">
+<BaseLayout title={page?.seo?.title} description={page?.seo?.description}>
+  <section class="grid lg:min-h-[calc(100svh-4rem)] lg:grid-cols-2">
+    <div class="bg-brand-primary-lightest">
+      <div class="ml-auto w-full max-w-[720px] px-5 py-16 md:px-8 md:py-24 xl:pl-[60px] xl:pr-16">
+        <ContactIntroReact query={result.query} variables={result.variables} data={result.data} contact={contact} client:tina />
+      </div>
+    </div>
+    <div class="bg-surface-raised">
+      <div class="w-full max-w-[720px] px-5 py-16 md:px-8 md:py-24 xl:px-24">
         <DynamicForm formSlug="contacto" />
+        {page?.requiredNote && <p class="mt-5 text-caption-sm text-content-subtle">{page.requiredNote}</p>}
       </div>
     </div>
   </section>

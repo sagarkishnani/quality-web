@@ -1,0 +1,16 @@
+{
+  "name": "Servicio técnico con personal especializado",
+  "shortName": "Servicio técnico",
+  "summary": "Técnicos certificados que atienden tus equipos en sitio.",
+  "description": "Quality Sumprint S.A.C. tiene como visión ser la empresa elegida por su innovación, soluciones, confiabilidad, servicios y productos, además de ser reconocida por la calidad profesional de su gente y por su contribución al medio ambiente. Técnicos certificados que atienden tus equipos en sitio.",
+  "includes": [
+    "Técnicos certificados",
+    "Atención en sitio",
+    "Diagnóstico remoto",
+    "Seguimiento de cada caso"
+  ],
+  "image": "/images/medioambiente/impresora-1.webp",
+  "detailImage": "/images/servicios/instalacion.webp",
+  "order": 6,
+  "showOnHome": false
+}

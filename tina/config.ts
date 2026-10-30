@@ -1,6 +1,11 @@
 import { defineConfig } from "tinacms";
 import { globalCollection } from "./collections/global";
 import { homeCollection } from "./collections/home";
+import { aboutCollection } from "./collections/about";
+import { serviceCollection } from "./collections/service";
+import { servicesPageCollection } from "./collections/servicesPage";
+import { environmentCollection } from "./collections/environment";
+import { contactPageCollection } from "./collections/contactPage";
 import { formConfigCollection } from "./collections/formConfig";
 import { dynamicFormsCollection } from "./collections/dynamicForms";
 import { shopCollection } from "./collections/shop";
@@ -29,9 +34,14 @@ export default defineConfig({
     collections: [
       globalCollection,
       homeCollection,
+      aboutCollection,
+      serviceCollection,
+      servicesPageCollection,
+      shopCollection,
+      environmentCollection,
+      contactPageCollection,
       formConfigCollection,
       dynamicFormsCollection,
-      shopCollection,
       maintenanceCollection,
       cookieConsentCollection,
     ],

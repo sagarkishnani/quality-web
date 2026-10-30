@@ -1,0 +1,52 @@
+{
+  "hero": {
+    "eyebrow": "Medioambiente",
+    "title": "¿Por qué reciclamos los deshechos?",
+    "video": "/videos/medioambiente-hero.mp4",
+    "poster": "/images/medioambiente/hero-poster.webp",
+    "buttonLabel": "Recicla con nosotros",
+    "buttonUrl": "/contacto"
+  },
+  "commitment": {
+    "eyebrow": "Nuestro compromiso",
+    "title": "Los grandes cambios empiezan con pequeños pasos",
+    "text": "Somos una empresa socialmente responsable, preocupada por la preservación del medio ambiente. Por eso nos esforzamos para que, en cada lugar donde tengamos presencia, contribuyamos a tener un mundo mejor."
+  },
+  "pillars": [
+    {
+      "title": "Reciclaje de cartuchos",
+      "text": "Damos una segunda vida a los cartuchos usados para reducir los residuos de cada impresión.",
+      "image": "/images/medioambiente/impresora-2.webp",
+      "video": "",
+      "linkLabel": "Más información",
+      "linkUrl": "/contacto"
+    },
+    {
+      "title": "Recolección de tóner vacíos",
+      "text": "Recogemos los cartuchos de tóner vacíos de tu empresa y los gestionamos de forma responsable.",
+      "image": "/images/banners/toner.webp",
+      "video": "",
+      "linkLabel": "Más información",
+      "linkUrl": "/contacto"
+    },
+    {
+      "title": "Impresión responsable",
+      "text": "Equipos eficientes y control de impresiones para consumir solo lo necesario.",
+      "image": "/images/medioambiente/impresion-poster.webp",
+      "video": "/videos/impresion-responsable.mp4",
+      "linkLabel": "Más información",
+      "linkUrl": "/servicios/control-de-impresiones"
+    }
+  ],
+  "banner": {
+    "eyebrow": "Reciclamos los deshechos para cuidar el ecosistema",
+    "title": "Ayuda a preservar el planeta en el que vivimos",
+    "image": "/images/medioambiente/impresora-1.webp",
+    "buttonLabel": "Contáctanos",
+    "buttonUrl": "/contacto"
+  },
+  "seo": {
+    "title": "Medioambiente — Quality Sumprint",
+    "description": "Reciclaje de cartuchos, recolección de tóner vacíos e impresión responsable."
+  }
+}
