@@ -44,7 +44,7 @@ export default function ProductTabsReact({ name, descriptionHtml, specs, image, 
             <div>
               <h2 className="text-subtitle-lg">{name}</h2>
               <div
-                className="prose mt-5 max-w-none text-body-lg text-content-strong prose-strong:text-content-strong"
+                className="prose mt-5 max-w-none text-body-lg text-content-strong prose-strong:font-bold prose-strong:text-content-strong"
                 dangerouslySetInnerHTML={{ __html: descriptionHtml }}
               />
             </div>

@@ -117,7 +117,7 @@ export function AboutCompare(props: TinaProps) {
         />
         <div className="mt-12 grid gap-6 md:grid-cols-2">
           <div className="card md:p-10">
-            <p className="eyebrow-caps text-caption-md text-content-subtle" data-tina-field={tinaField(compare, "beforeLabel")}>
+            <p className="eyebrow-caps text-caption-md font-semibold text-content-subtle" data-tina-field={tinaField(compare, "beforeLabel")}>
               {compare.beforeLabel}
             </p>
             <ul className="mt-5" data-tina-field={tinaField(compare, "before")}>
@@ -132,7 +132,7 @@ export function AboutCompare(props: TinaProps) {
             </ul>
           </div>
           <div className="rounded-2xl bg-brand-primary p-6 text-white md:p-10">
-            <p className="eyebrow-caps text-caption-md text-white" data-tina-field={tinaField(compare, "afterLabel")}>
+            <p className="eyebrow-caps text-caption-md font-semibold text-white" data-tina-field={tinaField(compare, "afterLabel")}>
               {compare.afterLabel}
             </p>
             <ul className="mt-5" data-tina-field={tinaField(compare, "after")}>

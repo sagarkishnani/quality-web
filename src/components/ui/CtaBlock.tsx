@@ -17,7 +17,7 @@ export default function CtaBlock({ cta }: { cta?: CtaContent | null }) {
           {cta.title}
         </h2>
         {cta.text && (
-          <p className="mx-auto mt-4 max-w-lg text-body-md text-content-muted" data-tina-field={tinaField(cta as any, "text")}>
+          <p className="mx-auto mt-4 max-w-lg text-body-lg text-content-muted" data-tina-field={tinaField(cta as any, "text")}>
             {cta.text}
           </p>
         )}
