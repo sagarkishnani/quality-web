@@ -379,7 +379,7 @@ function ContactSubmitButton({
       type="button"
       onClick={onClick}
       disabled={disabled}
-      className={`h-12 w-full sm:w-auto sm:min-w-[144px] px-8 flex items-center justify-center rounded-md text-greyscale-white text-body-md font-semibold transition-all ${
+      className={`h-[52px] w-full sm:w-auto sm:min-w-[144px] px-8 flex items-center justify-center rounded-md text-greyscale-white text-body-md font-semibold transition-all ${
         disabled
           ? "bg-ink/60 cursor-not-allowed"
           : dark

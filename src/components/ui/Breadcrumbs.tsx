@@ -5,7 +5,7 @@ export interface Crumb {
 
 export default function Breadcrumbs({ items, tone = "default" }: { items: Crumb[]; tone?: "default" | "inverse" }) {
   const linkClass = tone === "inverse" ? "text-white hover:text-white/80" : "text-content hover:text-accent";
-  const currentClass = tone === "inverse" ? "text-white/70" : "text-content-subtle";
+  const currentClass = tone === "inverse" ? "text-white/80" : "text-content-subtle";
 
   return (
     <nav aria-label="Miga de pan" className="text-body-sm">
