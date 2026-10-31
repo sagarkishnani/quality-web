@@ -71,7 +71,7 @@ export default function BundleQuoteReact({ main, extras, eyebrow, title, note, q
               Seleccionados · {chosen.length} {chosen.length === 1 ? "artículo" : "artículos"}
             </p>
             <p className="mt-2 text-body-sm text-content-muted">{note}</p>
-            <a href={quoteUrl(message)} className="btn-primary mt-6 w-full">
+            <a href={quoteUrl(message)} className="btn-primary btn-lg mt-6 w-full">
               {quoteLabel}
             </a>
           </div>
