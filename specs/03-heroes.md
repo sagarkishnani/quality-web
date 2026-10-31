@@ -239,3 +239,33 @@ Inicio conserva su capa `bg-ink/50`.
 - Corregir los ciclos duplicados de `startLenis`.
 
 Si alguno de estos entra, va en su propia spec.
+
+## Notas de implementación
+
+- **Paso 13:** el regreso arriba solo responde a `:focus-visible`. Un clic con mouse en un hero desplazado no mueve la página.
+- `ImageBanner` limita `parallax` a los factores `0.16` y `0.22`, porque Tailwind necesita las clases de cada sobredimensión escritas en el código.
+- La capa del slider de Inicio lleva `suppressHydrationWarning`. El parallax puede mover esa capa antes de que React hidrate. El desplazamiento se conserva.
+- Se probó un `preload` de la foto en `BaseLayout.astro` y se descartó: React 19 ya emite el suyo, y el LCP de `/nosotros` solo mejoró 24 ms.
+- `tina/tina-lock.json` cambió con el schema y va en la rama.
+
+Pendientes para revisar:
+
+- **LCP de `/nosotros`:** no cumple el límite de 300 ms de esta spec. La causa es que el LCP pasó de texto a foto. El valor sigue dentro del estándar (< 2,5 s).
+- **Contraste en Servicios:** el subtítulo tiene 3,3:1 sobre la parte clara de la impresora, y el título 3,6:1 en su peor 5 %. Se usa el degradado aprobado, igual al de la referencia. No está en las excepciones de contraste.
+
+## QA realizada
+
+- **Navegador:** 42 de 42 comprobaciones en Chromium, sobre `npm run dev` y catálogo de muestra. Cubren heroes fijos, movimiento, los cinco factores, bordes vacíos a 1440 × 900 y 1920 × 1080, slider, cambio de ancho, `ClientRouter`, teclado, movimiento reducido y 7 pantallas a 375 px.
+- **No probado a 375 px:** la ficha de producto. Las otras 7 pantallas pasan.
+- **Listener de scroll:** revisado en el código. En navegador solo se comprobó que el parallax funciona tras navegar.
+- **Fotos:** los 7 detalles cargan su foto. Con `hero.image` y `service.image` vacíos, el hero sigue fijo, muestra el bloque oscuro y no da errores 404.
+- **Capas:** el header y WhatsApp quedan por encima a 1440 px. El diálogo de cookies quedó por encima en la captura mobile.
+- **Tina:** el GraphQL local devuelve `hero.image`, y "Imagen de fondo" aparece en `/admin` en Nosotros. No se guardó un cambio desde el editor ni se abrió Servicios.
+- **Producción:** con `astro preview`, el parallax funciona en `/nosotros`, sin errores de JavaScript, con las secciones en `client:tina`.
+- **LCP:** mediana de 7 cargas a 1,6 Mbps y 150 ms de latencia, con el build de `staging` como base. `/nosotros`: 536 → 876 ms (+340). `/servicios`: 528 → 684 ms (+156).
+- **Contraste:** medido sobre los píxeles detrás del texto a 1440 px. Nosotros y los 7 detalles dan 4,2:1 o más en el peor 5 %. Servicios da los valores de "Pendientes para revisar".
+- **Fotos a 1920 × 1080:** revisadas Nosotros y Servicios. Las otras 7 no se revisaron a ese ancho.
+- **`npm run typecheck`:** sin errores.
+- **`npm run check:standard`:** 0 errores y 1 aviso (14 páginas sin `og:image`), con build sin catálogo de muestra.
+- **`npm run build`:** no se ejecutó, porque requiere credenciales de TinaCloud y `npm run dev` estaba activo. Se usó `astro build` contra ese servidor local (14 páginas).
+- **Ciclos de `startLenis`:** no se midió si aceleran el scroll.
