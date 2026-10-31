@@ -25,7 +25,7 @@
   .section-alt  { @apply bg-surface-raised; }
 
   .sheet {
-    @apply relative -mt-12 rounded-t-sheet bg-surface;
+    @apply relative z-10 -mt-12 rounded-t-sheet bg-surface;
   }
 
   .btn {
