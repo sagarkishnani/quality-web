@@ -15,6 +15,7 @@ export const aboutCollection: Collection = {
       name: "hero",
       label: "Cabecera",
       fields: [
+        { name: "image", label: "Imagen de fondo", type: "image" },
         textField("eyebrow", "Antetítulo"),
         textField("title", "Título"),
         textField("highlight", "Parte del título en verde"),

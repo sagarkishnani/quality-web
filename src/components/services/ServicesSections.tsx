@@ -2,6 +2,7 @@ import { useTina, tinaField } from "tinacms/dist/react";
 import DarkHero from "../ui/DarkHero";
 import SplitTitle from "../ui/SplitTitle";
 import CtaBlock from "../ui/CtaBlock";
+import { mediaUrl } from "../../utils/mediaUrl";
 
 interface TinaProps {
   query: string;
@@ -20,12 +21,14 @@ export function ServicesHero(props: TinaProps) {
   return (
     <DarkHero
       align="center"
+      image={mediaUrl(hero.image)}
       eyebrow={hero.eyebrow}
       title={hero.title}
       text={hero.text}
       buttonLabel={hero.buttonLabel}
       buttonUrl={hero.buttonUrl}
       tina={{
+        image: tinaField(hero, "image"),
         eyebrow: tinaField(hero, "eyebrow"),
         title: tinaField(hero, "title"),
         text: tinaField(hero, "text"),

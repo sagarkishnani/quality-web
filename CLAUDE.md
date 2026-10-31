@@ -106,11 +106,12 @@ Colecciones:
   contacto y WhatsApp, proveedores y aliados, footer, SEO por defecto, código inyectado.
 - `home` — portada: diapositivas del hero, productos destacados, servicios,
   experiencia, banner de medioambiente y testimonios.
-- `about` — `/nosotros`.
+- `about` — `/nosotros`; `hero.image` es la foto de fondo.
 - `service` — un JSON por servicio en `src/content/services/`; el nombre del
-  archivo es el slug de `/servicios/<slug>`. `order` ordena y `showOnHome` elige
-  los que van en el bento del inicio.
-- `servicesPage` — `/servicios` y los textos comunes del detalle de servicio.
+  archivo es el slug de `/servicios/<slug>`. `order` ordena, `showOnHome` elige
+  los que van en el bento del inicio e `image` es la foto del hero del detalle.
+- `servicesPage` — `/servicios` y los textos comunes del detalle de servicio;
+  `hero.image` es la foto de fondo.
 - `environment` — `/medioambiente`.
 - `contactPage` — textos de `/contacto` (los datos salen de `global.contact`).
 - `shop` — textos de `/productos`, banners promocionales, textos de la ficha y
@@ -235,6 +236,15 @@ Antetítulos: `eyebrow` (verde) y `eyebrow-caps` (mayúsculas, sobre fotos).
 que sube 48 px con esquinas redondeadas. Envolver una sección en
 `<div class="reveal">` la hace aparecer al entrar en pantalla; va siempre en el
 `.astro`, nunca dentro de un componente React (la hidratación borraría la clase).
+
+**Heroes**: los de Inicio, Nosotros, Servicios y detalle de servicio quedan fijos desde `lg`
+(`lg:sticky lg:top-16`) y `.sheet` sube sobre ellos. `HeroPhoto` pinta la foto y su degradado;
+sin imagen, el hero es el bloque oscuro.
+
+**Parallax**: `src/utils/parallax.ts` mueve las capas con `data-parallax="<factor>"`, desde `lg` y
+sin `prefers-reduced-motion`. La capa va dentro de un bloque con `overflow-hidden`, es más alta que
+él y nunca contiene texto. Los heroes fijos suman `data-parallax-pinned`, porque calculan con
+`scrollY`: sobre una sección fija, la distancia al centro no cambia.
 
 **Islas**: las secciones sin interacción usan `client:tina` (sin JavaScript en
 producción). Solo hidratan de verdad el header, el slider del inicio, el

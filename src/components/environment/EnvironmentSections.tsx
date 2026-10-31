@@ -24,7 +24,9 @@ export function EnvironmentHero(props: TinaProps) {
 
   return (
     <section className="relative flex min-h-[calc(100svh-4rem)] items-end overflow-hidden bg-[#0D4553] pb-28 text-white md:min-h-[820px]">
-      <BackgroundVideo src={hero.video} poster={mediaUrl(hero.poster)} className="absolute inset-0 h-full w-full object-cover" />
+      <div aria-hidden data-parallax="0.3" className="absolute inset-x-0 -top-[14%] h-[128%]">
+        <BackgroundVideo src={hero.video} poster={mediaUrl(hero.poster)} className="h-full w-full object-cover" />
+      </div>
       <div className="absolute inset-0 bg-gradient-to-t from-ink/70 via-ink/10 to-transparent" aria-hidden />
       <div className="container-xl relative text-center">
         {hero.eyebrow && (
@@ -123,6 +125,7 @@ export function EnvironmentBanner(props: TinaProps) {
     <section className="pb-16 md:pb-24">
       <div className="container-xl">
         <ImageBanner
+          parallax={0.22}
           eyebrow={banner.eyebrow}
           title={banner.title}
           image={mediaUrl(banner.image)}

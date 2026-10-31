@@ -23,6 +23,7 @@ export function AboutHero(props: TinaProps) {
 
   return (
     <DarkHero
+      image={mediaUrl(hero.image)}
       eyebrow={hero.eyebrow}
       title={
         <>
@@ -33,6 +34,7 @@ export function AboutHero(props: TinaProps) {
       buttonLabel={hero.buttonLabel}
       buttonUrl={hero.buttonUrl}
       tina={{
+        image: tinaField(hero, "image"),
         eyebrow: tinaField(hero, "eyebrow"),
         title: tinaField(hero, "title"),
         text: tinaField(hero, "text"),
@@ -163,7 +165,9 @@ export function AboutSolution(props: TinaProps) {
       <div className="container-xl grid gap-6 lg:grid-cols-[1fr_1.1fr]">
         <div className="relative min-h-[320px] overflow-hidden rounded-2xl bg-ink-soft">
           {image && (
-            <img src={image} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover" data-tina-field={tinaField(solution, "image")} />
+            <div aria-hidden data-parallax="0.1" className="absolute inset-x-0 -top-[12%] h-[124%]">
+              <img src={image} alt="" loading="lazy" className="h-full w-full object-cover" data-tina-field={tinaField(solution, "image")} />
+            </div>
           )}
         </div>
         <div className="card md:p-12">
