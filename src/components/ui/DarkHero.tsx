@@ -16,7 +16,7 @@ export default function DarkHero({ image, eyebrow, title, text, buttonLabel, but
   const centered = align === "center";
 
   return (
-    <section className="relative overflow-hidden bg-ink pb-36 pt-24 text-white md:pb-44 md:pt-32">
+    <section className="relative overflow-hidden bg-ink pb-36 pt-24 text-white md:pb-44 md:pt-32 lg:sticky lg:top-16">
       {image ? (
         <HeroPhoto image={image} align={align} tinaField={tina.image} />
       ) : (

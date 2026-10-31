@@ -36,7 +36,7 @@ export function ServiceHero(props: TinaProps & { labels: DetailLabels; servicesH
   const heroImage = mediaUrl(service.image);
 
   return (
-    <section className="relative overflow-hidden bg-ink pb-36 pt-24 text-white md:pb-44 md:pt-32">
+    <section className="relative overflow-hidden bg-ink pb-36 pt-24 text-white md:pb-44 md:pt-32 lg:sticky lg:top-16">
       {heroImage ? (
         <HeroPhoto image={heroImage} tinaField={tinaField(service, "image")} />
       ) : (
