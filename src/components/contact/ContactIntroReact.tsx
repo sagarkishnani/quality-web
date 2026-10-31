@@ -25,7 +25,7 @@ function ContactCard({ label, value, href, external }: { label?: string | null; 
       className="group flex items-center justify-between gap-6 rounded-2xl bg-surface-raised/80 px-6 py-5 transition-colors hover:bg-surface-raised"
     >
       <span>
-        <span className="block text-body-sm font-semibold">{label}</span>
+        <span className="block text-caption-md font-semibold text-content-strong">{label}</span>
         <span className="mt-1 block text-body-lg">{value}</span>
       </span>
       <FaArrowRight className="h-3.5 w-3.5 shrink-0 transition-transform group-hover:translate-x-1" aria-hidden />
@@ -40,10 +40,10 @@ export default function ContactIntroReact(props: TinaProps & { contact: ContactD
 
   return (
     <div>
-      <h1 className="text-heading-lg" data-tina-field={tinaField(page, "title")}>
+      <h1 className="text-heading-md" data-tina-field={tinaField(page, "title")}>
         {page.title}
       </h1>
-      <p className="mt-6 text-subtitle-sm font-normal text-content-muted">
+      <p className="mt-6 text-subtitle-xs font-normal text-content-muted">
         <span data-tina-field={tinaField(page, "question")}>{page.question}</span>
         <br />
         <strong className="font-semibold text-content" data-tina-field={tinaField(page, "highlight")}>

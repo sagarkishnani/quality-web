@@ -172,7 +172,7 @@ export default function CookieConsentReact({
       <div className="w-full max-w-[480px] max-h-[88vh] overflow-y-auto rounded-2xl bg-surface-raised shadow-2xl">
         <div className="p-5 md:p-7">
           <div className="flex items-start justify-between gap-4 mb-3">
-            <h2 className="text-content text-[17px] md:text-[19px] font-medium leading-snug">
+            <h2 className="text-content text-body-lg md:text-body-xl font-medium">
               {title}
             </h2>
             <button
@@ -187,12 +187,12 @@ export default function CookieConsentReact({
             </button>
           </div>
 
-          <div className="prose prose-sm max-w-none prose-p:text-content-muted prose-p:text-[13px] prose-p:leading-[20px] mb-1">
+          <div className="prose prose-sm max-w-none prose-p:text-content-muted prose-p:text-caption-md prose-p:leading-[20px] mb-1">
             {intro && <TinaMarkdown content={intro} />}
           </div>
           <a
             href={showMoreUrl}
-            className="text-accent text-[13px] font-medium hover:underline"
+            className="text-accent text-caption-md font-medium hover:underline"
           >
             {showMoreText}
           </a>
@@ -221,12 +221,12 @@ export default function CookieConsentReact({
                       >
                         <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                       </svg>
-                      <span className="text-content text-[14px] font-semibold truncate">
+                      <span className="text-content text-body-sm font-semibold truncate">
                         {c.name}
                       </span>
                     </button>
                     {c.alwaysActive ? (
-                      <span className="shrink-0 text-brand-secondary-dark text-[11px] font-semibold uppercase tracking-wider">
+                      <span className="shrink-0 text-brand-secondary-dark text-caption-xs font-semibold uppercase tracking-wider">
                         {alwaysActiveLabel}
                       </span>
                     ) : (
@@ -245,7 +245,7 @@ export default function CookieConsentReact({
                     }`}
                   >
                     <div className="overflow-hidden">
-                      <p className="text-content-subtle text-[12.5px] leading-[19px] pb-4 pl-[22px] pr-1">
+                      <p className="text-content-subtle text-caption-sm pb-4 pl-[22px] pr-1">
                         {c.description}
                       </p>
                     </div>
@@ -259,21 +259,21 @@ export default function CookieConsentReact({
             <button
               type="button"
               onClick={rejectAll}
-              className="flex-1 px-4 py-2.5 rounded-md border border-line-strong text-content text-[13px] font-semibold hover:border-ink transition-colors"
+              className="flex-1 px-4 py-2.5 rounded-md border border-line-strong text-content text-caption-md font-semibold hover:border-ink transition-colors"
             >
               {btnReject}
             </button>
             <button
               type="button"
               onClick={savePrefs}
-              className="flex-1 px-4 py-2.5 rounded-md border border-line-strong text-content text-[13px] font-semibold hover:border-ink transition-colors"
+              className="flex-1 px-4 py-2.5 rounded-md border border-line-strong text-content text-caption-md font-semibold hover:border-ink transition-colors"
             >
               {btnSave}
             </button>
             <button
               type="button"
               onClick={acceptAll}
-              className="flex-1 px-4 py-2.5 rounded-md bg-ink text-white text-[13px] font-semibold hover:bg-ink-soft transition-colors"
+              className="flex-1 px-4 py-2.5 rounded-md bg-ink text-white text-caption-md font-semibold hover:bg-ink-soft transition-colors"
             >
               {btnAccept}
             </button>
