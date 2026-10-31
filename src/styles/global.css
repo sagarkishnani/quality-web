@@ -68,6 +68,19 @@
     opacity: 1;
     transform: none;
   }
+  .whatsapp-button {
+    transition: bottom 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .whatsapp-bubble {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  [data-quote-bar="visible"] .whatsapp-button {
+    bottom: 108px;
+  }
+  [data-quote-bar="visible"] .whatsapp-bubble {
+    opacity: 0;
+    transform: translateX(12px);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

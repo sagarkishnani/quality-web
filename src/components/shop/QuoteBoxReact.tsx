@@ -42,6 +42,15 @@ export default function QuoteBoxReact(props: Props) {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    const root = document.documentElement;
+    if (showBar) root.dataset.quoteBar = "visible";
+    else delete root.dataset.quoteBar;
+    return () => {
+      delete root.dataset.quoteBar;
+    };
+  }, [showBar]);
+
   const label = quantity > 1 ? `${props.quoteLabel} (${quantity} equipos)` : props.quoteLabel;
   const href = quoteUrl(fillTemplate(props.quoteMessage, { cantidad: quantity, producto: props.productName }));
 
