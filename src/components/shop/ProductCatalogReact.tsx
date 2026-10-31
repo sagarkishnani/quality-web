@@ -56,7 +56,7 @@ function FacetGroup({ title, options, selected, onToggle }: FacetGroupProps) {
                 <input type="checkbox" className="peer sr-only" checked={checked} onChange={() => onToggle(option.label)} />
                 <span
                   aria-hidden
-                  className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-[5px] border transition-colors peer-focus-visible:ring-2 peer-focus-visible:ring-brand-primary ${
+                  className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-xs border transition-colors peer-focus-visible:ring-2 peer-focus-visible:ring-brand-primary ${
                     checked ? "border-ink bg-ink text-white" : "border-line-strong bg-surface-raised"
                   }`}
                 >
