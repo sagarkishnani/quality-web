@@ -1,0 +1,16 @@
+{
+  "name": "Equipos de respaldo",
+  "shortName": "Equipos de respaldo",
+  "summary": "Te prestamos un equipo mientras reparamos el tuyo, sin detener tu operación.",
+  "description": "Quality Sumprint S.A.C. tiene como visión ser la empresa elegida por su innovación, soluciones, confiabilidad, servicios y productos, además de ser reconocida por la calidad profesional de su gente y por su contribución al medio ambiente. Te prestamos un equipo mientras reparamos el tuyo, sin detener tu operación.",
+  "includes": [
+    "Equipo de reemplazo inmediato",
+    "Instalación sin costo adicional",
+    "Continuidad de tu operación",
+    "Retiro al finalizar la reparación"
+  ],
+  "image": "/images/banners/hp.webp",
+  "detailImage": "/images/banners/inicio.webp",
+  "order": 4,
+  "showOnHome": true
+}

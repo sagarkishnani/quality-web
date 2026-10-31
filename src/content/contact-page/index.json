@@ -1,0 +1,14 @@
+{
+  "title": "Contacto",
+  "question": "¿Tienes alguna duda o consulta?",
+  "highlight": "Solicita información",
+  "highlightSuffix": "con nosotros",
+  "emailLabel": "Escríbenos",
+  "phoneLabel": "Llámanos",
+  "addressLabel": "Ubícanos",
+  "requiredNote": "* Campos obligatorios",
+  "seo": {
+    "title": "Contacto — Quality Sumprint",
+    "description": "Solicita información o una cotización. Escríbenos a ventas@qualitysumprint.com o llámanos al (+51) 940-294-820."
+  }
+}

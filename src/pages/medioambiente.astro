@@ -1,0 +1,19 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { EnvironmentHero, EnvironmentCommitment, EnvironmentPillars, EnvironmentBanner } from "../components/environment/EnvironmentSections";
+import client from "../../tina/__generated__/client";
+
+const result = await client.queries.environment({ relativePath: "index.json" });
+const { query, variables, data } = result;
+const seo = data?.environment?.seo;
+const tina = { query, variables, data };
+---
+
+<BaseLayout title={seo?.title} description={seo?.description}>
+  <EnvironmentHero {...tina} client:tina />
+  <div class="sheet">
+    <div class="reveal"><EnvironmentCommitment {...tina} client:tina /></div>
+    <div class="reveal"><EnvironmentPillars {...tina} client:tina /></div>
+    <div class="reveal"><EnvironmentBanner {...tina} client:tina /></div>
+  </div>
+</BaseLayout>

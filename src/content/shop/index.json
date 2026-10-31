@@ -1,17 +1,59 @@
 {
   "hero": {
-    "eyebrow": "Tienda",
     "title": "Nuestros productos",
-    "description": "Explora el catálogo completo. Precios y disponibilidad actualizados al momento.",
-    "badges": [
-      { "label": "Envíos a todo el país", "icon": "truck" },
-      { "label": "Pago 100% seguro", "icon": "card" },
-      { "label": "Garantía de 12 meses", "icon": "shield" }
+    "description": "Contamos con impresoras e insumos de última generación."
+  },
+  "catalog": {
+    "allLabel": "Todos",
+    "searchPlaceholder": "Buscar por modelo o marca",
+    "categoryTitle": "Categoría",
+    "brandTitle": "Marca",
+    "emptyMessage": "No encontramos productos con esos filtros.",
+    "brandAttribute": "Marca",
+    "segmentAttribute": "Segmento",
+    "cardButtonLabel": "Ver cotización",
+    "segmentOrder": [
+      "Home & Home Office",
+      "Small Business",
+      "Enterprise"
     ]
   },
-  "lowStockThreshold": 5,
+  "promos": [
+    {
+      "eyebrow": "Oferta",
+      "title": "¡Aprovecha nuestras ofertas!",
+      "text": "Multifuncional LaserJet M2727 nf",
+      "image": "/images/productos/laserjet-m2727.webp",
+      "buttonLabel": "Consultar por esta promoción",
+      "buttonUrl": "/productos/laserjet-m2727-nf",
+      "tone": "dark"
+    },
+    {
+      "eyebrow": "",
+      "title": "Accesorios de impresora",
+      "text": "Incrementa tu productividad con accesorios que complementen tu trabajo.",
+      "image": "/images/banners/toner.webp",
+      "buttonLabel": "Ver más",
+      "buttonUrl": "/contacto",
+      "tone": "light"
+    }
+  ],
+  "product": {
+    "specsTitle": "Especificaciones",
+    "quantityLabel": "¿Estás interesado? Cantidad de equipos",
+    "quoteLabel": "Ver cotización",
+    "quoteMessage": "Hola, quisiera una cotización de {cantidad} × {producto}.",
+    "advisorTitle": "Comunícate con un asesor",
+    "advisorText": "Te ayudamos a elegir el equipo ideal",
+    "descriptionTab": "Descripción",
+    "featuresTab": "Características",
+    "bundleEyebrow": "Completa tu equipo",
+    "bundleTitle": "Puedes comprar con",
+    "bundleNote": "Cotización conjunta con instalación incluida.",
+    "relatedTitle": "Te puede interesar"
+  },
   "seo": {
-    "title": "Tienda — Quality Sumprint",
-    "description": "Productos y servicios de impresión personalizados, con más de 14 años en el mercado."
+    "title": "Productos — Quality Sumprint",
+    "description": "Impresoras multifuncionales, a color, monocromáticas y escáneres Xerox y HP para hogar, pequeña empresa y corporativo."
   }
 }

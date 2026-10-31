@@ -1,0 +1,55 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import Breadcrumbs from "../../../components/ui/Breadcrumbs";
+import ProductTile from "../../../components/ui/ProductTile";
+import { getAllProducts, getAllCategories } from "../../../lib/woo/rest";
+import { toCatalogItem } from "../../../lib/woo/catalog";
+import { loadShopContent } from "../../../lib/content/shopSettings";
+import { productsPath } from "../../../lib/content/catalogNav";
+import type { WooProduct, WooCategory } from "../../../lib/woo/types";
+
+export async function getStaticPaths() {
+  const [categories, products] = await Promise.all([getAllCategories(), getAllProducts()]);
+
+  return categories.map((category) => ({
+    params: { slug: category.slug },
+    props: {
+      category,
+      // Filtrar en memoria evita una petición a WordPress por categoría.
+      products: products.filter((p) => p.categories.some((c) => c.id === category.id)),
+    },
+  }));
+}
+
+interface Props {
+  category: WooCategory;
+  products: WooProduct[];
+}
+const { category, products } = Astro.props;
+
+const { result, attributes } = await loadShopContent();
+const cardButtonLabel = result.data?.shop?.catalog?.cardButtonLabel || "Ver cotización";
+const items = products.map((product) => toCatalogItem(product, attributes));
+const root = productsPath();
+const home = import.meta.env.BASE_URL || "/";
+---
+
+<BaseLayout title={`${category.name} — Quality Sumprint`} description={`${category.name}: equipos disponibles para cotizar con Quality Sumprint.`}>
+  <div class="container-xl pb-16 pt-8">
+    <Breadcrumbs items={[{ label: "Inicio", href: home }, { label: "Productos", href: root }, { label: category.name }]} />
+    <div class="mt-10 flex flex-wrap items-end justify-between gap-4">
+      <h1 class="text-heading-lg">{category.name}</h1>
+      <p class="text-body-md text-content-muted">
+        {items.length} {items.length === 1 ? "producto" : "productos"}
+      </p>
+    </div>
+  </div>
+
+  <div class="sheet bg-surface-raised">
+    <div class="container-xl grid gap-6 py-14 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+      {items.map((item) => (
+        <ProductTile item={item} href={`${root}/${item.slug}`} buttonLabel={cardButtonLabel} tone="sunken" />
+      ))}
+    </div>
+  </div>
+</BaseLayout>

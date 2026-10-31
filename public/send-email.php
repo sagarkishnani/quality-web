@@ -340,11 +340,11 @@ function getFieldRows(string $type, array $data): array {
     switch ($type) {
         case 'contacto':
             return [
-                'Nombre'   => trim(($data['nombre'] ?? '') . ' ' . ($data['apellido'] ?? '')),
-                'Empresa'  => $data['empresa'] ?? '',
-                'Teléfono' => $data['telefono'] ?? '',
-                'Email'    => $data['correo'] ?? $data['email'] ?? '',
-                'Mensaje'  => $data['mensaje'] ?? $data['comentario'] ?? '',
+                'Nombre'        => $data['nombre'] ?? '',
+                'Correo'        => $data['correo'] ?? $data['email'] ?? '',
+                'Teléfono'      => $data['telefono'] ?? '',
+                'RUC'           => $data['ruc'] ?? '',
+                'Requerimiento' => $data['requerimiento'] ?? $data['mensaje'] ?? '',
             ];
         default:
             $rows = [];

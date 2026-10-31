@@ -102,8 +102,19 @@ Los tipos, las queries y el cliente se generan en `tina/__generated__/`
 
 Colecciones:
 
-- `global` — navegación, footer, SEO por defecto, código inyectado.
-- `home` — contenido de la portada.
+- `global` — navegación (con megamenús de servicios y productos), datos de
+  contacto y WhatsApp, proveedores y aliados, footer, SEO por defecto, código inyectado.
+- `home` — portada: diapositivas del hero, productos destacados, servicios,
+  experiencia, banner de medioambiente y testimonios.
+- `about` — `/nosotros`.
+- `service` — un JSON por servicio en `src/content/services/`; el nombre del
+  archivo es el slug de `/servicios/<slug>`. `order` ordena y `showOnHome` elige
+  los que van en el bento del inicio.
+- `servicesPage` — `/servicios` y los textos comunes del detalle de servicio.
+- `environment` — `/medioambiente`.
+- `contactPage` — textos de `/contacto` (los datos salen de `global.contact`).
+- `shop` — textos de `/productos`, banners promocionales, textos de la ficha y
+  qué atributos de WooCommerce son la marca y el segmento.
 - `formConfig` — por formulario: `formType`, `label`, `enabled`, `recipients[]`.
 - `dynamicForms` — definición completa de cada formulario (un JSON por formulario).
 - `maintenance` — modo mantenimiento del sitio.
@@ -135,6 +146,33 @@ Los formularios no están hardcodeados:
 `siteverify` inalcanzable ⇒ no se envía correo), solo mientras el secreto esté
 configurado.
 
+### Catálogo de WooCommerce (modo `catalog`)
+
+El sitio **no vende**: muestra el catálogo y cada producto termina en una
+cotización. Las rutas son `/productos`, `/productos/<slug>` y
+`/productos/categoria/<slug>`, generadas en build desde la REST de Woo
+(`src/lib/woo/rest.ts`, solo build time).
+
+- Precios y stock no se muestran. “Ver cotización” lleva a
+  `/contacto?requerimiento=<mensaje>`; el formulario precarga cualquier campo
+  cuyo `name` coincida con un parámetro de la URL.
+- Marca y segmento son **atributos** de WooCommerce (por defecto `Marca` y
+  `Segmento`, configurables en la colección `shop`). Las pestañas de segmento
+  siguen `shop.catalog.segmentOrder`.
+- Etiqueta de la tarjeta: “Oferta” si el producto está en oferta; si no, la
+  primera etiqueta (tag) del producto (ej. “Nuevo”, “Más vendido”).
+- Destacados del inicio: productos marcados como destacados en Woo; si no hay,
+  los primeros del catálogo.
+- “Puedes comprar con” usa las ventas cruzadas (`cross_sell_ids`); “Te puede
+  interesar”, los relacionados o la misma categoría.
+- `src/lib/woo/catalog.ts` convierte un `WooProduct` en lo que pintan las
+  tarjetas y no toca credenciales: puede importarse desde islas.
+
+**Catálogo de muestra.** Mientras WooCommerce no exista, `WOO_SAMPLE_CATALOG=true`
+en `.env` usa los productos del diseño (`src/lib/woo/sample.ts`). Las páginas
+compiladas así llevan `<meta name="x-sample-catalog">` y `check:standard` da
+**error**: un build con datos de muestra no puede publicarse.
+
 ### Modo mantenimiento
 
 `BaseLayout.astro` consulta la colección `maintenance` en build time; con
@@ -154,13 +192,14 @@ semánticos, y por eso el tema se puede cambiar sin tocar una sola clase.
 
 | Token | Para qué | Valor |
 |---|---|---|
-| `surface` | Fondo de la página | `#FFFFFF` |
-| `surface-raised` | Tarjetas, footer | `#F7F8FA` |
-| `content` | Texto principal | `#16181D` |
-| `content-muted` | Texto secundario | `#4B5563` |
-| `content-subtle` | Metadatos | `#6B7280` |
-| `line` / `line-strong` | Bordes | `#E5E7EB` / `#CBD1D9` |
+| `surface` | Fondo de la página | `#F1F3F5` |
+| `surface-raised` | Tarjetas, bloques blancos | `#FFFFFF` |
+| `content` | Texto principal | `#111316` |
+| `content-muted` | Texto secundario | `#5C6166` |
+| `content-subtle` | Metadatos | `#676C71` |
+| `line` / `line-strong` | Bordes | `#E3E6E9` / `#C7CBD0` |
 | `accent` | Marca legible sobre el fondo | `#0078A7` |
+| `ink` / `ink-soft` | Botón primario, heros oscuros | `#111316` / `#24272A` |
 
 Los tonos de texto cumplen 4.5:1 sobre su fondo. Si cambias uno, vuelve a medir.
 
@@ -173,11 +212,27 @@ Para "texto en color de marca" usa `text-accent`, **no** `text-brand-primary-lig
 sobre fondo claro ese tono es ilegible.
 
 **Rampa de marca**: `brand-primary` (`#00A0DF`), `brand-primary-dark`
-(`#0078A7`), `brand-primary-darkest` (`#005070`).
+(`#0078A7`), `brand-primary-darkest` (`#005070`). Verde secundario:
+`brand-secondary` (`#74C947`, fondos y acentos), `brand-secondary-dark`
+(`#357A1A`, el único verde legible como texto sobre fondo claro),
+`brand-secondary-light` (`#9BE070`, antetítulos sobre fondo oscuro).
 
-**Tipografías**: Inter (títulos), Inter (cuerpo),
-Space Mono (acentos técnicos). La escala está como utilidades de Tailwind
-(`heading-xxl` → `caption-sm`).
+**Botones**: `btn-primary` (tinta), `btn-accent` (verde, CTA del header),
+`btn-light` y `btn-ghost-light` (sobre fondos oscuros), `btn-secondary`.
+Antetítulos: `eyebrow` (verde) y `eyebrow-caps` (mayúsculas, sobre fotos).
+
+**Secciones**: las páginas con hero oscuro continúan en `<div class="sheet">`,
+que sube 48 px con esquinas redondeadas. Envolver una sección en
+`<div class="reveal">` la hace aparecer al entrar en pantalla; va siempre en el
+`.astro`, nunca dentro de un componente React (la hidratación borraría la clase).
+
+**Islas**: las secciones sin interacción usan `client:tina` (sin JavaScript en
+producción). Solo hidratan de verdad el header, el slider del inicio, el
+catálogo con filtros, la ficha de producto y el explorador de servicios.
+
+**Tipografía**: Inter en todo el sitio. La escala está como utilidades de
+Tailwind (`heading-xxl` → `caption-sm`); los títulos son semibold con tracking
+negativo.
 
 
 ### Panel del CMS

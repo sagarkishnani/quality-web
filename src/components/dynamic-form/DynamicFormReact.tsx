@@ -190,10 +190,10 @@ function getDefaultValue(field: FormField): any {
 }
 
 const contactLabelCls =
-  "block text-caption-sm font-semibold text-greyscale-darkest tracking-wider uppercase mb-2";
+  "block text-body-sm font-medium text-content mb-2";
 const contactInputCls =
-  "w-full border rounded-xl px-4 py-3.5 text-body-sm text-greyscale-darkest placeholder:text-greyscale-medium focus:outline-none focus:ring-1 transition-all bg-greyscale-white";
-const contactInputOk = "border-greyscale-light focus:border-brand-primary focus:ring-brand-primary/20";
+  "w-full border rounded-md px-4 py-3.5 text-body-md text-content placeholder:text-content-subtle focus:outline-none focus:ring-2 transition-all bg-surface";
+const contactInputOk = "border-transparent focus:border-brand-primary focus:ring-brand-primary/20";
 const contactInputErr = "border-red-400 focus:border-red-400 focus:ring-red-400/20";
 const contactErrorCls = "text-caption-sm text-red-500 mt-1";
 
@@ -225,7 +225,7 @@ function ContactInput({
     <div>
       {label && (
         <label className={c.label}>
-          {label} {required && <span className="text-brand-primary">*</span>}
+          {label}{required && <span aria-hidden="true">*</span>}
         </label>
       )}
       <input
@@ -290,7 +290,7 @@ function ContactSelect({
     <div>
       {label && (
         <label className={c.label}>
-          {label} {required && <span className="text-brand-primary">*</span>}
+          {label}{required && <span aria-hidden="true">*</span>}
         </label>
       )}
       <select
@@ -325,7 +325,7 @@ function ContactTextarea({
     <div>
       {label && (
         <label className={c.label}>
-          {label} {required && <span className="text-brand-primary">*</span>}
+          {label}{required && <span aria-hidden="true">*</span>}
         </label>
       )}
       <textarea
@@ -379,12 +379,12 @@ function ContactSubmitButton({
       type="button"
       onClick={onClick}
       disabled={disabled}
-      className={`w-full h-12 flex items-center justify-center rounded-[8px] text-greyscale-white text-body-md font-semibold transition-all ${
+      className={`h-12 w-full sm:w-auto sm:min-w-[144px] px-8 flex items-center justify-center rounded-md text-greyscale-white text-body-md font-semibold transition-all ${
         disabled
-          ? "bg-brand-primary/60 cursor-not-allowed"
+          ? "bg-ink/60 cursor-not-allowed"
           : dark
           ? "bg-gradient-to-r from-brand-primary to-brand-primary-dark hover:from-brand-primary-dark hover:to-brand-primary-darkest active:scale-[0.99]"
-          : "bg-brand-primary hover:bg-brand-primary-dark active:scale-[0.99]"
+          : "bg-ink hover:bg-ink-soft active:scale-[0.99]"
       }`}
     >
       {text}

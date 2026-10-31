@@ -1,0 +1,8 @@
+---
+import PartnersReact from "./PartnersReact";
+import client from "../../../tina/__generated__/client";
+
+const result = await client.queries.global({ relativePath: "index.json" });
+---
+
+<PartnersReact query={result.query} variables={result.variables} data={result.data} client:tina />

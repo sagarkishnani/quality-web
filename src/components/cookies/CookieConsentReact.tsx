@@ -61,7 +61,7 @@ function Toggle({
       disabled={disabled}
       onClick={() => !disabled && onChange?.(!on)}
       className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors ${
-        on ? "bg-[#00A0DF]" : "bg-[#d1d5db]"
+        on ? "bg-brand-secondary-dark" : "bg-line-strong"
       } ${disabled ? "opacity-60 cursor-not-allowed" : "cursor-pointer"}`}
     >
       <span
@@ -169,17 +169,17 @@ export default function CookieConsentReact({
       aria-modal="true"
       aria-label={title}
     >
-      <div className="w-full max-w-[480px] max-h-[88vh] overflow-y-auto rounded-2xl bg-surface shadow-2xl">
+      <div className="w-full max-w-[480px] max-h-[88vh] overflow-y-auto rounded-2xl bg-surface-raised shadow-2xl">
         <div className="p-5 md:p-7">
           <div className="flex items-start justify-between gap-4 mb-3">
-            <h2 className="text-[#0a0a0a] text-[17px] md:text-[19px] font-medium leading-snug">
+            <h2 className="text-content text-[17px] md:text-[19px] font-medium leading-snug">
               {title}
             </h2>
             <button
               type="button"
               onClick={() => setOpen(false)}
               aria-label="Cerrar"
-              className="shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-[#717274] hover:bg-[#f2f3f5] transition-colors"
+              className="shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-content-subtle hover:bg-surface transition-colors"
             >
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
@@ -187,12 +187,12 @@ export default function CookieConsentReact({
             </button>
           </div>
 
-          <div className="prose prose-sm max-w-none prose-p:text-[#3f3f3f] prose-p:text-[13px] prose-p:leading-[20px] mb-1">
+          <div className="prose prose-sm max-w-none prose-p:text-content-muted prose-p:text-[13px] prose-p:leading-[20px] mb-1">
             {intro && <TinaMarkdown content={intro} />}
           </div>
           <a
             href={showMoreUrl}
-            className="text-[#00A0DF] text-[13px] font-medium hover:underline"
+            className="text-accent text-[13px] font-medium hover:underline"
           >
             {showMoreText}
           </a>
@@ -211,7 +211,7 @@ export default function CookieConsentReact({
                       className="flex items-center gap-2 min-w-0 flex-1 text-left"
                     >
                       <svg
-                        className={`w-3.5 h-3.5 shrink-0 text-[#717274] transition-transform duration-200 ${
+                        className={`w-3.5 h-3.5 shrink-0 text-content-subtle transition-transform duration-200 ${
                           isOpen ? "rotate-90" : ""
                         }`}
                         fill="none"
@@ -221,12 +221,12 @@ export default function CookieConsentReact({
                       >
                         <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                       </svg>
-                      <span className="text-[#0a0a0a] text-[14px] font-semibold truncate">
+                      <span className="text-content text-[14px] font-semibold truncate">
                         {c.name}
                       </span>
                     </button>
                     {c.alwaysActive ? (
-                      <span className="shrink-0 text-[#00A0DF] text-[11px] font-semibold uppercase tracking-wider">
+                      <span className="shrink-0 text-brand-secondary-dark text-[11px] font-semibold uppercase tracking-wider">
                         {alwaysActiveLabel}
                       </span>
                     ) : (
@@ -245,7 +245,7 @@ export default function CookieConsentReact({
                     }`}
                   >
                     <div className="overflow-hidden">
-                      <p className="text-[#717274] text-[12.5px] leading-[19px] pb-4 pl-[22px] pr-1">
+                      <p className="text-content-subtle text-[12.5px] leading-[19px] pb-4 pl-[22px] pr-1">
                         {c.description}
                       </p>
                     </div>
@@ -259,21 +259,21 @@ export default function CookieConsentReact({
             <button
               type="button"
               onClick={rejectAll}
-              className="flex-1 px-4 py-2.5 rounded-[8px] border border-[#00A0DF] text-[#00A0DF] text-[13px] font-semibold hover:bg-[#00A0DF]/[0.04] transition-colors"
+              className="flex-1 px-4 py-2.5 rounded-md border border-line-strong text-content text-[13px] font-semibold hover:border-ink transition-colors"
             >
               {btnReject}
             </button>
             <button
               type="button"
               onClick={savePrefs}
-              className="flex-1 px-4 py-2.5 rounded-[8px] border border-[#00A0DF] text-[#00A0DF] text-[13px] font-semibold hover:bg-[#00A0DF]/[0.04] transition-colors"
+              className="flex-1 px-4 py-2.5 rounded-md border border-line-strong text-content text-[13px] font-semibold hover:border-ink transition-colors"
             >
               {btnSave}
             </button>
             <button
               type="button"
               onClick={acceptAll}
-              className="flex-1 px-4 py-2.5 rounded-[8px] bg-[#00A0DF] text-white text-[13px] font-semibold hover:bg-[#0078A7] transition-colors"
+              className="flex-1 px-4 py-2.5 rounded-md bg-ink text-white text-[13px] font-semibold hover:bg-ink-soft transition-colors"
             >
               {btnAccept}
             </button>

@@ -1,0 +1,24 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { AboutHero, AboutIntro, AboutValues, AboutCompare, AboutSolution, AboutCta } from "../components/about/AboutSections";
+import Partners from "../components/shared/Partners.astro";
+import client from "../../tina/__generated__/client";
+
+const result = await client.queries.about({ relativePath: "index.json" });
+const { query, variables, data } = result;
+const seo = data?.about?.seo;
+const tina = { query, variables, data };
+const leafIcon = `${import.meta.env.BASE_URL || "/"}images/brand/hoja.svg`.replace(/\/{2,}/g, "/");
+---
+
+<BaseLayout title={seo?.title} description={seo?.description}>
+  <AboutHero {...tina} client:tina />
+  <div class="sheet">
+    <div class="reveal"><AboutIntro {...tina} client:tina /></div>
+    <div class="reveal"><AboutValues {...tina} leafIcon={leafIcon} client:tina /></div>
+    <div class="reveal"><AboutCompare {...tina} client:tina /></div>
+    <div class="reveal"><AboutSolution {...tina} client:tina /></div>
+    <div class="reveal"><Partners /></div>
+    <div class="reveal"><AboutCta {...tina} client:tina /></div>
+  </div>
+</BaseLayout>

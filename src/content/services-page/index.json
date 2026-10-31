@@ -1,0 +1,56 @@
+{
+  "hero": {
+    "eyebrow": "Servicios",
+    "title": "Servicios acorde a tus necesidades",
+    "text": "Nuestro servicio de outsourcing de impresión está dirigido a empresas que buscan reducir sus costos de impresión, copia y escaneo.",
+    "buttonLabel": "Más información",
+    "buttonUrl": "/contacto"
+  },
+  "list": {
+    "title": "Nuestros servicios",
+    "description": "Con 14 años en el mercado brindamos productos, ventas y apoyo técnico para satisfacer las necesidades de cada cliente.",
+    "linkLabel": "Ver servicio"
+  },
+  "reasons": {
+    "titleLight": "¿Por qué",
+    "titleStrong": "elegirnos?",
+    "text": "Más de 14 años de experiencia brindando un servicio de calidad y sostenible.",
+    "items": [
+      {
+        "title": "Experiencia",
+        "text": "Más de 14 años atendiendo a empresas de todos los rubros."
+      },
+      {
+        "title": "Profesionalismo",
+        "text": "Personal técnico especializado y certificado."
+      },
+      {
+        "title": "Sostenibilidad",
+        "text": "Reciclamos cartuchos y tóner para cuidar el ecosistema."
+      },
+      {
+        "title": "Confianza",
+        "text": "Somos el socio estratégico de más de 1000 clientes."
+      }
+    ]
+  },
+  "detail": {
+    "heroButtonLabel": "Solicitar servicio",
+    "consistsEyebrow": "¿En qué consiste?",
+    "includesTitle": "¿Qué incluye?",
+    "requestLabel": "Solicitar este servicio",
+    "othersTitle": "Otros servicios",
+    "othersLinkLabel": "Ver todos",
+    "requestMessage": "Hola, quisiera solicitar el servicio: {servicio}."
+  },
+  "cta": {
+    "title": "¿Listo para contactarnos?",
+    "text": "Nunca es tarde para encontrar productos operativos a excelentes precios.",
+    "buttonLabel": "Contáctanos",
+    "buttonUrl": "/contacto"
+  },
+  "seo": {
+    "title": "Servicios — Quality Sumprint",
+    "description": "Outsourcing de impresión, instalación, mantenimiento preventivo y correctivo, suministros y equipos de respaldo para empresas."
+  }
+}

@@ -1,0 +1,32 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { ServicesHero, ServicesReasons, ServicesCta } from "../../components/services/ServicesSections";
+import ServicesExplorerReact from "../../components/services/ServicesExplorerReact";
+import client from "../../../tina/__generated__/client";
+import { loadServices } from "../../lib/content/services";
+
+const [result, services] = await Promise.all([
+  client.queries.servicesPage({ relativePath: "index.json" }),
+  loadServices(),
+]);
+const { query, variables, data } = result;
+const page = data?.servicesPage;
+const tina = { query, variables, data };
+---
+
+<BaseLayout title={page?.seo?.title} description={page?.seo?.description}>
+  <ServicesHero {...tina} client:tina />
+  <div class="sheet">
+    <div class="reveal">
+      <ServicesExplorerReact
+        title={page?.list?.title || "Nuestros servicios"}
+        description={page?.list?.description || ""}
+        linkLabel={page?.list?.linkLabel || "Ver servicio"}
+        services={services}
+        client:visible
+      />
+    </div>
+    <div class="reveal"><ServicesReasons {...tina} client:tina /></div>
+    <div class="reveal"><ServicesCta {...tina} client:tina /></div>
+  </div>
+</BaseLayout>

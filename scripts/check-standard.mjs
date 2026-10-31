@@ -85,6 +85,7 @@ let badH1 = 0;
 let missingAlt = 0;
 let heavyPages = [];
 let jsonLdPages = 0;
+let samplePages = 0;
 
 for (const file of pages) {
   const html = readFileSync(file, "utf8");
@@ -105,6 +106,7 @@ for (const file of pages) {
   missingAlt += imgs.filter((t) => !/\balt=/i.test(t)).length;
 
   if (/application\/ld\+json/i.test(html)) jsonLdPages++;
+  if (/name=["']x-sample-catalog["']/i.test(html)) samplePages++;
 
   const size = statSync(file).size;
   if (size > 300 * 1024) heavyPages.push(`${name} (${kb(size)} de HTML)`);
@@ -118,6 +120,7 @@ if (badH1) warn(`${badH1} pagina(s) sin exactamente un <h1>`);
 if (missingAlt) warn(`${missingAlt} imagen(es) sin atributo alt`);
 if (!jsonLdPages) warn("Ninguna pagina tiene datos estructurados JSON-LD");
 for (const p of heavyPages) warn(`HTML pesado: ${p}`);
+if (samplePages) err(`${samplePages} pagina(s) usan el catalogo de muestra (WOO_SAMPLE_CATALOG=true): no se publica`);
 
 for (const f of ["sitemap-index.xml", "sitemap.xml"]) {
   if (existsSync(join(DIST, f))) { ok(`${f} presente`); break; }

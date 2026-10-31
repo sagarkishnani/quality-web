@@ -1,0 +1,16 @@
+{
+  "name": "Mantenimiento preventivo",
+  "shortName": "Mantenimiento preventivo",
+  "summary": "Revisiones programadas que evitan fallas y alargan la vida útil de tus equipos.",
+  "description": "Quality Sumprint S.A.C. tiene como visión ser la empresa elegida por su innovación, soluciones, confiabilidad, servicios y productos, además de ser reconocida por la calidad profesional de su gente y por su contribución al medio ambiente. Revisiones programadas que evitan fallas y alargan la vida útil de tus equipos.",
+  "includes": [
+    "Limpieza interna y externa",
+    "Revisión de rodillos y fusor",
+    "Calibración de calidad de impresión",
+    "Reporte técnico por visita"
+  ],
+  "image": "/images/servicios/preventivo.webp",
+  "detailImage": "/images/productos/laserjet-m608-1.webp",
+  "order": 2,
+  "showOnHome": true
+}

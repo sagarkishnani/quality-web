@@ -1,0 +1,16 @@
+{
+  "name": "Control de tus impresiones",
+  "shortName": "Control de tus impresiones",
+  "summary": "Reportes de uso por área y usuario para optimizar tus costos de impresión.",
+  "description": "Quality Sumprint S.A.C. tiene como visión ser la empresa elegida por su innovación, soluciones, confiabilidad, servicios y productos, además de ser reconocida por la calidad profesional de su gente y por su contribución al medio ambiente. Reportes de uso por área y usuario para optimizar tus costos de impresión.",
+  "includes": [
+    "Reportes por usuario y área",
+    "Cuotas de impresión",
+    "Alertas de consumo",
+    "Optimización de costos"
+  ],
+  "image": "/images/banners/productos.webp",
+  "detailImage": "/images/productos/laserjet-m608-3.webp",
+  "order": 3,
+  "showOnHome": false
+}

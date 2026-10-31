@@ -2,6 +2,8 @@
 // en el bundle y las claves quedarían públicas. Por eso las variables no llevan prefijo PUBLIC_.
 
 import type { WooProduct, WooCategory } from "./types";
+import { sampleProducts, sampleCategories } from "./sample";
+import { toCatalogItem, type CatalogAttributes, type CatalogItem } from "./catalog";
 
 if (typeof window !== "undefined") {
   throw new Error(
@@ -15,6 +17,7 @@ const CK = process.env.WOO_CONSUMER_KEY || "";
 const CS = process.env.WOO_CONSUMER_SECRET || "";
 
 export const wooConfigured = Boolean(STORE_URL && CK && CS);
+export const usingSampleCatalog = !wooConfigured && process.env.WOO_SAMPLE_CATALOG === "true";
 
 const memo = new Map<string, unknown>();
 
@@ -59,24 +62,34 @@ async function wooFetchAll<T>(path: string, params: Record<string, string | numb
   return out;
 }
 
-export function getAllProducts(): Promise<WooProduct[]> {
+export async function getAllProducts(): Promise<WooProduct[]> {
+  if (usingSampleCatalog) return sampleProducts;
   return wooFetchAll<WooProduct>("/products", { orderby: "menu_order", order: "asc" });
 }
 
-export function getAllCategories(): Promise<WooCategory[]> {
+export async function getAllCategories(): Promise<WooCategory[]> {
+  if (usingSampleCatalog) return sampleCategories;
   return wooFetchAll<WooCategory>("/products/categories", { hide_empty: "true", orderby: "menu_order" });
 }
 
 export async function getProductBySlug(slug: string): Promise<WooProduct | null> {
+  if (usingSampleCatalog) return sampleProducts.find((p) => p.slug === slug) ?? null;
   const [p] = await wooFetch<WooProduct>("/products", { slug, per_page: 1 });
   return p ?? null;
 }
 
 export async function getProductsByIds(ids: number[]): Promise<WooProduct[]> {
   if (!ids.length) return [];
+  if (usingSampleCatalog) return sampleProducts.filter((p) => ids.includes(p.id));
   return wooFetch<WooProduct>("/products", { include: ids.join(","), per_page: 100 });
 }
 
 export async function getFeaturedProducts(limit = 8): Promise<WooProduct[]> {
+  if (usingSampleCatalog) return sampleProducts.filter((p) => p.featured).slice(0, limit);
   return wooFetch<WooProduct>("/products", { featured: "true", per_page: limit });
+}
+
+export async function getCatalogItems(attributes: CatalogAttributes): Promise<CatalogItem[]> {
+  const products = await getAllProducts();
+  return products.map((product) => toCatalogItem(product, attributes));
 }

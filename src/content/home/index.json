@@ -1,30 +1,100 @@
 {
-  "hero": {
-    "eyebrow": "Quality Sumprint",
-    "title": "Un título que explica qué haces en una línea",
-    "subtitle": "Productos y servicios de impresión personalizados, con más de 14 años en el mercado.",
-    "buttons": [
-      { "text": "Conversemos", "url": "/#cta", "variant": "primary" },
-      { "text": "Ver más", "url": "/#features", "variant": "secondary" }
-    ]
-  },
-  "features": {
-    "title": "Por qué trabajar con nosotros",
-    "description": "Reemplaza estos textos desde el panel en /admin.",
-    "items": [
-      { "icon": "bolt", "title": "Rápido", "description": "Sitio estático: entrega en milisegundos desde cualquier CDN." },
-      { "icon": "shield", "title": "Seguro", "description": "Sin base de datos ni servidor de aplicaciones que mantener." },
-      { "icon": "chart", "title": "Medible", "description": "Analítica y píxeles se inyectan desde el CMS, sin tocar el código." }
-    ]
-  },
-  "cta": {
-    "title": "¿Empezamos?",
-    "description": "Cuéntanos qué necesitas y te respondemos el mismo día.",
-    "buttonText": "Escríbenos",
+  "slides": [
+    {
+      "eyebrow": "Servicios",
+      "title": "Outsourcing de impresión",
+      "text": "Dirigido a empresas que buscan reducir sus costos de impresión, copia y escaneo.",
+      "image": "/images/banners/inicio.webp",
+      "buttonLabel": "Más información",
+      "buttonUrl": "/servicios"
+    },
+    {
+      "eyebrow": "Productos",
+      "title": "Nuestros productos",
+      "text": "Contamos con impresoras e insumos de última generación.",
+      "image": "/images/banners/productos.webp",
+      "buttonLabel": "Ver productos",
+      "buttonUrl": "/productos"
+    },
+    {
+      "eyebrow": "Medioambiente",
+      "title": "¿Por qué reciclamos los deshechos?",
+      "text": "Somos una empresa socialmente responsable preocupada por la preservación del medio ambiente.",
+      "image": "/images/banners/toner.webp",
+      "buttonLabel": "Ver más",
+      "buttonUrl": "/medioambiente"
+    }
+  ],
+  "heroSecondary": {
+    "buttonLabel": "Cotizar",
     "buttonUrl": "/contacto"
   },
+  "products": {
+    "eyebrow": "Encuentra tu próxima impresora",
+    "title": "Nuestros productos",
+    "linkLabel": "Ver todos los productos",
+    "linkUrl": "/productos"
+  },
+  "services": {
+    "eyebrow": "Servicios",
+    "title": "Algunos de los servicios que ofrecemos",
+    "description": "Fortalecemos nuestros recursos técnicos e innovadores para brindar productos, ventas y apoyo técnico que satisfagan las necesidades de cada cliente.",
+    "linkLabel": "Ver todos los servicios",
+    "linkUrl": "/servicios"
+  },
+  "experience": {
+    "titleLight": "Contamos con una amplia",
+    "titleStrong": "experiencia y profesionalismo",
+    "text": "Quality Sumprint S.A.C. es una organización de origen nacional, privada, de productos y servicios personalizados, que se enfoca en fortalecer sus recursos técnicos e innovadores, así como la incorporación y distribución directa de sus productos, ventas y apoyo técnico. Con una experiencia de 14 años en el mercado.",
+    "stats": [
+      {
+        "value": "+1000",
+        "label": "Clientes satisfechos"
+      },
+      {
+        "value": "+2500",
+        "label": "Trabajos realizados con éxito"
+      },
+      {
+        "value": "+14",
+        "label": "Años de experiencia"
+      },
+      {
+        "value": "+3000",
+        "label": "Equipos vendidos"
+      }
+    ]
+  },
+  "ecoBanner": {
+    "eyebrow": "Reciclamos los deshechos para cuidar el ecosistema",
+    "title": "Cuidamos el medio ambiente",
+    "image": "/images/medioambiente/impresora-2.webp",
+    "buttonLabel": "Ver más",
+    "buttonUrl": "/medioambiente"
+  },
+  "testimonials": {
+    "eyebrow": "Testimonios",
+    "title": "Lo que dicen nuestros clientes",
+    "items": [
+      {
+        "quote": "Como empresa de tercerización, Quality Sumprint nos brinda una alternativa de confianza y calidad como socio estratégico.",
+        "name": "María Gómez",
+        "organization": "Clínica Javier Prado"
+      },
+      {
+        "quote": "El servicio técnico es rápido y nuestros equipos siempre están operativos. Muy recomendados.",
+        "name": "Arturo Torres",
+        "organization": "Clínica Javier Prado"
+      },
+      {
+        "quote": "Reducimos nuestros costos de impresión gracias al control y abastecimiento continuo de suministros.",
+        "name": "Jaime Quispe",
+        "organization": "Clínica Javier Prado"
+      }
+    ]
+  },
   "seo": {
-    "title": "Quality Sumprint",
-    "description": "Productos y servicios de impresión personalizados, con más de 14 años en el mercado."
+    "title": "Quality Sumprint — Outsourcing de impresión, impresoras y servicio técnico",
+    "description": "Productos y servicios de impresión personalizados, con más de 14 años en el mercado. Outsourcing, mantenimiento, suministros y equipos Xerox y HP."
   }
 }

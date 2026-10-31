@@ -1,0 +1,161 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Breadcrumbs from "../../components/ui/Breadcrumbs";
+import ProductTile from "../../components/ui/ProductTile";
+import ProductGalleryReact from "../../components/shop/ProductGalleryReact";
+import QuoteBoxReact from "../../components/shop/QuoteBoxReact";
+import ProductTabsReact from "../../components/shop/ProductTabsReact";
+import BundleQuoteReact from "../../components/shop/BundleQuoteReact";
+import client from "../../../tina/__generated__/client";
+import { getAllProducts } from "../../lib/woo/rest";
+import { stripHtml } from "../../lib/woo/format";
+import { toCatalogItem, specsOf } from "../../lib/woo/catalog";
+import { loadShopContent } from "../../lib/content/shopSettings";
+import { productsPath } from "../../lib/content/catalogNav";
+import type { WooProduct } from "../../lib/woo/types";
+
+const RELATED_LIMIT = 4;
+const SPECS_IN_SUMMARY = 6;
+
+export async function getStaticPaths() {
+  const products = await getAllProducts();
+  return products.map((product) => ({ params: { slug: product.slug }, props: { product, products } }));
+}
+
+interface Props {
+  product: WooProduct;
+  products: WooProduct[];
+}
+const { product, products } = Astro.props;
+
+const [{ result, attributes }, global] = await Promise.all([
+  loadShopContent(),
+  client.queries.global({ relativePath: "index.json" }),
+]);
+const texts = result.data?.shop?.product;
+const cardButtonLabel = result.data?.shop?.catalog?.cardButtonLabel || "Ver cotización";
+const contact = global.data?.global?.contact;
+
+const item = toCatalogItem(product, attributes);
+const specs = specsOf(product, attributes);
+const byId = (ids: number[]) => products.filter((p) => ids.includes(p.id));
+const sameCategory = products.filter((p) => p.id !== product.id && p.categories[0]?.id === product.categories[0]?.id);
+const fallbackRelated = products.filter((p) => p.id !== product.id && !sameCategory.includes(p));
+const related = (product.related_ids.length ? byId(product.related_ids) : [...sameCategory, ...fallbackRelated])
+  .slice(0, RELATED_LIMIT)
+  .map((p) => toCatalogItem(p, attributes));
+const extras = byId(product.cross_sell_ids).map((p) => toCatalogItem(p, attributes));
+
+const root = productsPath();
+const home = import.meta.env.BASE_URL || "/";
+const whatsappNumber = (contact?.whatsappNumber || "").replace(/\D/g, "");
+const whatsappUrl = whatsappNumber
+  ? `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(`Hola, quisiera información sobre ${item.brand} ${item.name}.`)}`
+  : undefined;
+const description = stripHtml(product.short_description || product.description, 155) || `${item.brand} ${item.name}. Solicita tu cotización.`;
+const descriptionImage = product.images[2]?.src || product.images[0]?.src;
+
+const productJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Product",
+  name: product.name,
+  description,
+  image: product.images.map((image) => new URL(image.src, Astro.site).href),
+  ...(item.brand ? { brand: { "@type": "Brand", name: item.brand } } : {}),
+  ...(product.sku ? { sku: product.sku } : {}),
+  category: item.category,
+};
+---
+
+<BaseLayout title={`${product.name} — Quality Sumprint`} description={description}>
+  <script type="application/ld+json" set:html={JSON.stringify(productJsonLd)} />
+
+  <section class="bg-surface-raised pb-16 pt-8 md:pb-20">
+    <div class="container-xl">
+      <Breadcrumbs items={[{ label: "Inicio", href: home }, { label: "Productos", href: root }, { label: product.name }]} />
+
+      <div class="mt-8 grid grid-cols-[minmax(0,1fr)] gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] lg:gap-16">
+        <ProductGalleryReact images={product.images} name={product.name} client:load />
+
+        <div>
+          <p class="text-body-sm">
+            {item.brand && <span class="font-semibold uppercase tracking-[0.14em] text-brand-secondary-dark">{item.brand}</span>}
+            {item.category && <span class="text-content-muted"> · {item.category}</span>}
+          </p>
+          <h1 class="mt-3 text-heading-md">{product.name}</h1>
+          {product.short_description && (
+            <div class="prose mt-4 max-w-none text-content-muted" set:html={product.short_description} />
+          )}
+
+          {specs.length > 0 && (
+            <div class="mt-8">
+              <h2 class="text-body-md font-semibold">{texts?.specsTitle || "Especificaciones"}</h2>
+              <dl class="mt-2">
+                {specs.slice(0, SPECS_IN_SUMMARY).map((spec) => (
+                  <div class="grid grid-cols-[minmax(0,180px)_minmax(0,1fr)] gap-4 border-b border-line py-3 text-body-sm">
+                    <dt class="text-content-muted">{spec.label}</dt>
+                    <dd>{spec.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            </div>
+          )}
+
+          <div class="mt-8">
+            <QuoteBoxReact
+              productName={`${item.brand} ${product.name}`.trim()}
+              productImage={item.image}
+              quantityLabel={texts?.quantityLabel || "¿Estás interesado? Cantidad de equipos"}
+              quoteLabel={texts?.quoteLabel || "Ver cotización"}
+              quoteMessage={texts?.quoteMessage || "Hola, quisiera una cotización de {cantidad} × {producto}."}
+              advisorTitle={texts?.advisorTitle || "Comunícate con un asesor"}
+              advisorText={texts?.advisorText || "Te ayudamos a elegir el equipo ideal"}
+              whatsappUrl={whatsappUrl}
+              client:load
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="bg-surface-raised">
+    <ProductTabsReact
+      name={product.name}
+      descriptionHtml={product.description}
+      specs={specs}
+      image={descriptionImage}
+      descriptionTab={texts?.descriptionTab || "Descripción"}
+      featuresTab={texts?.featuresTab || "Características"}
+      client:visible
+    />
+  </div>
+
+  {extras.length > 0 && (
+    <BundleQuoteReact
+      main={item}
+      extras={extras}
+      eyebrow={texts?.bundleEyebrow || "Completa tu equipo"}
+      title={texts?.bundleTitle || "Puedes comprar con"}
+      note={texts?.bundleNote || "Cotización conjunta con instalación incluida."}
+      quoteLabel={texts?.quoteLabel || "Ver cotización"}
+      client:visible
+    />
+  )}
+
+  {related.length > 0 && (
+    <section class="section reveal">
+      <div class="container-xl">
+        <div class="flex items-end justify-between gap-6">
+          <h2 class="text-heading-sm">{texts?.relatedTitle || "Te puede interesar"}</h2>
+          <a href={root} class="link-arrow">Ver todos</a>
+        </div>
+        <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          {related.map((relatedItem) => (
+            <ProductTile item={relatedItem} href={`${root}/${relatedItem.slug}`} buttonLabel={cardButtonLabel} />
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+</BaseLayout>

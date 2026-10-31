@@ -1,0 +1,16 @@
+{
+  "name": "Instalación de equipos nuevos y operativos",
+  "shortName": "Instalación de equipos",
+  "summary": "Instalamos y configuramos tus equipos para que operen desde el primer día.",
+  "description": "Quality Sumprint S.A.C. tiene como visión ser la empresa elegida por su innovación, soluciones, confiabilidad, servicios y productos, además de ser reconocida por la calidad profesional de su gente y por su contribución al medio ambiente. Instalamos y configuramos tus equipos para que operen desde el primer día.",
+  "includes": [
+    "Traslado e instalación en sitio",
+    "Configuración de red y drivers",
+    "Capacitación a usuarios",
+    "Pruebas de funcionamiento"
+  ],
+  "image": "/images/servicios/instalacion.webp",
+  "detailImage": "/images/banners/inicio.webp",
+  "order": 1,
+  "showOnHome": true
+}

@@ -1,0 +1,50 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { ShopHeader, ShopPromos } from "../../components/shop/ShopSections";
+import ProductCatalogReact from "../../components/shop/ProductCatalogReact";
+import { getCatalogItems, wooConfigured, usingSampleCatalog } from "../../lib/woo/rest";
+import { loadShopContent, orderedSegments } from "../../lib/content/shopSettings";
+import { productsPath } from "../../lib/content/catalogNav";
+
+const { result, attributes, segmentOrder } = await loadShopContent();
+const { query, variables, data } = result;
+const shop = data?.shop;
+const catalog = shop?.catalog;
+
+const items = await getCatalogItems(attributes);
+const segments = orderedSegments(items, segmentOrder);
+const home = import.meta.env.BASE_URL || "/";
+
+const emptyCatalogMessage =
+  wooConfigured || usingSampleCatalog
+    ? "Todavía no hay productos publicados."
+    : "El catálogo aún no está conectado a WooCommerce. Completa WOO_STORE_URL, WOO_CONSUMER_KEY y WOO_CONSUMER_SECRET y vuelve a compilar.";
+---
+
+<BaseLayout title={shop?.seo?.title} description={shop?.seo?.description}>
+  <ShopHeader
+    query={query}
+    variables={variables}
+    data={data}
+    crumbs={[{ label: "Inicio", href: home }, { label: "Productos" }]}
+    client:tina
+  />
+  <ProductCatalogReact
+    items={items}
+    segments={segments}
+    productsPath={productsPath()}
+    emptyCatalogMessage={emptyCatalogMessage}
+    labels={{
+      all: catalog?.allLabel || "Todos",
+      searchPlaceholder: catalog?.searchPlaceholder || "Buscar por modelo o marca",
+      categoryTitle: catalog?.categoryTitle || "Categoría",
+      brandTitle: catalog?.brandTitle || "Marca",
+      emptyMessage: catalog?.emptyMessage || "No encontramos productos con esos filtros.",
+      cardButton: catalog?.cardButtonLabel || "Ver cotización",
+    }}
+    client:load
+  />
+  <div class="reveal">
+    <ShopPromos query={query} variables={variables} data={data} client:tina />
+  </div>
+</BaseLayout>

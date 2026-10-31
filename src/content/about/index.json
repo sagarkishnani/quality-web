@@ -1,0 +1,101 @@
+{
+  "hero": {
+    "eyebrow": "Nosotros",
+    "title": "Tu empresa se enfoca",
+    "highlight": "en crecer",
+    "text": "Nosotros nos encargamos de la gestión de impresión para una operación más eficiente.",
+    "buttonLabel": "Conversemos",
+    "buttonUrl": "/contacto"
+  },
+  "intro": {
+    "eyebrow": "Quiénes somos",
+    "titleLight": "Tu aliado estratégico en",
+    "titleStrong": "soluciones de impresión",
+    "paragraphs": [
+      "Quality Sumprint S.A.C. es una organización de origen nacional, privada, de productos y servicios personalizados. Nos enfocamos en fortalecer nuestros recursos técnicos e innovadores, así como en la distribución directa de productos, ventas y apoyo técnico.",
+      "Con más de 14 años en el mercado, ayudamos a las empresas a optimizar sus procesos operativos para que vuelvan a enfocarse en lo que importa: hacer crecer su negocio."
+    ],
+    "stats": [
+      {
+        "value": "+1000",
+        "label": "Clientes satisfechos"
+      },
+      {
+        "value": "+2500",
+        "label": "Trabajos realizados con éxito"
+      },
+      {
+        "value": "+14",
+        "label": "Años de experiencia"
+      },
+      {
+        "value": "+3000",
+        "label": "Equipos vendidos"
+      }
+    ]
+  },
+  "values": [
+    {
+      "title": "Misión",
+      "text": "Brindar soluciones de impresión confiables que permitan a cada empresa concentrarse en su negocio, con equipos de última generación, suministros a tiempo y soporte técnico especializado."
+    },
+    {
+      "title": "Visión",
+      "text": "Ser la empresa elegida por nuestra innovación, soluciones, confiabilidad, servicios y productos, reconocida por la calidad profesional de nuestra gente y nuestra contribución al medio ambiente."
+    }
+  ],
+  "compare": {
+    "eyebrow": "Comprar vs. alquilar",
+    "title": "Olvídate de comprar y mantener impresoras",
+    "description": "Asumimos toda tu infraestructura de impresión con una cuota fija mensual, insumos y soporte técnico incluido.",
+    "beforeLabel": "Antes · Comprar",
+    "before": [
+      "Alto gasto de capital inicial",
+      "Gastos imprevistos en tóner",
+      "Obsolescencia del equipo",
+      "Mantenimiento por tu cuenta"
+    ],
+    "afterLabel": "Después · Con Quality Sumprint",
+    "after": [
+      "Cero inversión inicial",
+      "Suministros 100% incluidos",
+      "Soporte técnico inmediato",
+      "Renovación tecnológica constante"
+    ]
+  },
+  "solution": {
+    "image": "/images/servicios/instalacion.webp",
+    "eyebrow": "Solución integral",
+    "title": "Concentra tu negocio, nosotros nos encargamos de tus impresiones",
+    "items": [
+      {
+        "title": "Outsourcing de impresión",
+        "text": "Equipos, consumibles y soporte en una cuota fija mensual."
+      },
+      {
+        "title": "Control de impresiones",
+        "text": "Monitoreo y gestión del uso por área y usuario."
+      },
+      {
+        "title": "Servicio técnico",
+        "text": "Soporte especializado en sitio y diagnóstico remoto."
+      },
+      {
+        "title": "Mantenimiento",
+        "text": "Preventivo y correctivo con repuestos originales."
+      }
+    ],
+    "linkLabel": "Ver todos los servicios",
+    "linkUrl": "/servicios"
+  },
+  "cta": {
+    "title": "Da una buena impresión",
+    "text": "Deja los detalles operativos en nuestras manos y enfócate en hacer crecer tu negocio.",
+    "buttonLabel": "Contáctanos",
+    "buttonUrl": "/contacto"
+  },
+  "seo": {
+    "title": "Nosotros — Quality Sumprint",
+    "description": "Más de 14 años como aliado estratégico en soluciones de impresión para empresas en Perú."
+  }
+}

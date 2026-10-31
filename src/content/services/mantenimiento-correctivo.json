@@ -1,0 +1,16 @@
+{
+  "name": "Mantenimiento correctivo (repuestos)",
+  "shortName": "Mantenimiento correctivo",
+  "summary": "Diagnóstico y reparación con repuestos originales.",
+  "description": "Quality Sumprint S.A.C. tiene como visión ser la empresa elegida por su innovación, soluciones, confiabilidad, servicios y productos, además de ser reconocida por la calidad profesional de su gente y por su contribución al medio ambiente. Diagnóstico y reparación con repuestos originales.",
+  "includes": [
+    "Diagnóstico de fallas",
+    "Repuestos originales",
+    "Garantía de reparación",
+    "Tiempos de respuesta definidos"
+  ],
+  "image": "/images/productos/laserjet-m608-1.webp",
+  "detailImage": "/images/servicios/preventivo.webp",
+  "order": 7,
+  "showOnHome": false
+}
