@@ -222,6 +222,7 @@ Los textos que no estén en estas tablas se ajustan al valor calculado de la ref
 | Blanco | `#00A0DF` | 2,96:1 |
 | `#9AA0A6` | `#F1F3F5` | 2,37:1 |
 | `#3E8E1F` | `#F1F3F5` | 3,71:1 |
+| Blanco | `#74C947` | 2,06:1 |
 
 `check:standard` no mide contraste. Estas excepciones las aprobó Esteban y falta informarlas a Sagar.
 
@@ -239,3 +240,32 @@ Los textos que no estén en estas tablas se ajustan al valor calculado de la ref
 - **Baja de contraste.** Es la queja más frecuente de clientes según Fiberlux, y Sagar podría pedir revertirla. Mitigación: al estar en tokens, el cambio se hace en un solo lugar.
 - **Cambio visual en mobile sin referencia.** Mitigación: revisar a 375 px antes del PR.
 - **Títulos que dependen de otra estructura.** Algunos no se pueden validar del todo hasta las specs 02 a 05. Mitigación: anotarlos en "Notas de implementación".
+
+## Notas de implementación
+
+- `.btn-accent` pasa a texto blanco, porque así está el CTA del header en la referencia. Se agrega a las excepciones de contraste.
+- `ServiceCard` suma el tamaño `sm` para las dos tarjetas de 20 px del bento del inicio.
+- `.btn` usa `min-h` en vez de alto fijo, para que un texto largo no se corte.
+- Tamaños de la referencia sin token, resueltos con el más cercano: 19 px en el hero de Servicios (`body-xl`), 21 px en "¿Por qué elegirnos?" y Contacto (`subtitle-xs`).
+- Colores de la referencia sin token, resueltos con el más cercano: `#33373B` en la descripción de producto (`content-strong`) y `#7A8086` en la pestaña inactiva (`content-subtle`).
+- `surface-sunken` y las sombras `shadow-lift` y `shadow-deep` quedan definidas, pero se aplican en las specs 03 a 05, que tocan esos bloques.
+
+Diferencias que dependen de estructura y quedan para otra spec:
+
+| Elemento | Spec |
+|---|---|
+| Heroes sin imagen y texto de "Otros servicios" | 02 |
+| Color de los banners de `/productos` y su botón | 03 |
+| Tarjetas del bundle y nombre del producto en ellas | 04 |
+| Color de pilares y numeración de Medioambiente | 05 |
+
+## QA realizada
+
+- **Textos a 1440 px:** comparación automática de tamaño, peso y color en las 8 pantallas. Coincidían 73 de 382 y ahora 355 de 382. Los 27 restantes son las diferencias de arriba.
+- **Botones a 1440 px:** tamaño de texto, peso y radio revisados contra la referencia.
+- **Visual a 1440 px:** Nosotros revisada lado a lado.
+- **375 px:** sin scroll horizontal en las 8 pantallas; inicio y ficha revisadas a simple vista, sin texto cortado ni superpuesto.
+- **`npm run typecheck`:** sin errores.
+- **`npm run check:standard`:** 0 errores y 1 aviso (14 páginas sin `og:image`), con build local sin catálogo de muestra.
+- **`npm run build`:** no se pudo ejecutar, porque requiere credenciales de TinaCloud. `npm run build:local` terminó sin errores (14 páginas).
+- **Observación en mobile:** en las cifras del inicio, un rótulo de dos líneas desalinea `+3000` respecto de `+14`.
