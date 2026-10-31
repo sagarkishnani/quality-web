@@ -56,6 +56,14 @@ function observeBlocks() {
   layers.forEach((layer) => layer.parentElement && blockObserver!.observe(layer.parentElement));
 }
 
+function revealFocusedHeroControl(event: FocusEvent) {
+  const target = event.target;
+  if (!(target instanceof HTMLElement) || !target.matches(":focus-visible")) return;
+  const hero = target.closest("section");
+  if (!hero || getComputedStyle(hero).position !== "sticky" || window.scrollY === 0) return;
+  window.scrollTo({ top: 0, behavior: reducedMotion().matches ? "auto" : "smooth" });
+}
+
 export function startParallax() {
   layers = Array.from(document.querySelectorAll<HTMLElement>("[data-parallax]"));
   observeBlocks();
@@ -65,6 +73,7 @@ export function startParallax() {
   listening = true;
   window.addEventListener("scroll", scheduleMove, { passive: true });
   window.addEventListener("resize", scheduleMove, { passive: true });
+  document.addEventListener("focusin", revealFocusedHeroControl);
   desktop().addEventListener("change", syncWithEnvironment);
   reducedMotion().addEventListener("change", syncWithEnvironment);
 }
