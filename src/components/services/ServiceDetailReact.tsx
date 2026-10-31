@@ -104,7 +104,9 @@ export function ServiceBody(props: TinaProps & { labels: DetailLabels }) {
         <section className="pb-16 md:pb-24">
           <div className="container-xl">
             <div className="relative h-[280px] overflow-hidden rounded-3xl bg-ink-soft md:h-[480px]">
-              <img src={detailImage} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover" data-tina-field={tinaField(service, "detailImage")} />
+              <div aria-hidden data-parallax="0.12" className="absolute inset-x-0 -top-[15%] h-[130%]">
+                <img src={detailImage} alt="" loading="lazy" className="h-full w-full object-cover" data-tina-field={tinaField(service, "detailImage")} />
+              </div>
             </div>
           </div>
         </section>
