@@ -131,7 +131,7 @@ export function AboutCompare(props: TinaProps) {
               ))}
             </ul>
           </div>
-          <div className="rounded-2xl bg-brand-primary-dark p-6 text-white md:p-10">
+          <div className="rounded-2xl bg-brand-primary p-6 text-white md:p-10">
             <p className="eyebrow-caps text-white/85" data-tina-field={tinaField(compare, "afterLabel")}>
               {compare.afterLabel}
             </p>

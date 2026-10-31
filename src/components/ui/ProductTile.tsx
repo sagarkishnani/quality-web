@@ -16,7 +16,7 @@ export default function ProductTile({ item, href, buttonLabel, tone = "raised" }
       }`}
     >
       {item.badge && (
-        <span className="absolute left-5 top-5 z-10 inline-flex items-center gap-1.5 rounded-md bg-brand-primary-dark py-1 pl-2.5 pr-3 text-caption-sm font-semibold text-white">
+        <span className="absolute left-5 top-5 z-10 inline-flex items-center gap-1.5 rounded-md bg-brand-primary py-1 pl-2.5 pr-3 text-caption-sm font-semibold text-white">
           <span className="h-1 w-1 rounded-full bg-white" aria-hidden />
           {item.badge}
         </span>

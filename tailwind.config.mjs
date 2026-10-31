@@ -33,10 +33,11 @@ export default {
             dark:     '#0078A7',
             DEFAULT:  '#00A0DF',
             light:    '#73CBED',
-            lightest: '#D9F1FA',
+            lightest: '#DFF1FA',
           },
           secondary: {
-            dark:     '#357A1A',
+            darkest:  '#2F6E16',
+            dark:     '#3E8E1F',
             DEFAULT:  '#74C947',
             light:    '#9BE070',
             lightest: '#E5F4DC',
@@ -49,7 +50,7 @@ export default {
         semantics: {
           success: { dark: '#267C35', DEFAULT: '#37B24D', lightest: '#EBF7ED' },
           alert:   { dark: '#CA7900', DEFAULT: '#FC9700', lightest: '#FFF4D8' },
-          error:   { dark: '#8C1D1D', DEFAULT: '#EB0E0E', lightest: '#F9EBEA' },
+          error:   { dark: '#8C1D1D', DEFAULT: '#C8372D', lightest: '#F9EBEA' },
         },
         greyscale: {
           darkest:  '#16181D',
@@ -64,21 +65,30 @@ export default {
         surface: {
           DEFAULT: '#F1F3F5',
           raised:  '#FFFFFF',
+          sunken:  '#F4F5F5',
         },
         content: {
           DEFAULT: '#111316',
+          strong:  '#24272A',
           muted:   '#5C6166',
-          subtle:  '#676C71',
+          subtle:  '#6B7075',
+          faint:   '#9AA0A6',
         },
         line: {
-          DEFAULT: '#E3E6E9',
-          strong:  '#C7CBD0',
+          DEFAULT: '#E6E8EB',
+          soft:    '#ECEEF0',
+          strong:  '#DADDE1',
         },
-        /* Brand color readable on the page background; use text-accent, not a brand-primary step. */
-        accent: '#0078A7',
+        /* Matches the visual reference even though it stays below 4.5:1 on the page background (spec 01). */
+        accent: '#00A0DF',
       },
       borderRadius: {
-        sm: '4px', md: '8px', lg: '12px', xl: '16px', '2xl': '24px', '3xl': '32px', sheet: '48px',
+        xs: '5px', sm: '6px', md: '8px', lg: '14px', xl: '16px', '2xl': '24px', panel: '28px', '3xl': '32px', sheet: '48px',
+      },
+      boxShadow: {
+        soft: '0 8px 28px rgba(0,0,0,0.12)',
+        lift: '0 30px 60px rgba(0,0,0,0.08)',
+        deep: '0 40px 80px rgba(0,0,0,0.35)',
       },
       maxWidth: {
         site: '1440px',
