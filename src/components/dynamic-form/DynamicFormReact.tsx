@@ -821,7 +821,8 @@ export default function DynamicFormReact({ query, variables, data: initialData, 
     const selectPlaceholder = placeholder || ui.selectPlaceholder;
 
     const numType: NumericFieldType | null = isNumericField(field.fieldType) ? field.fieldType : null;
-    const numMaxLen = numType ? NUMERIC_FIELD_RULES[numType].maxLength : maxLen;
+    // sanitizeNumeric caps the digits; a character limit here would cut pasted numbers with spaces first.
+    const numMaxLen = numType ? undefined : maxLen;
     const numInputMode: "numeric" | undefined = numType ? "numeric" : undefined;
     const numOnChange = (v: string) =>
       updateField(name, numType ? sanitizeNumeric(v, numType) : maxLen ? v.slice(0, maxLen) : v);
