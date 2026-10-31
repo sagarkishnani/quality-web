@@ -173,7 +173,7 @@ export default function ProductCatalogReact({ items, segments, productsPath, lab
 
       <div className="sheet bg-surface-raised">
         <div className="container-xl grid gap-10 py-14 lg:grid-cols-[240px_1fr] lg:gap-14">
-          <aside className="space-y-6">
+          <aside className="space-y-6 lg:sticky lg:top-24 lg:max-h-[calc(100vh-7rem)] lg:self-start lg:overflow-y-auto">
             <FacetGroup title={labels.categoryTitle} options={countBy(inSegment, "category")} selected={categories} onToggle={(v) => setCategories((list) => toggleValue(list, v))} />
             <FacetGroup title={labels.brandTitle} options={countBy(inSegment, "brand")} selected={brands} onToggle={(v) => setBrands((list) => toggleValue(list, v))} />
             {hasFilters && (
