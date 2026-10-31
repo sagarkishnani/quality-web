@@ -28,7 +28,7 @@ interface Props {
 }
 const { product, products } = Astro.props;
 
-const [{ result, attributes }, global] = await Promise.all([
+const [{ result, attributes, quoteMessage }, global] = await Promise.all([
   loadShopContent(),
   client.queries.global({ relativePath: "index.json" }),
 ]);
@@ -107,7 +107,7 @@ const productJsonLd = {
               productImage={item.image}
               quantityLabel={texts?.quantityLabel || "¿Estás interesado? Cantidad de equipos"}
               quoteLabel={texts?.quoteLabel || "Ver cotización"}
-              quoteMessage={texts?.quoteMessage || "Hola, quisiera una cotización de {cantidad} × {producto}."}
+              quoteMessage={quoteMessage}
               advisorTitle={texts?.advisorTitle || "Comunícate con un asesor"}
               advisorText={texts?.advisorText || "Te ayudamos a elegir el equipo ideal"}
               whatsappUrl={whatsappUrl}
@@ -152,7 +152,7 @@ const productJsonLd = {
         </div>
         <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {related.map((relatedItem) => (
-            <ProductTile item={relatedItem} href={`${root}/${relatedItem.slug}`} buttonLabel={cardButtonLabel} />
+            <ProductTile item={relatedItem} href={`${root}/${relatedItem.slug}`} buttonLabel={cardButtonLabel} quoteMessage={quoteMessage} />
           ))}
         </div>
       </div>

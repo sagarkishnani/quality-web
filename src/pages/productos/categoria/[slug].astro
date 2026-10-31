@@ -27,7 +27,7 @@ interface Props {
 }
 const { category, products } = Astro.props;
 
-const { result, attributes } = await loadShopContent();
+const { result, attributes, quoteMessage } = await loadShopContent();
 const cardButtonLabel = result.data?.shop?.catalog?.cardButtonLabel || "Ver cotización";
 const items = products.map((product) => toCatalogItem(product, attributes));
 const root = productsPath();
@@ -48,7 +48,7 @@ const home = import.meta.env.BASE_URL || "/";
   <div class="sheet bg-surface-raised">
     <div class="container-xl grid gap-6 py-14 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
       {items.map((item) => (
-        <ProductTile item={item} href={`${root}/${item.slug}`} buttonLabel={cardButtonLabel} tone="sunken" />
+        <ProductTile item={item} href={`${root}/${item.slug}`} buttonLabel={cardButtonLabel} quoteMessage={quoteMessage} tone="sunken" />
       ))}
     </div>
   </div>

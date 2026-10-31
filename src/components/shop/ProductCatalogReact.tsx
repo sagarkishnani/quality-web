@@ -21,6 +21,7 @@ interface Props {
   productsPath: string;
   labels: Labels;
   emptyCatalogMessage: string;
+  quoteMessage: string;
 }
 
 interface FacetGroupProps {
@@ -97,7 +98,7 @@ function readInitialFilters(items: CatalogItem[], segments: FacetOption[]) {
   return { segment, brands: brand ? [brand] : [], categories: category ? [category] : [], term: params.get("q") ?? "" };
 }
 
-export default function ProductCatalogReact({ items, segments, productsPath, labels, emptyCatalogMessage }: Props) {
+export default function ProductCatalogReact({ items, segments, productsPath, labels, emptyCatalogMessage, quoteMessage }: Props) {
   const [segment, setSegment] = useState("all");
   const [categories, setCategories] = useState<string[]>([]);
   const [brands, setBrands] = useState<string[]>([]);
@@ -215,7 +216,7 @@ export default function ProductCatalogReact({ items, segments, productsPath, lab
             {visible.length > 0 ? (
               <div className="mt-8 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
                 {visible.map((item) => (
-                  <ProductTile key={item.id} item={item} href={`${productsPath}/${item.slug}`} buttonLabel={labels.cardButton} tone="sunken" />
+                  <ProductTile key={item.id} item={item} href={`${productsPath}/${item.slug}`} buttonLabel={labels.cardButton} quoteMessage={quoteMessage} tone="sunken" />
                 ))}
               </div>
             ) : (

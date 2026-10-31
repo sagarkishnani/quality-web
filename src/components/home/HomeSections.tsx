@@ -28,7 +28,7 @@ function initials(name: string): string {
     .join("");
 }
 
-export function HomeProducts(props: TinaProps & { products: CatalogItem[]; productsPath: string; buttonLabel: string }) {
+export function HomeProducts(props: TinaProps & { products: CatalogItem[]; productsPath: string; buttonLabel: string; quoteMessage: string }) {
   const section = useHome(props)?.products;
   if (!section || !props.products.length) return <div hidden />;
 
@@ -44,7 +44,7 @@ export function HomeProducts(props: TinaProps & { products: CatalogItem[]; produ
         />
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {props.products.map((item) => (
-            <ProductTile key={item.id} item={item} href={`${props.productsPath}/${item.slug}`} buttonLabel={props.buttonLabel} />
+            <ProductTile key={item.id} item={item} href={`${props.productsPath}/${item.slug}`} buttonLabel={props.buttonLabel} quoteMessage={props.quoteMessage} />
           ))}
         </div>
       </div>

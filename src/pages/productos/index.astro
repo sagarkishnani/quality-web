@@ -6,7 +6,7 @@ import { getCatalogItems, wooConfigured, usingSampleCatalog } from "../../lib/wo
 import { loadShopContent, orderedSegments } from "../../lib/content/shopSettings";
 import { productsPath } from "../../lib/content/catalogNav";
 
-const { result, attributes, segmentOrder } = await loadShopContent();
+const { result, attributes, segmentOrder, quoteMessage } = await loadShopContent();
 const { query, variables, data } = result;
 const shop = data?.shop;
 const catalog = shop?.catalog;
@@ -34,6 +34,7 @@ const emptyCatalogMessage =
     segments={segments}
     productsPath={productsPath()}
     emptyCatalogMessage={emptyCatalogMessage}
+    quoteMessage={quoteMessage}
     labels={{
       all: catalog?.allLabel || "Todos",
       searchPlaceholder: catalog?.searchPlaceholder || "Buscar por modelo o marca",

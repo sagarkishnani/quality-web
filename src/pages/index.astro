@@ -32,7 +32,7 @@ const tina = { query, variables, data };
   <HeroSliderReact {...tina} client:load />
   <div class="sheet">
     <div class="reveal">
-      <HomeProducts {...tina} products={products} productsPath={productsPath()} buttonLabel={cardButtonLabel} client:tina />
+      <HomeProducts {...tina} products={products} productsPath={productsPath()} buttonLabel={cardButtonLabel} quoteMessage={shop.quoteMessage} client:tina />
     </div>
     <div class="reveal">
       <HomeServices {...tina} services={homeServices.length ? homeServices : services} client:tina />

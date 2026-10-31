@@ -1,6 +1,8 @@
 import client from "../../../tina/__generated__/client";
 import { DEFAULT_ATTRIBUTES, slugify, uniqueSorted, type CatalogAttributes, type CatalogItem } from "../woo/catalog";
 
+const DEFAULT_QUOTE_MESSAGE = "Hola, quisiera una cotización de {cantidad} × {producto}.";
+
 export interface FacetOption {
   label: string;
   slug: string;
@@ -14,7 +16,8 @@ export async function loadShopContent() {
     segment: catalog?.segmentAttribute || DEFAULT_ATTRIBUTES.segment,
   };
   const segmentOrder = (catalog?.segmentOrder ?? []).filter((value): value is string => Boolean(value));
-  return { result, attributes, segmentOrder };
+  const quoteMessage = result.data?.shop?.product?.quoteMessage || DEFAULT_QUOTE_MESSAGE;
+  return { result, attributes, segmentOrder, quoteMessage };
 }
 
 export function orderedSegments(items: CatalogItem[], segmentOrder: string[]): FacetOption[] {
