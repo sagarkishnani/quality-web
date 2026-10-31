@@ -28,7 +28,7 @@ interface Props {
 }
 const { product, products } = Astro.props;
 
-const [{ result, attributes }, global] = await Promise.all([
+const [{ result, attributes, quoteMessage }, global] = await Promise.all([
   loadShopContent(),
   client.queries.global({ relativePath: "index.json" }),
 ]);
@@ -75,7 +75,9 @@ const productJsonLd = {
       <Breadcrumbs items={[{ label: "Inicio", href: home }, { label: "Productos", href: root }, { label: product.name }]} />
 
       <div class="mt-8 grid grid-cols-[minmax(0,1fr)] gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] lg:gap-16">
-        <ProductGalleryReact images={product.images} name={product.name} client:load />
+        <div class="lg:sticky lg:top-24 lg:self-start">
+          <ProductGalleryReact images={product.images} name={product.name} client:load />
+        </div>
 
         <div>
           <p class="text-body-base">
@@ -107,7 +109,7 @@ const productJsonLd = {
               productImage={item.image}
               quantityLabel={texts?.quantityLabel || "¿Estás interesado? Cantidad de equipos"}
               quoteLabel={texts?.quoteLabel || "Ver cotización"}
-              quoteMessage={texts?.quoteMessage || "Hola, quisiera una cotización de {cantidad} × {producto}."}
+              quoteMessage={quoteMessage}
               advisorTitle={texts?.advisorTitle || "Comunícate con un asesor"}
               advisorText={texts?.advisorText || "Te ayudamos a elegir el equipo ideal"}
               whatsappUrl={whatsappUrl}
@@ -152,7 +154,7 @@ const productJsonLd = {
         </div>
         <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {related.map((relatedItem) => (
-            <ProductTile item={relatedItem} href={`${root}/${relatedItem.slug}`} buttonLabel={cardButtonLabel} />
+            <ProductTile item={relatedItem} href={`${root}/${relatedItem.slug}`} buttonLabel={cardButtonLabel} quoteMessage={quoteMessage} />
           ))}
         </div>
       </div>

@@ -1,14 +1,18 @@
 import { FaEye } from "react-icons/fa6";
+import { fillTemplate, quoteUrl } from "../shop/quote";
 import type { CatalogItem } from "../../lib/woo/catalog";
 
 interface Props {
   item: CatalogItem;
   href: string;
   buttonLabel?: string | null;
+  quoteMessage?: string;
   tone?: "raised" | "sunken";
 }
 
-export default function ProductTile({ item, href, buttonLabel, tone = "raised" }: Props) {
+export default function ProductTile({ item, href, buttonLabel, quoteMessage, tone = "raised" }: Props) {
+  const product = `${item.brand} ${item.name}`.trim();
+
   return (
     <article
       className={`group relative flex flex-col overflow-hidden rounded-2xl p-6 transition-shadow duration-300 hover:shadow-[0_24px_48px_-24px_rgba(17,19,22,0.25)] ${
@@ -56,13 +60,14 @@ export default function ProductTile({ item, href, buttonLabel, tone = "raised" }
         {item.category && <p className="mt-1 text-body-base text-content-muted">{item.category}</p>}
       </div>
 
-      {buttonLabel && (
-        <span
-          aria-hidden
-          className="pointer-events-none absolute inset-x-6 bottom-6 translate-y-4 rounded-full bg-ink py-3 text-center text-body-sm font-medium text-white opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100"
+      {buttonLabel && quoteMessage && (
+        <a
+          href={quoteUrl(fillTemplate(quoteMessage, { cantidad: 1, producto: product }))}
+          aria-label={`${buttonLabel}: ${product}`}
+          className="pointer-events-none absolute inset-x-6 bottom-6 z-10 translate-y-4 rounded-full bg-ink py-3 text-center text-body-sm font-medium text-white opacity-0 transition-all duration-300 focus-visible:pointer-events-auto focus-visible:translate-y-0 focus-visible:opacity-100 group-hover:translate-y-0 group-hover:opacity-100 [@media(hover:hover)]:group-hover:pointer-events-auto"
         >
           {buttonLabel}
-        </span>
+        </a>
       )}
     </article>
   );

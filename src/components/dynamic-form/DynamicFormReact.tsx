@@ -154,6 +154,8 @@ interface FormConfig extends TinaEditable {
   submitButtonText_en?: string;
   successTitle?: string;
   successTitle_en?: string;
+  successButtonText?: string;
+  successButtonText_en?: string;
   successMessage?: string;
   successMessage_en?: string;
   errorMessage?: string;
@@ -495,7 +497,7 @@ export default function DynamicFormReact({ query, variables, data: initialData, 
   const captchaConfigured = !!TURNSTILE_SITE_KEY;
 
   useEffect(() => {
-    if (!captchaConfigured) return;
+    if (!captchaConfigured || submitted) return;
     let cancelled = false;
     loadTurnstile()
       .then(() => {
@@ -521,7 +523,7 @@ export default function DynamicFormReact({ query, variables, data: initialData, 
         widgetIdRef.current = null;
       }
     };
-  }, []);
+  }, [submitted]);
 
   const resetCaptcha = () => {
     const ts = (window as any).turnstile;
@@ -529,6 +531,18 @@ export default function DynamicFormReact({ query, variables, data: initialData, 
       try { ts.reset(widgetIdRef.current); } catch {}
     }
     setCaptchaToken("");
+  };
+
+  const resetForm = () => {
+    const inputFields = fields.filter((f) => f.name && !isStructural(f.fieldType));
+    setValues(Object.fromEntries(inputFields.map((f) => [f.name, getDefaultValue(f)])));
+    setErrors({});
+    setTouched(false);
+    setSendError("");
+    setCorrelativo("");
+    setHoneypot("");
+    setCaptchaToken("");
+    setSubmitted(false);
   };
 
   useEffect(() => {
@@ -713,6 +727,10 @@ export default function DynamicFormReact({ query, variables, data: initialData, 
 
   if (submitted) {
     if (isContact) {
+      const firstName = String(values.nombre || "").trim().split(/\s+/)[0];
+      const successTitle = (L(formConfig, "successTitle") || ui.successTitle).replace("{nombre}", () => firstName);
+      const successButtonText = L(formConfig, "successButtonText");
+
       return (
         <div className="flex items-center justify-center h-full min-h-[400px]">
           <div className="text-center">
@@ -721,9 +739,17 @@ export default function DynamicFormReact({ query, variables, data: initialData, 
                 <path d="M5 13l4 4L19 7" stroke="#22C55E" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </div>
-            <p className={`text-subtitle-sm font-semibold ${isDark ? "text-greyscale-white" : "text-greyscale-darkest"}`}>
+            <h2 className={`text-subtitle-sm ${isDark ? "text-greyscale-white" : "text-greyscale-darkest"}`}>
+              {successTitle}
+            </h2>
+            <p className={`mt-3 text-body-base ${isDark ? "text-greyscale-light" : "text-content-muted"}`}>
               {L(formConfig, "successMessage") || ui.contactSuccess}
             </p>
+            {successButtonText && (
+              <button type="button" onClick={resetForm} className={`mt-6 ${isDark ? "btn-ghost-light" : "btn-secondary"}`}>
+                {successButtonText}
+              </button>
+            )}
           </div>
         </div>
       );
@@ -795,7 +821,8 @@ export default function DynamicFormReact({ query, variables, data: initialData, 
     const selectPlaceholder = placeholder || ui.selectPlaceholder;
 
     const numType: NumericFieldType | null = isNumericField(field.fieldType) ? field.fieldType : null;
-    const numMaxLen = numType ? NUMERIC_FIELD_RULES[numType].length : maxLen;
+    // sanitizeNumeric caps the digits; a character limit here would cut pasted numbers with spaces first.
+    const numMaxLen = numType ? undefined : maxLen;
     const numInputMode: "numeric" | undefined = numType ? "numeric" : undefined;
     const numOnChange = (v: string) =>
       updateField(name, numType ? sanitizeNumeric(v, numType) : maxLen ? v.slice(0, maxLen) : v);

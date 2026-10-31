@@ -134,6 +134,9 @@ Los formularios no están hardcodeados:
 - El envío pasa por `src/utils/submitForm.ts` → `POST` a **`send-email.php`**
   (JSON normalmente; `multipart/form-data` si hay adjuntos). Incluye honeypot
   (`website`) y token de Turnstile.
+- En la variante de contacto, `successTitle` acepta `{nombre}` (primera palabra
+  del campo `nombre`) y `successButtonText` muestra un botón que reinicia el
+  formulario; si está vacío, el botón no aparece.
 - `src/pages/form-config.json.ts` emite `/form-config.json` en build time: el
   mapa de destinatarios que lee el backend PHP.
 
