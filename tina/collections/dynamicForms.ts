@@ -71,9 +71,16 @@ export const dynamicFormsCollection: Collection = {
       label: "Título de éxito",
       type: "string",
       description:
-        "Título que se muestra después de enviar exitosamente.",
+        "Título que se muestra después de enviar exitosamente. Usa {nombre} para saludar por el primer nombre.",
     },
     { name: "successTitle_en", label: "Título de éxito (EN)", type: "string" },
+    {
+      name: "successButtonText",
+      label: "Texto botón de nueva consulta",
+      type: "string",
+      description: "Reinicia el formulario tras el envío. Si está vacío, el botón no se muestra.",
+    },
+    { name: "successButtonText_en", label: "Texto botón de nueva consulta (EN)", type: "string" },
     {
       name: "successMessage",
       label: "Mensaje de éxito",
