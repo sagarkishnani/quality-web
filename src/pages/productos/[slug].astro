@@ -78,8 +78,8 @@ const productJsonLd = {
         <ProductGalleryReact images={product.images} name={product.name} client:load />
 
         <div>
-          <p class="text-body-sm">
-            {item.brand && <span class="font-semibold uppercase tracking-[0.14em] text-brand-secondary-dark">{item.brand}</span>}
+          <p class="text-body-base">
+            {item.brand && <span class="text-caption-sm font-semibold uppercase tracking-[0.12em] text-brand-secondary-dark">{item.brand}</span>}
             {item.category && <span class="text-content-muted"> · {item.category}</span>}
           </p>
           <h1 class="mt-3 text-heading-md">{product.name}</h1>
@@ -92,8 +92,8 @@ const productJsonLd = {
               <h2 class="text-body-md font-semibold">{texts?.specsTitle || "Especificaciones"}</h2>
               <dl class="mt-2">
                 {specs.slice(0, SPECS_IN_SUMMARY).map((spec) => (
-                  <div class="grid grid-cols-[minmax(0,180px)_minmax(0,1fr)] gap-4 border-b border-line py-3 text-body-sm">
-                    <dt class="text-content-muted">{spec.label}</dt>
+                  <div class="grid grid-cols-[minmax(0,180px)_minmax(0,1fr)] gap-4 border-b border-line py-3 text-body-base">
+                    <dt class="text-content-subtle">{spec.label}</dt>
                     <dd>{spec.value}</dd>
                   </div>
                 ))}
@@ -147,7 +147,7 @@ const productJsonLd = {
     <section class="section reveal">
       <div class="container-xl">
         <div class="flex items-end justify-between gap-6">
-          <h2 class="text-heading-sm">{texts?.relatedTitle || "Te puede interesar"}</h2>
+          <h2 class="text-heading-xs">{texts?.relatedTitle || "Te puede interesar"}</h2>
           <a href={root} class="link-arrow">Ver todos</a>
         </div>
         <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">

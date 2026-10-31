@@ -22,7 +22,7 @@ export function ShopHeader(props: TinaProps & { crumbs: Crumb[]; title?: string;
     <div className="container-xl pt-8">
       <Breadcrumbs items={props.crumbs} />
       <div className="mt-10 grid items-start gap-6 md:grid-cols-[1fr_auto]">
-        <h1 className="text-heading-lg" data-tina-field={editable && hero ? tinaField(hero, "title") : undefined}>
+        <h1 className="text-heading-xl" data-tina-field={editable && hero ? tinaField(hero, "title") : undefined}>
           {title}
         </h1>
         {description && (
@@ -74,7 +74,7 @@ export function ShopPromos(props: TinaProps) {
                     {promo.eyebrow}
                   </p>
                 )}
-                <h2 className="mt-3 text-subtitle-lg" data-tina-field={tinaField(promo, "title")}>
+                <h2 className="mt-3 text-heading-xs" data-tina-field={tinaField(promo, "title")}>
                   {promo.title}
                 </h2>
                 {promo.text && (
