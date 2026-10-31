@@ -713,6 +713,9 @@ export default function DynamicFormReact({ query, variables, data: initialData, 
 
   if (submitted) {
     if (isContact) {
+      const firstName = String(values.nombre || "").trim().split(/\s+/)[0];
+      const successTitle = (L(formConfig, "successTitle") || ui.successTitle).replace("{nombre}", () => firstName);
+
       return (
         <div className="flex items-center justify-center h-full min-h-[400px]">
           <div className="text-center">
@@ -721,7 +724,10 @@ export default function DynamicFormReact({ query, variables, data: initialData, 
                 <path d="M5 13l4 4L19 7" stroke="#22C55E" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </div>
-            <p className={`text-subtitle-sm font-semibold ${isDark ? "text-greyscale-white" : "text-greyscale-darkest"}`}>
+            <h2 className={`text-subtitle-sm ${isDark ? "text-greyscale-white" : "text-greyscale-darkest"}`}>
+              {successTitle}
+            </h2>
+            <p className={`mt-3 text-body-base ${isDark ? "text-greyscale-light" : "text-content-muted"}`}>
               {L(formConfig, "successMessage") || ui.contactSuccess}
             </p>
           </div>
