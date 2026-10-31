@@ -40,7 +40,7 @@ export default function HeroSliderReact({ query, variables, data: initialData }:
       onMouseLeave={() => setPaused(false)}
       aria-roledescription="carrusel"
     >
-      <div data-parallax="0.15" data-parallax-pinned className="absolute inset-x-0 -top-[10%] h-[120%]">
+      <div data-parallax="0.15" data-parallax-pinned suppressHydrationWarning className="absolute inset-x-0 -top-[10%] h-[120%]">
         {slides.map((slide: any, index: number) => (
           <img
             key={index}
