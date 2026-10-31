@@ -1,6 +1,7 @@
 import { useTina, tinaField } from "tinacms/dist/react";
 import { FaCheck, FaArrowRight } from "react-icons/fa6";
 import Breadcrumbs from "../ui/Breadcrumbs";
+import HeroPhoto from "../ui/HeroPhoto";
 import ServiceCard, { type ServiceSummary } from "../ui/ServiceCard";
 import { mediaUrl } from "../../utils/mediaUrl";
 import { fillTemplate, quoteUrl } from "../shop/quote";
@@ -32,10 +33,15 @@ function requestHref(labels: DetailLabels, name: string) {
 export function ServiceHero(props: TinaProps & { labels: DetailLabels; servicesHref: string; servicesLabel: string }) {
   const service = useService(props);
   if (!service) return <div hidden />;
+  const heroImage = mediaUrl(service.image);
 
   return (
     <section className="relative overflow-hidden bg-ink pb-36 pt-24 text-white md:pb-44 md:pt-32">
-      <div aria-hidden className="pointer-events-none absolute -right-40 -top-40 h-[520px] w-[520px] rounded-full bg-brand-primary/10 blur-3xl" />
+      {heroImage ? (
+        <HeroPhoto image={heroImage} tinaField={tinaField(service, "image")} />
+      ) : (
+        <div aria-hidden className="pointer-events-none absolute -right-40 -top-40 h-[520px] w-[520px] rounded-full bg-brand-primary/10 blur-3xl" />
+      )}
       <div className="container-xl relative">
         <Breadcrumbs tone="inverse" items={[{ label: props.servicesLabel, href: props.servicesHref }, { label: service.name }]} />
         <h1 className="mt-6 max-w-3xl text-heading-xl" data-tina-field={tinaField(service, "name")}>
