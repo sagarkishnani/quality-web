@@ -33,7 +33,7 @@ export default function DarkHero({ eyebrow, title, text, buttonLabel, buttonUrl,
           )}
           {text && (
             <p
-              className={`mt-6 text-body-lg text-white/80 ${centered ? "mx-auto max-w-2xl" : "max-w-xl"}`}
+              className={`mt-6 text-body-xl text-white/90 ${centered ? "mx-auto max-w-2xl" : "max-w-xl"}`}
               data-tina-field={tina.text}
             >
               {text}

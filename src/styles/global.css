@@ -10,7 +10,7 @@
     @apply bg-surface text-content font-sans antialiased;
   }
   h1, h2, h3, h4, h5, h6 {
-    @apply font-heading font-semibold tracking-tight;
+    @apply font-heading font-bold tracking-tight;
   }
   :focus-visible {
     @apply outline-none ring-2 ring-brand-primary ring-offset-2 ring-offset-surface;
@@ -29,17 +29,20 @@
   }
 
   .btn {
-    @apply inline-flex items-center justify-center gap-2 rounded-md px-6 py-3
-           text-body-sm font-semibold transition-colors duration-200;
+    @apply inline-flex min-h-[46px] items-center justify-center gap-2 rounded-sm px-6 py-2
+           text-body-base font-semibold transition-colors duration-200;
   }
   .btn-primary   { @apply btn bg-ink text-white hover:bg-ink-soft; }
   .btn-secondary { @apply btn border border-line-strong bg-surface-raised text-content hover:border-ink; }
-  .btn-accent    { @apply btn bg-brand-secondary text-ink hover:bg-brand-secondary-light; }
+  .btn-accent    { @apply btn bg-brand-secondary text-white hover:bg-brand-secondary-dark; }
   .btn-light     { @apply btn bg-white text-ink hover:bg-surface; }
   .btn-ghost-light { @apply btn border border-white/60 text-white hover:bg-white/10; }
+  .btn-sm { @apply min-h-[40px] text-body-sm font-semibold; }
+  .btn-lg { @apply min-h-[48px] rounded-md; }
+  .btn-xl { @apply min-h-[52px] rounded-md text-body-md font-semibold; }
 
   .link-arrow {
-    @apply inline-flex items-center gap-2 text-body-sm font-semibold text-content
+    @apply inline-flex items-center gap-2 text-body-base font-semibold text-content
            transition-colors hover:text-accent;
   }
 
@@ -47,11 +50,11 @@
     @apply text-body-sm font-semibold text-brand-secondary-dark;
   }
   .eyebrow-caps {
-    @apply text-body-sm font-semibold uppercase tracking-[0.14em];
+    @apply text-caption-sm font-semibold uppercase tracking-[0.12em];
   }
 
   .card {
-    @apply rounded-2xl bg-surface-raised p-6 md:p-8;
+    @apply rounded-panel bg-surface-raised p-6 md:p-8;
   }
 }
 

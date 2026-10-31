@@ -48,10 +48,10 @@ export default function QuoteBoxReact(props: Props) {
   return (
     <>
       <div ref={boxRef}>
-        <p className="text-body-sm font-semibold">{props.quantityLabel}</p>
+        <p className="text-body-base font-semibold">{props.quantityLabel}</p>
         <div className="mt-3 flex gap-3">
           <Stepper quantity={quantity} onChange={setQuantity} />
-          <a href={href} className="btn-primary h-14 flex-1">
+          <a href={href} className="btn-primary btn-xl flex-1">
             {label}
           </a>
         </div>
@@ -66,8 +66,8 @@ export default function QuoteBoxReact(props: Props) {
               <FaWhatsapp className="h-5 w-5" aria-hidden />
             </span>
             <span className="flex-1">
-              <span className="block text-body-sm font-semibold">{props.advisorTitle}</span>
-              <span className="block text-caption-sm text-content-muted">{props.advisorText}</span>
+              <span className="block text-body-sm font-medium">{props.advisorTitle}</span>
+              <span className="block text-body-sm text-content-muted">{props.advisorText}</span>
             </span>
             <FaArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-1" aria-hidden />
           </a>

@@ -24,8 +24,8 @@ interface Props {
   locale: Locale;
 }
 
-const columnTitle = "text-caption-sm font-semibold uppercase tracking-[0.14em] text-content";
-const footerLink = "text-body-sm text-content-muted transition-colors hover:text-content";
+const columnTitle = "text-caption-md font-semibold uppercase tracking-[0.12em] text-content";
+const footerLink = "text-body-base text-content-muted transition-colors hover:text-content";
 
 export default function FooterReact({ query, variables, data: initialData, locale }: Props) {
   const { data } = useTina({ query, variables, data: initialData });
@@ -118,7 +118,7 @@ export default function FooterReact({ query, variables, data: initialData, local
               );
             })}
           </div>
-          <div className="flex flex-col gap-2 text-caption-sm text-content-subtle md:flex-row md:gap-7">
+          <div className="flex flex-col gap-2 text-caption-md text-content-subtle md:flex-row md:gap-7">
             {footer?.legal && <p data-tina-field={tinaField(footer, "legal")}>{tField(footer, "legal", locale)}</p>}
             {footer?.creditLabel && (
               <a href={footer.creditUrl || "#"} target="_blank" rel="noopener" className="hover:text-content" data-tina-field={tinaField(footer, "creditLabel")}>

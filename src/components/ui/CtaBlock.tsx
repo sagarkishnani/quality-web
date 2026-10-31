@@ -13,7 +13,7 @@ export default function CtaBlock({ cta }: { cta?: CtaContent | null }) {
   return (
     <section className="section">
       <div className="container-xl text-center">
-        <h2 className="text-heading-sm" data-tina-field={tinaField(cta as any, "title")}>
+        <h2 className="text-heading-md" data-tina-field={tinaField(cta as any, "title")}>
           {cta.title}
         </h2>
         {cta.text && (

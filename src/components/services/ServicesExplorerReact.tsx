@@ -20,7 +20,7 @@ export default function ServicesExplorerReact({ title, description, linkLabel, s
     <section className="section">
       <div className="container-xl">
         <div className="grid items-end gap-6 md:grid-cols-2">
-          <h2 className="text-heading-sm">{title}</h2>
+          <h2 className="text-heading-md">{title}</h2>
           {description && <p className="max-w-xl text-body-md text-content-muted md:justify-self-end">{description}</p>}
         </div>
 
@@ -36,12 +36,12 @@ export default function ServicesExplorerReact({ title, description, linkLabel, s
                     onFocus={() => setActive(index)}
                     className="flex items-center gap-6 py-4"
                   >
-                    <span className={`w-6 text-caption-sm font-semibold transition-colors ${selected ? "text-brand-secondary-dark" : "text-content-subtle"}`}>
+                    <span className={`w-6 text-caption-md font-semibold transition-colors ${selected ? "text-brand-secondary-dark" : "text-content-faint"}`}>
                       {pad(index + 1)}
                     </span>
                     <span
-                      className={`flex-1 text-body-lg transition-all duration-300 ${
-                        selected ? "translate-x-1.5 font-semibold text-content" : "font-normal text-content-muted"
+                      className={`flex-1 text-body-xl transition-all duration-300 ${
+                        selected ? "translate-x-1.5 font-semibold text-content" : "font-medium text-content-muted"
                       }`}
                     >
                       {service.name}
@@ -78,8 +78,8 @@ export default function ServicesExplorerReact({ title, description, linkLabel, s
                 {pad(active + 1)} / {pad(services.length)}
               </p>
               <h3 className="mt-2 text-subtitle-md font-semibold">{current.name}</h3>
-              {current.summary && <p className="mt-3 max-w-md text-body-sm text-white/80">{current.summary}</p>}
-              <a href={current.href} className="btn-light mt-6">
+              {current.summary && <p className="mt-3 max-w-md text-body-base text-white/[0.88]">{current.summary}</p>}
+              <a href={current.href} className="btn-light btn-sm mt-6">
                 {linkLabel}
               </a>
             </div>

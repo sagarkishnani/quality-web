@@ -23,12 +23,12 @@ export default function ImageBanner({ eyebrow, title, image, buttonLabel, button
       <div className="absolute inset-0 bg-ink/55" aria-hidden />
       <div className="relative max-w-3xl text-white">
         {eyebrow && (
-          <p className="eyebrow-caps text-brand-secondary-light" data-tina-field={tina.eyebrow}>
+          <p className="text-body-sm font-semibold uppercase tracking-[0.12em] text-brand-secondary-light" data-tina-field={tina.eyebrow}>
             {eyebrow}
           </p>
         )}
         {title && (
-          <h2 className="mt-4 text-heading-md" data-tina-field={tina.title}>
+          <h2 className="mt-4 text-heading-xl" data-tina-field={tina.title}>
             {title}
           </h2>
         )}

@@ -58,7 +58,7 @@ export function EnvironmentCommitment(props: TinaProps) {
               {commitment.eyebrow}
             </p>
           )}
-          <h2 className="mt-3 text-heading-sm" data-tina-field={tinaField(commitment, "title")}>
+          <h2 className="mt-3 text-heading-md" data-tina-field={tinaField(commitment, "title")}>
             {commitment.title}
           </h2>
         </div>
@@ -92,11 +92,11 @@ export function EnvironmentPillars(props: TinaProps) {
               </div>
               <div className="flex flex-col justify-center p-8 md:p-14">
                 <p className="text-body-sm font-semibold text-brand-secondary-dark">{String(index + 1).padStart(2, "0")}</p>
-                <h2 className="mt-3 text-heading-xs" data-tina-field={tinaField(pillar, "title")}>
+                <h2 className="mt-3 text-heading-md" data-tina-field={tinaField(pillar, "title")}>
                   {pillar.title}
                 </h2>
                 {pillar.text && (
-                  <p className="mt-4 text-body-md leading-7 text-content-muted" data-tina-field={tinaField(pillar, "text")}>
+                  <p className="mt-4 text-body-lg text-content-muted" data-tina-field={tinaField(pillar, "text")}>
                     {pillar.text}
                   </p>
                 )}

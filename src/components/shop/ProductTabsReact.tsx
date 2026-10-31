@@ -30,8 +30,8 @@ export default function ProductTabsReact({ name, descriptionHtml, specs, image, 
               role="tab"
               aria-selected={active === tab.key}
               onClick={() => setActive(tab.key)}
-              className={`-mb-px border-b-2 px-0.5 pb-4 text-subtitle-sm transition-colors ${
-                active === tab.key ? "border-ink font-semibold" : "border-transparent text-content-subtle hover:text-content"
+              className={`-mb-px border-b-2 px-0.5 pb-4 text-body-lg transition-colors ${
+                active === tab.key ? "border-ink font-semibold" : "border-transparent font-medium text-content-subtle hover:text-content"
               }`}
             >
               {tab.label}
@@ -42,9 +42,9 @@ export default function ProductTabsReact({ name, descriptionHtml, specs, image, 
         {active === "description" && (
           <div className="grid items-center gap-12 pt-12 md:grid-cols-2">
             <div>
-              <h2 className="text-heading-xs">{name}</h2>
+              <h2 className="text-subtitle-lg">{name}</h2>
               <div
-                className="prose mt-5 max-w-none text-body-lg leading-8 text-content-muted prose-strong:text-content"
+                className="prose mt-5 max-w-none text-body-lg text-content-strong prose-strong:font-bold prose-strong:text-content-strong"
                 dangerouslySetInnerHTML={{ __html: descriptionHtml }}
               />
             </div>

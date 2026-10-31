@@ -52,11 +52,11 @@ function FacetGroup({ title, options, selected, onToggle }: FacetGroupProps) {
           {options.map((option) => {
             const checked = selected.includes(option.label);
             return (
-              <label key={option.label} className="flex cursor-pointer items-start gap-3 text-body-sm text-content">
+              <label key={option.label} className="flex cursor-pointer items-start gap-3 text-body-base text-content-strong">
                 <input type="checkbox" className="peer sr-only" checked={checked} onChange={() => onToggle(option.label)} />
                 <span
                   aria-hidden
-                  className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-[5px] border transition-colors peer-focus-visible:ring-2 peer-focus-visible:ring-brand-primary ${
+                  className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-xs border transition-colors peer-focus-visible:ring-2 peer-focus-visible:ring-brand-primary ${
                     checked ? "border-ink bg-ink text-white" : "border-line-strong bg-surface-raised"
                   }`}
                 >
@@ -159,7 +159,7 @@ export default function ProductCatalogReact({ items, segments, productsPath, lab
                   aria-selected={selected}
                   onClick={() => pickSegment(tab.slug)}
                   className={`shrink-0 border-b-2 pb-2 text-body-md transition-colors ${
-                    selected ? "border-ink font-semibold text-content" : "border-transparent text-content-subtle hover:text-content"
+                    selected ? "border-ink font-semibold text-content" : "border-transparent font-medium text-content-subtle hover:text-content"
                   }`}
                 >
                   {tab.label}
@@ -195,7 +195,7 @@ export default function ProductCatalogReact({ items, segments, productsPath, lab
                   className="h-12 w-full bg-transparent text-body-sm placeholder:text-content-subtle focus:outline-none"
                 />
               </label>
-              <p className="shrink-0 text-body-sm font-semibold" aria-live="polite">
+              <p className="shrink-0 text-body-base font-semibold" aria-live="polite">
                 {visible.length} {visible.length === 1 ? "producto" : "productos"}
               </p>
               <label className="shrink-0">

@@ -8,9 +8,9 @@ interface Props {
 
 export default function SplitTitle({ light, strong, className = "text-heading-xs", tinaField, as: Tag = "h2" }: Props) {
   return (
-    <Tag className={`font-normal ${className}`} data-tina-field={tinaField}>
+    <Tag className={`font-medium ${className}`} data-tina-field={tinaField}>
       {light && <span className="text-content-muted">{light} </span>}
-      {strong && <strong className="font-semibold text-content">{strong}</strong>}
+      {strong && <strong className="font-bold text-content">{strong}</strong>}
     </Tag>
   );
 }

@@ -79,7 +79,7 @@ export function HomeServices(props: TinaProps & { services: ServiceSummary[] }) 
               key={service.href}
               service={service}
               className={BENTO_LAYOUT[index]}
-              size={index === 0 ? "lg" : "md"}
+              size={index === 0 ? "lg" : index === 1 ? "md" : "sm"}
               showSummary={index < 2}
             />
           ))}
@@ -168,18 +168,18 @@ export function HomeTestimonials(props: TinaProps) {
                   <FaStar key={star} className="h-4 w-4" aria-hidden />
                 ))}
               </div>
-              <blockquote className="mt-6 flex-1 text-body-md leading-7 text-content" data-tina-field={tinaField(item, "quote")}>
+              <blockquote className="mt-6 flex-1 text-body-lg text-content-strong" data-tina-field={tinaField(item, "quote")}>
                 {item.quote}
               </blockquote>
               <figcaption className="mt-7 flex items-center gap-3">
-                <span className="flex h-11 w-11 items-center justify-center rounded-full bg-brand-secondary-lightest text-body-sm font-bold text-brand-secondary-dark">
+                <span className="flex h-11 w-11 items-center justify-center rounded-full bg-brand-secondary-lightest text-body-base font-bold text-brand-secondary-darkest">
                   {initials(item.name || "")}
                 </span>
                 <span>
-                  <span className="block text-body-sm font-semibold" data-tina-field={tinaField(item, "name")}>
+                  <span className="block text-body-base font-bold" data-tina-field={tinaField(item, "name")}>
                     {item.name}
                   </span>
-                  <span className="block text-caption-sm text-content-muted" data-tina-field={tinaField(item, "organization")}>
+                  <span className="block text-body-sm text-content-muted" data-tina-field={tinaField(item, "organization")}>
                     {item.organization}
                   </span>
                 </span>

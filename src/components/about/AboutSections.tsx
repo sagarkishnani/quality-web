@@ -117,7 +117,7 @@ export function AboutCompare(props: TinaProps) {
         />
         <div className="mt-12 grid gap-6 md:grid-cols-2">
           <div className="card md:p-10">
-            <p className="eyebrow-caps text-content-muted" data-tina-field={tinaField(compare, "beforeLabel")}>
+            <p className="eyebrow-caps text-caption-md font-semibold text-content-subtle" data-tina-field={tinaField(compare, "beforeLabel")}>
               {compare.beforeLabel}
             </p>
             <ul className="mt-5" data-tina-field={tinaField(compare, "before")}>
@@ -131,13 +131,13 @@ export function AboutCompare(props: TinaProps) {
               ))}
             </ul>
           </div>
-          <div className="rounded-2xl bg-brand-primary-dark p-6 text-white md:p-10">
-            <p className="eyebrow-caps text-white/85" data-tina-field={tinaField(compare, "afterLabel")}>
+          <div className="rounded-2xl bg-brand-primary p-6 text-white md:p-10">
+            <p className="eyebrow-caps text-caption-md font-semibold text-white" data-tina-field={tinaField(compare, "afterLabel")}>
               {compare.afterLabel}
             </p>
             <ul className="mt-5" data-tina-field={tinaField(compare, "after")}>
               {after.map((item: string, index: number) => (
-                <li key={index} className="flex items-center gap-4 border-b border-white/20 py-4 text-body-md font-medium">
+                <li key={index} className="flex items-center gap-4 border-b border-white/20 py-4 text-body-md font-semibold">
                   <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-brand-secondary text-ink">
                     <FaCheck className="h-3 w-3" aria-hidden />
                   </span>
@@ -178,10 +178,10 @@ export function AboutSolution(props: TinaProps) {
           <div className="mt-8 grid gap-x-8 sm:grid-cols-2">
             {items.map((item: any, index: number) => (
               <div key={index} className="border-t border-line py-6">
-                <h3 className="text-body-lg font-semibold" data-tina-field={tinaField(item, "title")}>
+                <h3 className="text-body-lg font-bold" data-tina-field={tinaField(item, "title")}>
                   {item.title}
                 </h3>
-                <p className="mt-2 text-body-sm text-content-muted" data-tina-field={tinaField(item, "text")}>
+                <p className="mt-2 text-body-base text-content-muted" data-tina-field={tinaField(item, "text")}>
                   {item.text}
                 </p>
               </div>

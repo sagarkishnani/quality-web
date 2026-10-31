@@ -37,7 +37,7 @@ function BundleCard({ item, kind, selected, locked, onToggle }: {
       <span className="flex h-32 items-center justify-center">
         {item.image && <img src={item.image} alt="" loading="lazy" className="max-h-full w-auto object-contain mix-blend-multiply" />}
       </span>
-      <span className="mt-4 text-caption-sm font-semibold uppercase tracking-[0.14em] text-brand-secondary-dark">{kind}</span>
+      <span className="mt-4 text-caption-xs font-semibold uppercase tracking-[0.1em] text-brand-secondary-dark">{kind}</span>
       <span className="mt-1 text-body-md font-semibold">{item.name}</span>
     </label>
   );
@@ -55,7 +55,7 @@ export default function BundleQuoteReact({ main, extras, eyebrow, title, note, q
     <section className="section bg-surface">
       <div className="container-xl">
         <p className="eyebrow">{eyebrow}</p>
-        <h2 className="mt-3 text-heading-sm">{title}</h2>
+        <h2 className="mt-3 text-heading-xs">{title}</h2>
         <div className="mt-10 flex flex-col gap-8 lg:flex-row lg:items-center">
           <div className="flex w-full flex-col items-center gap-4 sm:w-auto sm:flex-row">
             <BundleCard item={main} kind="Este producto" selected locked onToggle={() => undefined} />
@@ -70,8 +70,8 @@ export default function BundleQuoteReact({ main, extras, eyebrow, title, note, q
             <p className="text-body-sm text-content-muted">
               Seleccionados · {chosen.length} {chosen.length === 1 ? "artículo" : "artículos"}
             </p>
-            <p className="mt-2 text-body-md font-medium">{note}</p>
-            <a href={quoteUrl(message)} className="btn-primary mt-6 w-full">
+            <p className="mt-2 text-body-sm text-content-muted">{note}</p>
+            <a href={quoteUrl(message)} className="btn-primary btn-lg mt-6 w-full">
               {quoteLabel}
             </a>
           </div>

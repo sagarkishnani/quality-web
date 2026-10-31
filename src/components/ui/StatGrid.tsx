@@ -13,11 +13,11 @@ export default function StatGrid({ stats }: { stats: (Stat | null)[] }) {
     <dl className="grid grid-cols-2 gap-y-10 gap-x-6 lg:grid-cols-4">
       {visible.map((stat, index) => (
         <div key={index} className="flex flex-col-reverse gap-2">
-          <dt className="text-body-sm text-content-muted" data-tina-field={tinaField(stat as any, "label")}>
+          <dt className="text-body-base text-content-muted" data-tina-field={tinaField(stat as any, "label")}>
             {stat.label}
           </dt>
           <dd
-            className="text-heading-md font-bold tracking-tight text-brand-primary"
+            className="text-heading-lg text-accent"
             data-tina-field={tinaField(stat as any, "value")}
           >
             {stat.value}

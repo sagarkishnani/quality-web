@@ -20,7 +20,7 @@ export default function PartnersReact({ query, variables, data: initialData }: P
   return (
     <section className="py-16 md:py-20" aria-label={partners?.title || "Aliados"}>
       {partners?.title && (
-        <p className="text-center text-body-sm font-medium text-content-muted" data-tina-field={tinaField(partners, "title")}>
+        <p className="text-center text-body-sm font-semibold text-content-muted" data-tina-field={tinaField(partners, "title")}>
           {partners.title}
         </p>
       )}

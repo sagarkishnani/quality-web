@@ -42,7 +42,7 @@ export function ServiceHero(props: TinaProps & { labels: DetailLabels; servicesH
           {service.name}
         </h1>
         {service.summary && (
-          <p className="mt-6 max-w-xl text-body-lg text-white/80" data-tina-field={tinaField(service, "summary")}>
+          <p className="mt-6 max-w-xl text-body-xl text-white/90" data-tina-field={tinaField(service, "summary")}>
             {service.summary}
           </p>
         )}
@@ -78,7 +78,7 @@ export function ServiceBody(props: TinaProps & { labels: DetailLabels }) {
               <p className="text-body-sm font-semibold">{props.labels.includesTitle}</p>
               <ul className="mt-3" data-tina-field={tinaField(service, "includes")}>
                 {includes.map((item: string, index: number) => (
-                  <li key={index} className="flex items-center gap-4 border-b border-line py-3.5 text-body-md">
+                  <li key={index} className="flex items-center gap-4 border-b border-line py-3.5 text-body-base text-content-strong">
                     <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-brand-secondary-lightest text-brand-secondary-dark">
                       <FaCheck className="h-2.5 w-2.5" aria-hidden />
                     </span>
@@ -114,7 +114,7 @@ export function OtherServices({ labels, others, servicesHref }: { labels: Detail
     <section className="pb-8">
       <div className="container-xl">
         <div className="flex items-end justify-between gap-6">
-          <h2 className="text-heading-sm">{labels.othersTitle}</h2>
+          <h2 className="text-heading-xs">{labels.othersTitle}</h2>
           <a href={servicesHref} className="link-arrow">
             {labels.othersLinkLabel}
             <FaArrowRight className="h-3 w-3" aria-hidden />

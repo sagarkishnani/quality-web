@@ -194,7 +194,7 @@ export default function HeaderReact({ query, variables, data: initialData, local
                     target={link.external ? "_blank" : undefined}
                     rel={link.external ? "noopener noreferrer" : undefined}
                     aria-current={active ? "page" : undefined}
-                    className="text-body-sm font-medium text-content transition-colors hover:text-content-muted"
+                    className="text-body-base font-medium text-content-strong transition-colors hover:text-content-muted"
                     data-tina-field={tinaField(link, "label")}
                   >
                     {tField(link, "label", locale)}
@@ -234,7 +234,7 @@ export default function HeaderReact({ query, variables, data: initialData, local
             {nav?.cta?.label && (
               <a
                 href={localizeHref(nav.cta.url, locale)}
-                className="btn-accent !px-5 !py-2.5"
+                className="btn-accent btn-sm !px-5"
                 data-tina-field={tinaField(nav.cta, "label")}
               >
                 {tField(nav.cta, "label", locale)}
