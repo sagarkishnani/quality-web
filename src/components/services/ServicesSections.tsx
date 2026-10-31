@@ -45,7 +45,7 @@ export function ServicesReasons(props: TinaProps) {
       <div className="container-xl">
         <div className="card grid gap-10 md:p-16 lg:grid-cols-[1fr_2fr]">
           <div>
-            <SplitTitle light={reasons.titleLight} strong={reasons.titleStrong} className="text-heading-xs" tinaField={tinaField(reasons, "titleStrong")} />
+            <SplitTitle light={reasons.titleLight} strong={reasons.titleStrong} className="text-heading-sm" tinaField={tinaField(reasons, "titleStrong")} />
             {reasons.text && (
               <p className="mt-5 max-w-sm text-body-md text-content-muted" data-tina-field={tinaField(reasons, "text")}>
                 {reasons.text}
@@ -56,10 +56,10 @@ export function ServicesReasons(props: TinaProps) {
             {items.map((item: any, index: number) => (
               <div key={index} className="border-t border-line py-7">
                 <p className="text-body-sm font-semibold text-accent">{String(index + 1).padStart(2, "0")}</p>
-                <h3 className="mt-2 text-subtitle-sm" data-tina-field={tinaField(item, "title")}>
+                <h3 className="mt-2 text-subtitle-xs font-bold" data-tina-field={tinaField(item, "title")}>
                   {item.title}
                 </h3>
-                <p className="mt-2 text-body-sm text-content-muted" data-tina-field={tinaField(item, "text")}>
+                <p className="mt-2 text-body-base text-content-muted" data-tina-field={tinaField(item, "text")}>
                   {item.text}
                 </p>
               </div>
