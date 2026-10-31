@@ -123,6 +123,7 @@ export function EnvironmentBanner(props: TinaProps) {
     <section className="pb-16 md:pb-24">
       <div className="container-xl">
         <ImageBanner
+          parallax={0.22}
           eyebrow={banner.eyebrow}
           title={banner.title}
           image={mediaUrl(banner.image)}
