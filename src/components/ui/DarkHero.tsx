@@ -1,24 +1,30 @@
 import type { ReactNode } from "react";
+import HeroPhoto from "./HeroPhoto";
 
 interface Props {
+  image?: string;
   eyebrow?: ReactNode;
   title?: ReactNode;
   text?: string | null;
   buttonLabel?: string | null;
   buttonUrl?: string | null;
   align?: "left" | "center";
-  tina?: { eyebrow?: string; title?: string; text?: string; button?: string };
+  tina?: { image?: string; eyebrow?: string; title?: string; text?: string; button?: string };
 }
 
-export default function DarkHero({ eyebrow, title, text, buttonLabel, buttonUrl, align = "left", tina = {} }: Props) {
+export default function DarkHero({ image, eyebrow, title, text, buttonLabel, buttonUrl, align = "left", tina = {} }: Props) {
   const centered = align === "center";
 
   return (
     <section className="relative overflow-hidden bg-ink pb-36 pt-24 text-white md:pb-44 md:pt-32">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -right-40 -top-40 h-[520px] w-[520px] rounded-full bg-brand-primary/10 blur-3xl"
-      />
+      {image ? (
+        <HeroPhoto image={image} align={align} tinaField={tina.image} />
+      ) : (
+        <div
+          aria-hidden
+          className="pointer-events-none absolute -right-40 -top-40 h-[520px] w-[520px] rounded-full bg-brand-primary/10 blur-3xl"
+        />
+      )}
       <div className={`container-xl relative ${centered ? "text-center" : ""}`}>
         <div className={centered ? "mx-auto max-w-3xl" : "max-w-2xl"}>
           {eyebrow && (
