@@ -12,7 +12,13 @@ export const servicesPageCollection: Collection = {
       type: "object",
       name: "hero",
       label: "Cabecera",
-      fields: [textField("eyebrow", "Antetítulo"), textField("title", "Título"), longTextField("text", "Texto"), ...buttonFields()],
+      fields: [
+        { name: "image", label: "Imagen de fondo", type: "image" },
+        textField("eyebrow", "Antetítulo"),
+        textField("title", "Título"),
+        longTextField("text", "Texto"),
+        ...buttonFields(),
+      ],
     },
     {
       type: "object",
