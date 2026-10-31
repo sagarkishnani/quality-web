@@ -194,14 +194,19 @@ semánticos, y por eso el tema se puede cambiar sin tocar una sola clase.
 |---|---|---|
 | `surface` | Fondo de la página | `#F1F3F5` |
 | `surface-raised` | Tarjetas, bloques blancos | `#FFFFFF` |
+| `surface-sunken` | Tarjetas de producto y galería | `#F4F5F5` |
 | `content` | Texto principal | `#111316` |
+| `content-strong` | Navegación y texto de lectura | `#24272A` |
 | `content-muted` | Texto secundario | `#5C6166` |
-| `content-subtle` | Metadatos | `#676C71` |
-| `line` / `line-strong` | Bordes | `#E3E6E9` / `#C7CBD0` |
-| `accent` | Marca legible sobre el fondo | `#0078A7` |
+| `content-subtle` | Metadatos | `#6B7075` |
+| `content-faint` | Numeración y texto de apoyo | `#9AA0A6` |
+| `line` / `line-soft` / `line-strong` | Bordes | `#E6E8EB` / `#ECEEF0` / `#DADDE1` |
+| `accent` | Marca en cifras y acentos | `#00A0DF` |
 | `ink` / `ink-soft` | Botón primario, heros oscuros | `#111316` / `#24272A` |
 
-Los tonos de texto cumplen 4.5:1 sobre su fondo. Si cambias uno, vuelve a medir.
+Los tonos siguen la referencia visual. `accent`, `content-faint`, `brand-secondary-dark` y el texto
+blanco sobre `brand-primary` no llegan a 4.5:1: es una excepción registrada en `specs/01-tokens.md`,
+y `check:standard` no la mide.
 
 **Nunca escribas `text-white/65` ni `bg-white/5`**: asumen fondo oscuro y rompen
 el tema. Las únicas excepciones legítimas son los bloques con fondo oscuro fijo
@@ -214,11 +219,13 @@ sobre fondo claro ese tono es ilegible.
 **Rampa de marca**: `brand-primary` (`#00A0DF`), `brand-primary-dark`
 (`#0078A7`), `brand-primary-darkest` (`#005070`). Verde secundario:
 `brand-secondary` (`#74C947`, fondos y acentos), `brand-secondary-dark`
-(`#357A1A`, el único verde legible como texto sobre fondo claro),
+(`#3E8E1F`, antetítulos sobre fondo claro), `brand-secondary-darkest`
+(`#2F6E16`, iniciales y texto sobre verde claro),
 `brand-secondary-light` (`#9BE070`, antetítulos sobre fondo oscuro).
 
 **Botones**: `btn-primary` (tinta), `btn-accent` (verde, CTA del header),
 `btn-light` y `btn-ghost-light` (sobre fondos oscuros), `btn-secondary`.
+Tamaños: `btn` (46 px), `btn-sm` (40 px), `btn-lg` (48 px) y `btn-xl` (52 px).
 Antetítulos: `eyebrow` (verde) y `eyebrow-caps` (mayúsculas, sobre fotos).
 
 **Secciones**: las páginas con hero oscuro continúan en `<div class="sheet">`,
@@ -231,8 +238,12 @@ producción). Solo hidratan de verdad el header, el slider del inicio, el
 catálogo con filtros, la ficha de producto y el explorador de servicios.
 
 **Tipografía**: Inter en todo el sitio. La escala está como utilidades de
-Tailwind (`heading-xxl` → `caption-sm`); los títulos son semibold con tracking
-negativo.
+Tailwind (`heading-xl` → `caption-xs`); los títulos son bold con tracking
+negativo. Nada de tamaños sueltos como `text-[52px]`: si falta uno, va como token.
+
+**Radios y sombras**: `rounded-xs` (etiquetas), `rounded-sm` (botones), `rounded-md`
+(campos), `rounded-panel` (tarjetas e imágenes grandes); `shadow-soft`,
+`shadow-lift` y `shadow-deep`.
 
 
 ### Panel del CMS
