@@ -170,7 +170,7 @@ Inicio conserva su capa `bg-ink/50`.
 
 - [ ] A 375 px, ninguna de las 8 pantallas presenta scroll horizontal ni texto cortado o superpuesto.
 - [ ] Los filtros de `/productos` y la galería de la ficha siguen fijos a 96 px si la spec 02 ya está en la rama.
-- [ ] El LCP de Nosotros y Servicios a 1440 px no empeora más de 300 ms frente a `staging`.
+- [ ] El LCP de Nosotros y Servicios a 1440 px es menor a 2,5 s, la meta del estándar.
 
 **Cierre**
 
@@ -200,6 +200,9 @@ Inicio conserva su capa `bg-ink/50`.
 - **Los degradados usan el token `ink`.** El `rgba(10,12,14)` de la referencia es casi igual y no existe como token.
 - **El factor 0,15 aplica a los cuatro heroes fijos.** Es el valor de la referencia en los heroes que lo tienen.
 - **Los pilares y la franja de impresión se van a la spec 05.** Esa spec rehace esa parte de Medioambiente.
+- **El parallax se queda como lo aprobó Sagar.** Decisión de Esteban del 2026-10-31, al cerrar la revisión previa al PR.
+- **El degradado de Servicios no se oscurece.** Decisión de Esteban del 2026-10-31. El subtítulo queda en 3,3:1 y el título baja a 3,6:1 en su peor zona. Es una excepción a los 4.5:1 del estándar, y el PR debe señalarla.
+- **El criterio de LCP pasa a la meta del estándar, 2,5 s.** El límite anterior era de 300 ms frente a `staging`. Dejó de ser útil porque la foto reemplaza al texto como LCP, y `/nosotros` sube 340 ms.
 
 **Descartadas:**
 
@@ -248,24 +251,21 @@ Si alguno de estos entra, va en su propia spec.
 - Se probó un `preload` de la foto en `BaseLayout.astro` y se descartó: React 19 ya emite el suyo, y el LCP de `/nosotros` solo mejoró 24 ms.
 - `tina/tina-lock.json` cambió con el schema y va en la rama.
 
-Pendientes para revisar:
-
-- **LCP de `/nosotros`:** no cumple el límite de 300 ms de esta spec. La causa es que el LCP pasó de texto a foto. El valor sigue dentro del estándar (< 2,5 s).
-- **Contraste en Servicios:** el subtítulo tiene 3,3:1 sobre la parte clara de la impresora, y el título 3,6:1 en su peor 5 %. Se usa el degradado aprobado, igual al de la referencia. No está en las excepciones de contraste.
+- `tina-lock.json` chocó al actualizar la rama con `staging`, y se generó de nuevo con el schema combinado de las specs 02 y 03.
 
 ## QA realizada
 
 - **Navegador:** 42 de 42 comprobaciones en Chromium, sobre `npm run dev` y catálogo de muestra. Cubren heroes fijos, movimiento, los cinco factores, bordes vacíos a 1440 × 900 y 1920 × 1080, slider, cambio de ancho, `ClientRouter`, teclado, movimiento reducido y 7 pantallas a 375 px.
-- **No probado a 375 px:** la ficha de producto. Las otras 7 pantallas pasan.
+- **Ficha a 375 px:** sin scroll horizontal. Con la spec 02 ya en la rama, los filtros siguen a 96 px. La galería conserva `top: 96px`, pero no se vio fija: en la ficha probada mide lo mismo que su contenedor (550 px) y no tiene recorrido.
 - **Listener de scroll:** revisado en el código. En navegador solo se comprobó que el parallax funciona tras navegar.
 - **Fotos:** los 7 detalles cargan su foto. Con `hero.image` y `service.image` vacíos, el hero sigue fijo, muestra el bloque oscuro y no da errores 404.
 - **Capas:** el header y WhatsApp quedan por encima a 1440 px. El diálogo de cookies quedó por encima en la captura mobile.
 - **Tina:** el GraphQL local devuelve `hero.image`, y "Imagen de fondo" aparece en `/admin` en Nosotros. No se guardó un cambio desde el editor ni se abrió Servicios.
 - **Producción:** con `astro preview`, el parallax funciona en `/nosotros`, sin errores de JavaScript, con las secciones en `client:tina`.
 - **LCP:** mediana de 7 cargas a 1,6 Mbps y 150 ms de latencia, con el build de `staging` como base. `/nosotros`: 536 → 876 ms (+340). `/servicios`: 528 → 684 ms (+156).
-- **Contraste:** medido sobre los píxeles detrás del texto a 1440 px. Nosotros y los 7 detalles dan 4,2:1 o más en el peor 5 %. Servicios da los valores de "Pendientes para revisar".
+- **Contraste:** medido sobre los píxeles detrás del texto a 1440 px. Nosotros y los 7 detalles dan 4,2:1 o más en el peor 5 %. Servicios queda en 3,3:1 en el subtítulo y 3,6:1 en el título, en su peor zona: es la excepción registrada en "Decisiones".
 - **Fotos a 1920 × 1080:** revisadas Nosotros y Servicios. Las otras 7 no se revisaron a ese ancho.
 - **`npm run typecheck`:** sin errores.
 - **`npm run check:standard`:** 0 errores y 1 aviso (14 páginas sin `og:image`), con build sin catálogo de muestra.
-- **`npm run build`:** no se ejecutó, porque requiere credenciales de TinaCloud y `npm run dev` estaba activo. Se usó `astro build` contra ese servidor local (14 páginas).
+- **`npm run build`:** falla porque no hay credenciales de TinaCloud (`Missing clientId, token`). `npm run build:local` terminó sin errores, sin catálogo de muestra. La verificación se repitió tras actualizar la rama con `staging`: 42 de 42 en navegador, `typecheck` y `check:standard`.
 - **Ciclos de `startLenis`:** no se midió si aceleran el scroll.
