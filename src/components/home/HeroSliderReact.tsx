@@ -35,25 +35,27 @@ export default function HeroSliderReact({ query, variables, data: initialData }:
 
   return (
     <section
-      className="relative flex min-h-[640px] items-center overflow-hidden bg-ink pb-24 pt-16 text-white md:min-h-[720px]"
+      className="relative flex min-h-[640px] items-center overflow-hidden bg-ink pb-24 pt-16 text-white md:min-h-[720px] lg:sticky lg:top-16"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       aria-roledescription="carrusel"
     >
-      {slides.map((slide: any, index: number) => (
-        <img
-          key={index}
-          src={mediaUrl(slide.image)}
-          alt=""
-          aria-hidden
-          fetchPriority={index === 0 ? "high" : "low"}
-          loading={index === 0 ? "eager" : "lazy"}
-          className={`absolute inset-0 h-full w-full object-cover transition-[opacity,transform] duration-[1400ms] ease-out ${
-            index === current ? "scale-100 opacity-100" : "scale-[1.08] opacity-0"
-          }`}
-          data-tina-field={tinaField(slide, "image")}
-        />
-      ))}
+      <div data-parallax="0.15" data-parallax-pinned className="absolute inset-x-0 -top-[10%] h-[120%]">
+        {slides.map((slide: any, index: number) => (
+          <img
+            key={index}
+            src={mediaUrl(slide.image)}
+            alt=""
+            aria-hidden
+            fetchPriority={index === 0 ? "high" : "low"}
+            loading={index === 0 ? "eager" : "lazy"}
+            className={`absolute inset-0 h-full w-full object-cover transition-[opacity,transform] duration-[1400ms] ease-out ${
+              index === current ? "scale-100 opacity-100" : "scale-[1.08] opacity-0"
+            }`}
+            data-tina-field={tinaField(slide, "image")}
+          />
+        ))}
+      </div>
       <div className="absolute inset-0 bg-ink/50" aria-hidden />
 
       <div className="container-xl relative text-center" aria-live="polite">
