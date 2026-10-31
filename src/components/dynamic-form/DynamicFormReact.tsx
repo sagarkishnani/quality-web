@@ -795,7 +795,7 @@ export default function DynamicFormReact({ query, variables, data: initialData, 
     const selectPlaceholder = placeholder || ui.selectPlaceholder;
 
     const numType: NumericFieldType | null = isNumericField(field.fieldType) ? field.fieldType : null;
-    const numMaxLen = numType ? NUMERIC_FIELD_RULES[numType].length : maxLen;
+    const numMaxLen = numType ? NUMERIC_FIELD_RULES[numType].maxLength : maxLen;
     const numInputMode: "numeric" | undefined = numType ? "numeric" : undefined;
     const numOnChange = (v: string) =>
       updateField(name, numType ? sanitizeNumeric(v, numType) : maxLen ? v.slice(0, maxLen) : v);
