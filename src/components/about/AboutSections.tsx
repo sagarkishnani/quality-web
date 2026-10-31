@@ -23,6 +23,7 @@ export function AboutHero(props: TinaProps) {
 
   return (
     <DarkHero
+      image={mediaUrl(hero.image)}
       eyebrow={hero.eyebrow}
       title={
         <>
@@ -33,6 +34,7 @@ export function AboutHero(props: TinaProps) {
       buttonLabel={hero.buttonLabel}
       buttonUrl={hero.buttonUrl}
       tina={{
+        image: tinaField(hero, "image"),
         eyebrow: tinaField(hero, "eyebrow"),
         title: tinaField(hero, "title"),
         text: tinaField(hero, "text"),
