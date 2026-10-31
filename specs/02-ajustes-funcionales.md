@@ -183,3 +183,27 @@ Sin `quoteMessage`, el botón no se muestra.
 - Cambios visuales de tarjetas, banners y bundle.
 
 Si alguno de estos entra, va en su propia spec.
+
+## Notas de implementación
+
+- **Cambio fuera del plan:** los campos `tel` y `ruc` ya no limitan caracteres en el input. Con la regla de 7 a 9 dígitos, pegar `987 654 321` se cortaba a `987 654 3` y pasaba como un teléfono válido de 7 dígitos. Ahora `sanitizeNumeric` limpia primero y limita después.
+- El widget de Turnstile se desmonta con el formulario, así que su efecto ahora depende de `submitted` y se vuelve a renderizar al reiniciar.
+- `loadShopContent` devuelve `quoteMessage` con el texto por defecto, en un solo lugar. La ficha también lo usa.
+- "Ver cotización" lleva `aria-label` con el producto, porque en una lista todas las tarjetas tendrían el mismo texto.
+- El enlace solo recibe clics con `hover` real (`@media (hover: hover)`), para que un toque en pantalla táctil abra la ficha.
+- La burbuja de WhatsApp pasa su transición a `global.css` para cubrir opacidad y posición.
+
+Observaciones que no se corrigieron, por estar fuera de alcance:
+
+- Pegar un número con prefijo, como `+51 987 654 321`, conserva `519876543`, un teléfono incorrecto de 9 dígitos.
+- Las etiquetas de `ContactInput` no están asociadas a su campo con `htmlFor`. Es anterior a esta spec.
+
+## QA realizada
+
+- **Navegador:** 45 de 45 comprobaciones en Chromium, sobre `npm run dev` y catálogo de muestra. Cubren tarjetas en las cuatro ubicaciones, teclado, tacto, WhatsApp a 375 y 1440 px, filtros, galería, formulario, 8 pantallas a 375 px y movimiento reducido.
+- **Simulado en esa prueba:** Turnstile y `send-email.php`. Se comprobó que el widget se renderiza de nuevo y que cada envío lleva un token distinto, pero no se probó contra Cloudflare ni contra el backend real.
+- **`npm run typecheck`:** sin errores.
+- **`npm run check:standard`:** 0 errores y 1 aviso (14 páginas sin `og:image`), con build local sin catálogo de muestra.
+- **`npm run build`:** no se pudo ejecutar, porque requiere credenciales de TinaCloud. `npm run build:local` terminó sin errores (14 páginas).
+- **Tina:** el GraphQL local devuelve `successButtonText` y `successTitle`. No se abrió el editor de `/admin`.
+- **`successButtonText` vacío:** revisado en el código, no en el navegador.
