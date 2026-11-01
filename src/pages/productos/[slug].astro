@@ -9,7 +9,7 @@ import BundleQuoteReact from "../../components/shop/BundleQuoteReact";
 import client from "../../../tina/__generated__/client";
 import { getAllProducts } from "../../lib/woo/rest";
 import { stripHtml } from "../../lib/woo/format";
-import { toCatalogItem, specsOf } from "../../lib/woo/catalog";
+import { toCatalogItem, specsOf, datasheetUrlOf } from "../../lib/woo/catalog";
 import { loadShopContent } from "../../lib/content/shopSettings";
 import { productsPath } from "../../lib/content/catalogNav";
 import type { WooProduct } from "../../lib/woo/types";
@@ -113,6 +113,8 @@ const productJsonLd = {
               advisorTitle={texts?.advisorTitle || "Comunícate con un asesor"}
               advisorText={texts?.advisorText || "Te ayudamos a elegir el equipo ideal"}
               whatsappUrl={whatsappUrl}
+              datasheetUrl={datasheetUrlOf(product)}
+              datasheetLabel={texts?.datasheetLabel || "Descargar ficha técnica"}
               client:load
             />
           </div>
