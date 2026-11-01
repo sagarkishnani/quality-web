@@ -43,6 +43,7 @@
     "quantityLabel": "¿Estás interesado? Cantidad de equipos",
     "quoteLabel": "Ver cotización",
     "quoteMessage": "Hola, quisiera una cotización de {cantidad} × {producto}.",
+    "datasheetLabel": "Descargar ficha técnica",
     "advisorTitle": "Comunícate con un asesor",
     "advisorText": "Te ayudamos a elegir el equipo ideal",
     "descriptionTab": "Descripción",

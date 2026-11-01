@@ -167,8 +167,13 @@ cotización. Las rutas son `/productos`, `/productos/<slug>` y
   primera etiqueta (tag) del producto (ej. “Nuevo”, “Más vendido”).
 - Destacados del inicio: productos marcados como destacados en Woo; si no hay,
   los primeros del catálogo.
-- “Puedes comprar con” usa las ventas cruzadas (`cross_sell_ids`); “Te puede
-  interesar”, los relacionados o la misma categoría.
+- “Puedes comprar con” usa las ventas cruzadas (`cross_sell_ids`), con un máximo
+  de 3 en ese orden; “Te puede interesar”, los relacionados o la misma categoría.
+- Ficha técnica: el PDF se sube a Medios y su URL completa va en el campo
+  personalizado `ficha_tecnica` del producto (guarda la URL, no el ID del
+  archivo). `datasheetUrlOf` solo acepta `http` o `https`; sin URL válida, el botón no
+  aparece. Abre en una pestaña nueva y el cambio se ve al recompilar. El catálogo
+  de muestra no trae fichas.
 - `src/lib/woo/catalog.ts` convierte un `WooProduct` en lo que pintan las
   tarjetas y no toca credenciales: puede importarse desde islas.
 

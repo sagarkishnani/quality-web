@@ -38,6 +38,7 @@ export interface WooProduct {
   attributes: { name: string; options: string[] }[];
   related_ids: number[];
   cross_sell_ids: number[];
+  meta_data: { key: string; value: unknown }[];
 }
 
 export interface WooCategory {

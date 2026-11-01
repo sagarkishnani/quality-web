@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { FaMinus, FaPlus, FaWhatsapp, FaArrowRight } from "react-icons/fa6";
+import { FaDownload, FaMinus, FaPlus, FaWhatsapp } from "react-icons/fa6";
 import { fillTemplate, quoteUrl } from "./quote";
 
 interface Props {
@@ -11,6 +11,8 @@ interface Props {
   advisorTitle: string;
   advisorText: string;
   whatsappUrl?: string;
+  datasheetUrl?: string;
+  datasheetLabel: string;
 }
 
 function Stepper({ quantity, onChange, compact = false }: { quantity: number; onChange: (value: number) => void; compact?: boolean }) {
@@ -64,12 +66,23 @@ export default function QuoteBoxReact(props: Props) {
             {label}
           </a>
         </div>
+        {props.datasheetUrl && (
+          <a
+            href={props.datasheetUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-3 flex min-h-14 w-full items-center justify-center gap-2.5 rounded-md border border-line-strong py-2 text-center text-body-md font-semibold transition-colors hover:border-ink"
+          >
+            <FaDownload className="h-4 w-4" aria-hidden />
+            {props.datasheetLabel}
+          </a>
+        )}
         {props.whatsappUrl && (
           <a
             href={props.whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="group mt-5 flex items-center gap-4 rounded-2xl bg-brand-secondary-lightest px-5 py-4"
+            className="mt-5 flex items-center gap-4 rounded-md bg-brand-secondary-lightest px-5 py-4"
           >
             <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-secondary text-white">
               <FaWhatsapp className="h-5 w-5" aria-hidden />
@@ -78,7 +91,6 @@ export default function QuoteBoxReact(props: Props) {
               <span className="block text-body-sm font-medium">{props.advisorTitle}</span>
               <span className="block text-body-sm text-content-muted">{props.advisorText}</span>
             </span>
-            <FaArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-1" aria-hidden />
           </a>
         )}
       </div>
