@@ -75,6 +75,7 @@ export const shopCollection: Collection = {
         textField("quantityLabel", "Pregunta de cantidad"),
         textField("quoteLabel", "Botón de cotización"),
         textField("quoteMessage", "Mensaje precargado (usa {cantidad} y {producto})"),
+        textField("datasheetLabel", "Botón de ficha técnica"),
         textField("advisorTitle", "Título del asesor"),
         textField("advisorText", "Texto del asesor"),
         textField("descriptionTab", "Pestaña de descripción"),
