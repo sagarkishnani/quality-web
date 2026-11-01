@@ -16,6 +16,7 @@ import type { WooProduct } from "../../lib/woo/types";
 
 const RELATED_LIMIT = 4;
 const SPECS_IN_SUMMARY = 6;
+const BUNDLE_EXTRAS_LIMIT = 3;
 
 export async function getStaticPaths() {
   const products = await getAllProducts();
@@ -44,7 +45,10 @@ const fallbackRelated = products.filter((p) => p.id !== product.id && !sameCateg
 const related = (product.related_ids.length ? byId(product.related_ids) : [...sameCategory, ...fallbackRelated])
   .slice(0, RELATED_LIMIT)
   .map((p) => toCatalogItem(p, attributes));
-const extras = byId(product.cross_sell_ids).map((p) => toCatalogItem(p, attributes));
+const extras = product.cross_sell_ids
+  .flatMap((id) => products.filter((p) => p.id === id))
+  .slice(0, BUNDLE_EXTRAS_LIMIT)
+  .map((p) => toCatalogItem(p, attributes));
 
 const root = productsPath();
 const home = import.meta.env.BASE_URL || "/";
