@@ -1,13 +1,20 @@
-# SPEC 04 — Ficha técnica
+# SPEC 04 — Ficha técnica y bundle
 
 > **Estado:** Aprobado
 > **Depende de:** SPEC 01
 > **Fecha:** 2026-11-01
-> **Objetivo:** Agregar a la ficha de producto un botón "Descargar ficha técnica" que abre el PDF indicado en WooCommerce.
+> **Objetivo:** Agregar a la ficha de producto el botón "Descargar ficha técnica" y reorganizar "Puedes comprar con" en un panel único.
 
 ## Por qué existe esta spec
 
 La referencia tiene el botón en la ficha de producto, pero su enlace es de muestra. Sagar aprobó traerlo, y faltaba definir de dónde sale el archivo. WooCommerce todavía no existe, así que esta spec también fija cómo debe cargarse.
+
+La spec 01 dejó las tarjetas del bundle para esta spec. Después, el inventario funcional solo comparó su comportamiento, y el diseño quedó sin decidir. La comparación en navegador encontró dos problemas en el bloque actual:
+
+- A 1440 px, las tarjetas y el resumen quedan separados por unos 500 px vacíos.
+- Con 3 complementos y nombres largos, la página se desborda 259 px a 1024 px y 199 px a 768 px. El botón de cotización queda fuera de pantalla.
+
+La referencia resuelve lo primero, pero solo admite 2 productos y no tiene versión mobile. Por eso esta spec usa un híbrido.
 
 ## Alcance
 
@@ -20,6 +27,8 @@ La referencia tiene el botón en la ficha de producto, pero su enlace es de mues
 - Campo de Tina `datasheetLabel` en `shop.product`, con el valor "Descargar ficha técnica".
 - Catálogo de muestra: un producto con ficha y un PDF de prueba en `public/`, para probar los dos casos.
 - Sección de catálogo de `CLAUDE.md`: cómo se carga la ficha en WooCommerce.
+- "Puedes comprar con" como panel único con tarjetas horizontales y resumen integrado, en desktop y mobile.
+- Máximo de 3 complementos, tomados en el orden de `cross_sell_ids`.
 
 **Qué no entra (para specs futuras):**
 
@@ -28,6 +37,8 @@ La referencia tiene el botón en la ficha de producto, pero su enlace es de mues
 - Fichas por variación de producto.
 - Subir PDF desde Tina.
 - Plugins de WooCommerce.
+- Cambiar la lógica de selección o el mensaje de cotización del bundle.
+- Mover el bundle a la columna principal, como en la referencia.
 
 ## Modelo de datos
 
@@ -76,6 +87,10 @@ Devuelve la URL sin espacios si es un texto con protocolo `http` o `https`, o un
 
 Un producto de `src/lib/woo/sample.ts` apunta a `${BASE}docs/ficha-muestra.pdf`, como las imágenes de ese archivo. El PDF vive en `public/docs/ficha-muestra.pdf`. Los demás productos llevan `meta_data: []`.
 
+### Bundle
+
+`BundleQuoteReact` no cambia sus props ni necesita campos nuevos de Tina. `src/pages/productos/[slug].astro` suma la constante `BUNDLE_EXTRAS_LIMIT = 3`.
+
 ## Plan de implementación
 
 1. Agregar `meta_data` a `WooProduct` y `meta_data: []` a los productos de `src/lib/woo/sample.ts`. Agregar `DATASHEET_META_KEY` y `datasheetUrlOf` a `src/lib/woo/catalog.ts`. Prueba: `npm run typecheck`.
@@ -84,6 +99,16 @@ Un producto de `src/lib/woo/sample.ts` apunta a `${BASE}docs/ficha-muestra.pdf`,
 4. En `src/pages/productos/[slug].astro`, pasar `datasheetUrlOf(product)` y `texts?.datasheetLabel || "Descargar ficha técnica"`. Prueba: sin URL, la ficha se ve igual que antes.
 5. Crear `public/docs/ficha-muestra.pdf` y apuntar un producto de muestra a esa ruta. Prueba: con `WOO_SAMPLE_CATALOG=true`, ese producto muestra el botón y el PDF abre.
 6. Documentar en la sección de catálogo de `CLAUDE.md` cómo cargar `ficha_tecnica` en WooCommerce.
+7. En `src/pages/productos/[slug].astro`, tomar los complementos en el orden de `cross_sell_ids`, ignorar los que no estén en el catálogo y limitarlos con `BUNDLE_EXTRAS_LIMIT`.
+8. Reescribir el layout de `BundleQuoteReact`:
+   - Sección con fondo `surface-raised`.
+   - Panel con fondo `surface-sunken`, `rounded-panel` y 24 px de relleno desde `sm`.
+   - Tarjetas blancas horizontales de la misma altura, con 16 px de relleno y 16 px entre imagen y texto.
+   - Miniatura de 112 px con `object-contain`, `width` y `height`, y fondo `surface-sunken`.
+   - Check sobre la miniatura, arriba a la izquierda, con checkbox real y foco visible en la tarjeta.
+   - Con 1 complemento, tarjetas y círculo blanco de 32 px con `+` en fila desde `md`. Con 2 o 3, grilla de 2 columnas desde `md`, sin `+`.
+   - Resumen en la columna derecha desde `xl`, separado por una línea `line-strong`. Por debajo de `xl`, va abajo, a todo el ancho, con una línea horizontal.
+9. Actualizar la sección de catálogo de `CLAUDE.md` con el máximo de complementos.
 
 ## Criterios de aceptación
 
@@ -101,6 +126,17 @@ Un producto de `src/lib/woo/sample.ts` apunta a `${BASE}docs/ficha-muestra.pdf`,
 - [ ] `npm run check:standard` pasa sin catálogo de muestra.
 - [ ] `npm run build` pasa.
 - [ ] `CLAUDE.md` explica cómo cargar `ficha_tecnica` en WooCommerce.
+- [ ] A 1440 px, productos y resumen se ven dentro de un solo panel.
+- [ ] Con 1 complemento, el círculo con `+` aparece entre las dos tarjetas. Con 2 o 3, no aparece.
+- [ ] Un producto con 4 ventas cruzadas muestra solo las 3 primeras, en el orden de `cross_sell_ids`.
+- [ ] Todas las tarjetas de una misma fila tienen la misma altura.
+- [ ] Con 3 complementos y nombres largos, no hay scroll horizontal a 1440, 1280, 1024, 768 ni 375 px.
+- [ ] Con 3 complementos, "Ver cotización" se ve dentro del ancho de pantalla en esos 5 anchos.
+- [ ] Quitar un complemento baja la opacidad de su tarjeta, actualiza el conteo y lo saca del mensaje de cotización.
+- [ ] El producto principal sigue marcado y no se puede desmarcar.
+- [ ] Al enfocar un complemento con teclado, su tarjeta muestra un foco visible, y la barra espaciadora lo marca o desmarca.
+- [ ] Un producto sin ventas cruzadas no muestra el bloque.
+- [ ] Las imágenes de las tarjetas no se recortan.
 
 ## Decisiones
 
@@ -112,6 +148,13 @@ Un producto de `src/lib/woo/sample.ts` apunta a `${BASE}docs/ficha-muestra.pdf`,
 - **Sí:** clave fija en el código. Marca y segmento son configurables porque son datos de negocio; esta clave es un detalle técnico.
 - **Sí:** el texto del botón se edita en Tina, como los demás textos de la ficha.
 - **No:** botón en la barra fija. La referencia solo lo tiene en el bloque de cotización.
+- **Sí:** bundle híbrido. Toma de la referencia el panel, las tarjetas horizontales y el resumen integrado, y conserva del sitio el checkbox, los varios complementos y el mobile.
+- **Sí:** miniatura de 112 px, frente a los 88 px de la referencia. Una impresora necesita más detalle para reconocerse.
+- **Sí:** `object-contain` en lugar del recorte de la referencia, para no cortar productos.
+- **Sí:** máximo de 3 complementos. Más alargan el panel y dificultan decidir.
+- **Sí:** el bundle sigue a todo el ancho, en su lugar actual. Moverlo cambiaría la estructura de la ficha sin resolver ningún problema.
+- **No:** `button` para seleccionar, como en la referencia. El checkbox anuncia su estado sin código extra.
+- **Sí:** cambio de alcance decidido por Esteban el 2026-11-01, y queda para validación de Sagar en el PR. Sagar había dejado fuera los cambios solo visuales, pero este también corrige un desborde real.
 - **Sí:** un PDF de prueba en `public/docs/`. Se publica con el sitio, pesa poco y nada lo enlaza en un build real.
 
 ## Riesgos
@@ -122,6 +165,9 @@ Un producto de `src/lib/woo/sample.ts` apunta a `${BASE}docs/ficha-muestra.pdf`,
 | Un plugin de campos guarda el ID del archivo en lugar de la URL. | `datasheetUrlOf` lo rechaza y el botón no aparece. `CLAUDE.md` indica guardar la URL. |
 | La URL del PDF cambia o se borra en WooCommerce. | El sitio se compila en build y no valida el archivo. El enlace queda roto hasta corregir la URL y recompilar. |
 | El sitio usa datos de build y una ficha nueva no aparece sola. | Requiere recompilar, como cualquier cambio del catálogo. |
+| El panel `surface-sunken` casi no se distingue sobre `surface`. | La sección pasa a `surface-raised`. |
+| La miniatura de 112 px no basta con fotos reales, que aún no existen. | Revisarlo con el primer catálogo real. |
+| Un producto con más de 3 ventas cruzadas pierde complementos en este bloque. | Es una decisión aprobada. El orden de `cross_sell_ids` define cuáles se ven. |
 
 ## Qué no entra en esta spec
 
@@ -130,6 +176,8 @@ Un producto de `src/lib/woo/sample.ts` apunta a `${BASE}docs/ficha-muestra.pdf`,
 - Fichas por variación de producto.
 - Subir PDF desde Tina.
 - Plugins de WooCommerce.
+- Cambiar la lógica de selección o el mensaje de cotización del bundle.
+- Mover el bundle a la columna principal.
 
 ## Notas de implementación
 
@@ -147,4 +195,6 @@ Un producto de `src/lib/woo/sample.ts` apunta a `${BASE}docs/ficha-muestra.pdf`,
 - **`npm run typecheck`:** sin errores.
 - **`npm run check:standard`:** 0 errores y 1 aviso, con build sin catálogo de muestra.
 - **`npm run build`:** falla porque no hay credenciales de TinaCloud (`Missing clientId, token`). `npm run build:local` terminó sin errores, con y sin catálogo de muestra.
-- **Sin probar:** `meta_data` contra una API real de WooCommerce, porque todavía no existe, y el PDF abierto en un navegador normal.
+- **Bundle:** 111 de 111 comprobaciones en Chromium, sobre `npm run dev` y catálogo de muestra, con 1, 2 y 4 ventas cruzadas. Cubren 1440, 1280, 1024, 768 y 375 px con nombres largos, orden y límite de complementos, altura de tarjetas, signo `+`, imágenes sin recorte, selección, mensaje de cotización y teclado. Las ventas cruzadas se cambiaron de forma temporal en `src/lib/woo/sample.ts`.
+- **Tras el bundle:** `npm run typecheck` sin errores. `npm run check:standard` con 0 errores y 1 aviso. `npm run build:local` sin errores, sin catálogo de muestra.
+- **Sin probar:** `meta_data` contra una API real de WooCommerce, porque todavía no existe; el PDF abierto en un navegador normal, y el bundle con fotos y nombres reales.
