@@ -74,6 +74,20 @@ export function EnvironmentCommitment(props: TinaProps) {
   );
 }
 
+export function EnvironmentVideoBand(props: TinaProps) {
+  const hero = useEnvironment(props)?.hero;
+  if (!hero?.video && !hero?.poster) return <div hidden />;
+
+  return (
+    <section aria-hidden className="video-band-mask relative h-80 overflow-hidden lg:h-[720px]">
+      <div data-parallax="0.18" className="absolute inset-x-0 -top-[20%] h-[140%]">
+        <BackgroundVideo src={hero.video} poster={mediaUrl(hero.poster)} className="h-full w-full object-cover" />
+      </div>
+      <div className="absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-b from-petrol/0 via-petrol/55 via-45% to-petrol" />
+    </section>
+  );
+}
+
 export function EnvironmentPillars(props: TinaProps) {
   const pillars = (useEnvironment(props)?.pillars || []).filter((pillar: any) => pillar?.title);
   if (!pillars.length) return <div hidden />;

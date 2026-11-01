@@ -68,6 +68,10 @@
     opacity: 1;
     transform: none;
   }
+  .video-band-mask {
+    -webkit-mask-image: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.6) 22%, #000 42%);
+    mask-image: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.6) 22%, #000 42%);
+  }
   .whatsapp-button {
     transition: bottom 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   }
