@@ -7,12 +7,13 @@ const result = await client.queries.environment({ relativePath: "index.json" });
 const { query, variables, data } = result;
 const seo = data?.environment?.seo;
 const tina = { query, variables, data };
+const leafIcon = `${import.meta.env.BASE_URL || "/"}images/brand/hoja.svg`.replace(/\/{2,}/g, "/");
 ---
 
 <BaseLayout title={seo?.title} description={seo?.description}>
   <EnvironmentHero {...tina} client:tina />
   <div class="reveal"><EnvironmentCommitment {...tina} client:tina /></div>
   <EnvironmentVideoBand {...tina} client:tina />
-  <EnvironmentPillars {...tina} client:tina />
+  <EnvironmentPillars {...tina} leafIcon={leafIcon} client:tina />
   <EnvironmentBanner {...tina} client:tina />
 </BaseLayout>

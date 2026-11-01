@@ -83,7 +83,7 @@ export function EnvironmentVideoBand(props: TinaProps) {
   );
 }
 
-export function EnvironmentPillars(props: TinaProps) {
+export function EnvironmentPillars(props: TinaProps & { leafIcon: string }) {
   const pillars = (useEnvironment(props)?.pillars || []).filter((pillar: any) => pillar?.title);
   if (!pillars.length) return <div hidden />;
 
@@ -105,7 +105,7 @@ export function EnvironmentPillars(props: TinaProps) {
           vectorEffect="non-scaling-stroke"
         />
       </svg>
-      <div className="container-xl relative space-y-16 lg:space-y-[180px]">
+      <div className="relative mx-auto w-full max-w-[1180px] space-y-16 px-5 md:px-8 lg:space-y-[180px] xl:px-0">
         {pillars.map((pillar: any, index: number) => {
           const mediaFirst = index % 2 === 0;
           const hasMedia = Boolean(pillar.video || pillar.image);
@@ -127,18 +127,23 @@ export function EnvironmentPillars(props: TinaProps) {
                   </div>
                 </div>
               )}
-              <div className="flex flex-col items-start lg:max-w-[440px]">
-                <p className="text-body-sm font-semibold text-brand-secondary-light">{String(index + 1).padStart(2, "0")}</p>
-                <h2 className="mt-3 text-heading-md" data-tina-field={tinaField(pillar, "title")}>
+              <div className="flex flex-col items-start gap-[18px] lg:max-w-[440px]">
+                <div className="flex items-center gap-3.5">
+                  <span className="flex h-12 w-12 items-center justify-center rounded-full bg-brand-secondary">
+                    <img src={props.leafIcon} alt="" width="22" height="22" className="h-[22px] w-[22px] brightness-0 invert" />
+                  </span>
+                  <p className="text-body-sm font-semibold text-brand-secondary-light">{String(index + 1).padStart(2, "0")}</p>
+                </div>
+                <h2 className="text-heading-md" data-tina-field={tinaField(pillar, "title")}>
                   {pillar.title}
                 </h2>
                 {pillar.text && (
-                  <p className="mt-4 text-body-lg text-white/90" data-tina-field={tinaField(pillar, "text")}>
+                  <p className="text-body-lg text-white/90" data-tina-field={tinaField(pillar, "text")}>
                     {pillar.text}
                   </p>
                 )}
                 {pillar.linkLabel && pillar.linkUrl && (
-                  <a href={pillar.linkUrl} className="btn-light mt-8" data-tina-field={tinaField(pillar, "linkLabel")}>
+                  <a href={pillar.linkUrl} className="btn-light mt-1.5" data-tina-field={tinaField(pillar, "linkLabel")}>
                     {pillar.linkLabel}
                   </a>
                 )}
