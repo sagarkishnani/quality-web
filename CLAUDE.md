@@ -239,7 +239,7 @@ Tamaños: `btn` (46 px), `btn-sm` (40 px), `btn-lg` (48 px) y `btn-xl` (52 px).
 Antetítulos: `eyebrow` (verde) y `eyebrow-caps` (mayúsculas, sobre fotos).
 
 **Secciones**: las páginas con hero oscuro continúan en `<div class="sheet">`,
-que sube 48 px con esquinas redondeadas. Envolver una sección en
+que sube 48 px con esquinas redondeadas. Medioambiente no lo usa: su hero funde a claro. Envolver una sección en
 `<div class="reveal">` la hace aparecer al entrar en pantalla; va siempre en el
 `.astro`, nunca dentro de un componente React (la hidratación borraría la clase).
 

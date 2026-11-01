@@ -213,13 +213,17 @@ Si alguno de estos entra, va en su propia spec.
 - **Banner:** el degradado de la referencia daba 1,34:1 en el antetítulo y 2,63:1 en el título. El tramo central subió a una opacidad de 0,8, como preveía "Riesgos". La foto queda bastante oscurecida.
 - **Videos:** la carga bajo demanda no estaba en el plan. Se agregó tras medir 3,65 MB del video del hero al abrir la página, el doble del archivo. Ahora son 1,83 MB. También aplica al video de "Impresión responsable".
 - **Pilares sin medio:** el bloque de la foto no se renderiza.
+- **Revisión visual del 2026-11-01:** a 1440 × 900 px, el título del hero estaba 248 px más abajo que en la referencia, y la QA no lo detectaba porque esta spec dejaba fuera el hero y el compromiso. Se trajeron sus valores: hero de `100svh` menos el header y texto al 28 %, compromiso centrado, columna de 1180 px e icono de hoja.
+- **Contraste del hero:** con el degradado de la referencia, el antetítulo daba 1,75:1 y el título 2,6:1 sobre el agua clara. Se agregó una elipse de opacidad 0,55 detrás del texto.
+- **Medioambiente sin `.sheet`:** su fundido a claro reemplaza el corte con esquinas redondeadas.
 
 ## QA realizada
 
-- **Navegador:** 28 de 28 comprobaciones en Chromium, sobre el build de producción sin catálogo de muestra. Cubren franja, pilares, línea, banner, footer, bordes vacíos a 1440 × 900 y 1920 × 1080, cambio de ancho, `ClientRouter`, movimiento reducido, consola y scroll horizontal a 375, 768 y 1024 px.
+- **Navegador:** 28 de 28 comprobaciones en Chromium, repetidas tras la revisión visual sobre el build de producción sin catálogo de muestra. Cubren franja, pilares, línea, banner, footer, bordes vacíos a 1440 × 900 y 1920 × 1080, cambio de ancho, `ClientRouter`, movimiento reducido, consola y scroll horizontal a 375, 768 y 1024 px.
 - **Capturas:** revisadas a 1440 y 375 px. A 1440 px, la línea cruza el texto del pilar 1, y se sigue leyendo. No se revisó a simple vista a 1024 ni a 1920 px.
+- **Contraste del hero:** peor 5 % en 4 momentos del video. A 1440 y 1920 px: antetítulo 4,93:1 y título de 7,59:1 a 7,90:1. A 375 px: antetítulo 4,91:1 y título de 4,59:1 a 4,74:1.
 - **Contraste del banner:** medido sobre los píxeles detrás del texto, en el peor 5 % y en 3 posiciones. Antetítulo: 4,68:1 a 5,15:1. Título: 9,52:1 a 9,61:1.
-- **LCP de `/medioambiente` a 1440 px:** mediana de 7 cargas a 1,6 Mbps y 150 ms de latencia: 2,47 s, entre 2,38 y 2,49 s. Cumple con solo 30 ms de margen. El elemento es el póster del hero, y la franja no lo afecta: 2,22 s con ella y 2,23 s sin su video, en una comparación con ruido de 1,6 a 3,1 s. Una comparación anterior que indicaba 350 ms de diferencia estaba mal hecha.
+- **LCP de `/medioambiente` a 1440 px:** mediana de 7 cargas a 1,6 Mbps y 150 ms de latencia: 2,35 s, entre 2,34 y 2,38 s, tras la revisión visual. La medición anterior dio 2,47 s. El elemento es el póster del hero, y la franja no lo afecta: 2,22 s con ella y 2,23 s sin su video, en una comparación con ruido de 1,6 a 3,1 s. Una comparación anterior que indicaba 350 ms de diferencia estaba mal hecha.
 - **Variantes de contenido:** sin `hero.video`, la franja muestra el póster. Sin video ni póster, no aparece. El pilar sin medio, el banner sin imagen y 2 y 4 pilares funcionan sin errores. El título editado en el JSON se ve en la página. Se probaron antes del cambio de carga de videos y no se repitieron.
 - **`client:tina`:** las islas de Medioambiente no se hidratan en producción. React se carga igual por el header.
 - **Listener de scroll:** revisado en el código. En navegador solo se comprobó que la línea funciona tras navegar.
