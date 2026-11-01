@@ -105,12 +105,14 @@ export function EnvironmentPillars(props: TinaProps) {
                     mediaFirst ? "lg:justify-self-start" : "lg:order-2 lg:justify-self-end"
                   }`}
                 >
-                  <BackgroundVideo
-                    src={pillar.video}
-                    poster={mediaUrl(pillar.image)}
-                    className="absolute inset-0 h-full w-full object-cover"
-                    lazy
-                  />
+                  <div aria-hidden data-parallax="-0.08" className="absolute inset-x-0 -top-[10%] h-[120%]">
+                    <BackgroundVideo
+                      src={pillar.video}
+                      poster={mediaUrl(pillar.image)}
+                      className="h-full w-full object-cover"
+                      lazy
+                    />
+                  </div>
                 </div>
               )}
               <div className="flex flex-col items-start lg:max-w-[440px]">
