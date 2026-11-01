@@ -13,7 +13,8 @@ function useEnvironment({ query, variables, data }: TinaProps) {
 
 function BackgroundVideo({ src, poster, className, lazy }: { src?: string | null; poster?: string; className: string; lazy?: boolean }) {
   if (!src) return poster ? <img src={poster} alt="" className={className} loading={lazy ? "lazy" : undefined} decoding={lazy ? "async" : undefined} /> : null;
-  return <video data-motion-video className={className} src={mediaUrl(src)} poster={poster} autoPlay muted loop playsInline preload="metadata" aria-hidden />;
+  const source = lazy ? { "data-lazy-src": mediaUrl(src), preload: "none" } : { src: mediaUrl(src), autoPlay: true, preload: "metadata" };
+  return <video data-motion-video className={className} poster={poster} muted loop playsInline aria-hidden {...source} />;
 }
 
 export function EnvironmentHero(props: TinaProps) {
@@ -79,7 +80,7 @@ export function EnvironmentVideoBand(props: TinaProps) {
   return (
     <section aria-hidden className="video-band-mask relative h-80 overflow-hidden lg:h-[720px]">
       <div data-parallax="0.18" className="absolute inset-x-0 -top-[20%] h-[140%]">
-        <BackgroundVideo src={hero.video} poster={mediaUrl(hero.poster)} className="h-full w-full object-cover" />
+        <BackgroundVideo src={hero.video} poster={mediaUrl(hero.poster)} className="h-full w-full object-cover" lazy />
       </div>
       <div className="absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-b from-petrol/0 via-petrol/55 via-45% to-petrol" />
     </section>

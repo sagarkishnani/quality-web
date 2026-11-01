@@ -258,7 +258,8 @@ con `non-scaling-stroke`, el guion se mide en píxeles de pantalla e ignora `pat
 de `lg`, el `svg` no se muestra.
 
 **Videos**: `BackgroundVideo` marca sus videos con `data-motion-video`, y
-`src/utils/reducedMotionVideo.ts` los detiene con `prefers-reduced-motion`.
+`src/utils/reducedMotionVideo.ts` los detiene con `prefers-reduced-motion`. Con `lazy`, el video no
+se carga hasta acercarse a la pantalla (`src/utils/lazyVideo.ts`); debajo del fold, siempre con `lazy`.
 
 **Islas**: las secciones sin interacción usan `client:tina` (sin JavaScript en
 producción). Solo hidratan de verdad el header, el slider del inicio, el

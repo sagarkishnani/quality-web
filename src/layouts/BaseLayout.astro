@@ -115,6 +115,7 @@ try {
       import { startParallax } from "../utils/parallax";
       import { startScrollLine } from "../utils/scrollLine";
       import { startReducedMotionVideos } from "../utils/reducedMotionVideo";
+      import { startLazyVideos } from "../utils/lazyVideo";
 
       let lenis: any = null;
 
@@ -153,6 +154,7 @@ try {
       startParallax();
       startScrollLine();
       startReducedMotionVideos();
+      startLazyVideos();
       document.addEventListener("astro:after-swap", () => {
         document.documentElement.classList.add("js");
         startLenis();
@@ -160,6 +162,7 @@ try {
         startParallax();
         startScrollLine();
         startReducedMotionVideos();
+        startLazyVideos();
       });
     </script>
   </body>
