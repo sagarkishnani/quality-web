@@ -220,7 +220,7 @@ Si alguno de estos entra, va en su propia spec.
 ## QA realizada
 
 - **Navegador:** 28 de 28 comprobaciones en Chromium, repetidas tras la revisión visual sobre el build de producción sin catálogo de muestra. Cubren franja, pilares, línea, banner, footer, bordes vacíos a 1440 × 900 y 1920 × 1080, cambio de ancho, `ClientRouter`, movimiento reducido, consola y scroll horizontal a 375, 768 y 1024 px.
-- **Capturas:** revisadas a 1440 y 375 px. A 1440 px, la línea cruza el texto del pilar 1, y se sigue leyendo. No se revisó a simple vista a 1024 ni a 1920 px.
+- **Capturas:** revisadas a 375, 1024, 1440 y 1920 px. Desde 1024 px, la línea cruza el texto del pilar 1, y se sigue leyendo.
 - **Contraste del hero:** peor 5 % en 4 momentos del video. A 1440 y 1920 px: antetítulo 4,93:1 y título de 7,59:1 a 7,90:1. A 375 px: antetítulo 4,91:1 y título de 4,59:1 a 4,74:1.
 - **Contraste del banner:** medido sobre los píxeles detrás del texto, en el peor 5 % y en 3 posiciones. Antetítulo: 4,68:1 a 5,15:1. Título: 9,52:1 a 9,61:1.
 - **LCP de `/medioambiente` a 1440 px:** mediana de 7 cargas a 1,6 Mbps y 150 ms de latencia: 2,35 s, entre 2,34 y 2,38 s, tras la revisión visual. La medición anterior dio 2,47 s. El elemento es el póster del hero, y la franja no lo afecta: 2,22 s con ella y 2,23 s sin su video, en una comparación con ruido de 1,6 a 3,1 s. Una comparación anterior que indicaba 350 ms de diferencia estaba mal hecha.
