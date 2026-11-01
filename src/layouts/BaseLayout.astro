@@ -113,6 +113,7 @@ try {
     <script>
       import Lenis from "lenis";
       import { startParallax } from "../utils/parallax";
+      import { startScrollLine } from "../utils/scrollLine";
 
       let lenis: any = null;
 
@@ -149,11 +150,13 @@ try {
       startLenis();
       revealOnScroll();
       startParallax();
+      startScrollLine();
       document.addEventListener("astro:after-swap", () => {
         document.documentElement.classList.add("js");
         startLenis();
         revealOnScroll();
         startParallax();
+        startScrollLine();
       });
     </script>
   </body>
