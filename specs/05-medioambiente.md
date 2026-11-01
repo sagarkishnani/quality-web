@@ -67,8 +67,9 @@ Atributos nuevos:
 
 | Atributo | Elemento | Función |
 | --- | --- | --- |
-| `data-scroll-line` | `path` de la línea | `src/utils/scrollLine.ts` lo dibuja según el avance de su `section` |
+| `data-scroll-line` | `svg` de la línea | `src/utils/scrollLine.ts` lo revela según el avance de su `section` |
 | `data-motion-video` | `video` de Medioambiente | `src/utils/reducedMotionVideo.ts` lo detiene con movimiento reducido |
+| `data-lazy-src` | `video` debajo del fold | `src/utils/lazyVideo.ts` lo carga a 100 px de la pantalla |
 
 Avance de la línea, de 0 a 1:
 
@@ -92,8 +93,8 @@ Medidas de cada ancho:
 2. **Franja.** Crear `EnvironmentVideoBand` en `EnvironmentSections.tsx`, con `data-parallax="0.18"`, capa de `-top-[20%]` y `h-[140%]`. La máscara va como clase `.video-band-mask` en `global.css`. Agregarla a `medioambiente.astro` con `client:tina`.
 3. **Fondo de los pilares.** Pasar `EnvironmentPillars` a fondo petróleo, con texto blanco, numeración en `brand-secondary-light` y `btn-light` en lugar de `link-arrow`. Quitar la tarjeta blanca.
 4. **Composición de los pilares.** Pasar a dos columnas desde `lg`, con las medidas de la tabla, `rounded-panel` y `shadow-deep`. La foto se alinea al borde exterior de su columna. Las imágenes llevan `loading="lazy"`.
-5. **Parallax de los pilares.** Envolver cada medio en una capa con `data-parallax="-0.08"`, `-top-[10%]` y `h-[120%]`. El bloque padre lleva `overflow-hidden`.
-6. **Línea.** Agregar el `svg` decorativo con `aria-hidden`, `hidden lg:block` y el `path` de la referencia, con `pathLength={1}` y `vectorEffect="non-scaling-stroke"`.
+5. **Parallax de los pilares.** Envolver cada medio en una capa con `data-parallax="-0.08"`, `-top-[15%]` y `h-[130%]`. El bloque padre lleva `overflow-hidden`.
+6. **Línea.** Agregar el `svg` decorativo con `aria-hidden`, `hidden lg:block` y el `path` de la referencia, con `vectorEffect="non-scaling-stroke"`.
 7. **Dibujo.** Crear `src/utils/scrollLine.ts` con `startScrollLine()`. Llamarla en `BaseLayout.astro` al cargar y en `astro:after-swap`. Usa un solo listener y `requestAnimationFrame`. Con movimiento reducido, deja la línea completa y quieta.
 8. **Banner.** Reescribir `EnvironmentBanner` como sección propia a todo el ancho, sin `ImageBanner`, con `data-parallax="0.22"` y el degradado en `.environment-banner-scrim`. Quitar `0.22` de `PARALLAX_LAYERS` en `ImageBanner.tsx`.
 9. **Revelado.** Quitar `.reveal` de los pilares y el banner en `medioambiente.astro`. No agregarlo a la franja.
@@ -171,7 +172,9 @@ Medidas de cada ancho:
 - **Sí:** los videos se detienen con movimiento reducido. El estándar lo exige, y la franja suma un segundo video en movimiento.
 - **Sí:** `.reveal` sale de los pilares y el banner. Su desplazamiento de 24 px abriría una rendija entre bloques que deben fundirse.
 - **No:** suavizado propio en la línea. Lenis ya suaviza el scroll, igual que en la spec 03.
-- **No:** `getTotalLength`. `pathLength={1}` da el mismo resultado sin medir el trazo.
+- **Sí:** la línea se revela con un `clip-path` vertical sobre el `svg`. Con `non-scaling-stroke`, el guion se mide en píxeles de pantalla e ignora `pathLength`, y la línea salía cortada en tramos.
+- **No:** `getTotalLength`. Habría que convertir la longitud a píxeles y medirla de nuevo en cada cambio de tamaño.
+- **Sí:** la franja y los pilares cargan su video a 100 px de la pantalla. Evita descargar dos veces el video del hero y cumple la carga bajo demanda del estándar.
 - **No:** círculo con icono sobre la numeración. Es un cambio solo visual, fuera del criterio de Sagar.
 - **No:** rediseñar el hero o el compromiso. Mismo motivo.
 - **No:** video en el banner. Pesa más del doble que los dos videos del sitio juntos.
@@ -182,7 +185,7 @@ Medidas de cada ancho:
 
 | Riesgo | Mitigación |
 | --- | --- |
-| Dos videos en reproducción automática contradicen la regla del estándar sobre autoplay pesado. | Es el mismo archivo de 1,8 MB que el hero. El PR debe señalar la excepción, y la QA revisa si el navegador lo descarga dos veces. |
+| El hero sigue en reproducción automática, y solo él carga al abrir la página. | La franja y los pilares cargan bajo demanda. Al llegar a la franja, el archivo puede pedirse de nuevo si el servidor no permite guardarlo en caché. |
 | El texto del banner pierde contraste, porque el degradado de la referencia es más suave que el `ink/55` actual. | Medirlo sobre los píxeles detrás del texto. Si no llega, se oscurece el centro del degradado. |
 | El trazo cruza por detrás del texto de los pilares. | Es igual en la referencia. Revisar la legibilidad a 1024, 1440 y 1920 px. |
 | Con otra cantidad de pilares, la curva no coincide con las filas. | La línea se estira a la altura de la sección y sigue siendo decorativa. Revisarla con 2 y 4 pilares. |
@@ -200,3 +203,25 @@ Medidas de cada ancho:
 - Corregir los ciclos duplicados de `startLenis`.
 
 Si alguno de estos entra, va en su propia spec.
+
+## Notas de implementación
+
+- **Línea:** el método de `pathLength={1}` pasaba las mediciones, pero las capturas mostraban la línea cortada en tramos. Se cambió por el `clip-path` registrado en "Decisiones". La punta de la línea queda siempre al 75 % del alto de la ventana.
+- **Parallax de los pilares:** la capa pasó de `-top-[10%]` y `h-[120%]` a `-top-[15%]` y `h-[130%]`. Con factor negativo, el borde vacío aparecía en el lado visible: hasta 11 px a 1080 px de alto.
+- **Banner:** el degradado de la referencia daba 1,34:1 en el antetítulo y 2,63:1 en el título. El tramo central subió a una opacidad de 0,8, como preveía "Riesgos". La foto queda bastante oscurecida.
+- **Videos:** la carga bajo demanda no estaba en el plan. Se agregó tras medir 3,65 MB del video del hero al abrir la página, el doble del archivo. Ahora son 1,83 MB. También aplica al video de "Impresión responsable".
+- **Pilares sin medio:** el bloque de la foto no se renderiza.
+
+## QA realizada
+
+- **Navegador:** 28 de 28 comprobaciones en Chromium, sobre el build de producción sin catálogo de muestra. Cubren franja, pilares, línea, banner, footer, bordes vacíos a 1440 × 900 y 1920 × 1080, cambio de ancho, `ClientRouter`, movimiento reducido, consola y scroll horizontal a 375, 768 y 1024 px.
+- **Capturas:** revisadas a 1440 y 375 px. A 1440 px, la línea cruza el texto del pilar 1, y se sigue leyendo. No se revisó a simple vista a 1024 ni a 1920 px.
+- **Contraste del banner:** medido sobre los píxeles detrás del texto, en el peor 5 % y en 3 posiciones. Antetítulo: 4,68:1 a 5,15:1. Título: 9,52:1 a 9,61:1.
+- **LCP de `/medioambiente` a 1440 px:** mediana de 7 cargas a 1,6 Mbps y 150 ms de latencia: 2,47 s, entre 2,38 y 2,49 s. Cumple con solo 30 ms de margen. El elemento es el póster del hero, y la franja no lo afecta: 2,22 s con ella y 2,23 s sin su video, en una comparación con ruido de 1,6 a 3,1 s. Una comparación anterior que indicaba 350 ms de diferencia estaba mal hecha.
+- **Variantes de contenido:** sin `hero.video`, la franja muestra el póster. Sin video ni póster, no aparece. El pilar sin medio, el banner sin imagen y 2 y 4 pilares funcionan sin errores. El título editado en el JSON se ve en la página. Se probaron antes del cambio de carga de videos y no se repitieron.
+- **`client:tina`:** las islas de Medioambiente no se hidratan en producción. React se carga igual por el header.
+- **Listener de scroll:** revisado en el código. En navegador solo se comprobó que la línea funciona tras navegar.
+- **`npm run typecheck`:** sin errores.
+- **`npm run check:standard`:** 0 errores y 1 aviso (14 páginas sin `og:image`), con build sin catálogo de muestra.
+- **`npm run build`:** no se ejecutó, porque requiere credenciales de TinaCloud. `astro build` terminó sin errores (14 páginas), contra el servidor local de Tina.
+- **Sin probar:** el editor de `/admin`, Safari, la edición en Tina con la línea en pantalla y la caché del video en el servidor real.
