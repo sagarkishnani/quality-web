@@ -13,7 +13,7 @@ function useEnvironment({ query, variables, data }: TinaProps) {
 
 function BackgroundVideo({ src, poster, className, lazy }: { src?: string | null; poster?: string; className: string; lazy?: boolean }) {
   if (!src) return poster ? <img src={poster} alt="" className={className} loading={lazy ? "lazy" : undefined} decoding={lazy ? "async" : undefined} /> : null;
-  return <video className={className} src={mediaUrl(src)} poster={poster} autoPlay muted loop playsInline preload="metadata" aria-hidden />;
+  return <video data-motion-video className={className} src={mediaUrl(src)} poster={poster} autoPlay muted loop playsInline preload="metadata" aria-hidden />;
 }
 
 export function EnvironmentHero(props: TinaProps) {
