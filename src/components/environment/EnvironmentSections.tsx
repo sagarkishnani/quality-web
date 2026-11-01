@@ -77,8 +77,8 @@ export function EnvironmentVideoBand(props: TinaProps) {
   if (!hero?.video && !hero?.poster) return <div hidden />;
 
   return (
-    <section aria-hidden className="video-band-mask relative h-80 overflow-hidden lg:h-[720px]">
-      <div data-parallax="0.18" className="absolute inset-x-0 -top-[20%] h-[140%]">
+    <section aria-hidden className="video-band-mask relative h-80 overflow-hidden lg:h-[420px]">
+      <div data-parallax="0.18" className="absolute inset-x-0 -top-[35%] h-[170%]">
         <BackgroundVideo src={hero.video} poster={mediaUrl(hero.poster)} className="h-full w-full object-cover" lazy />
       </div>
       <div className="absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-b from-petrol/0 via-petrol/55 via-45% to-petrol" />
