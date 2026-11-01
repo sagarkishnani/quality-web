@@ -81,9 +81,9 @@ Medidas de cada ancho:
 
 | Bloque | Menos de `md` | De `md` a `lg` | Desde `lg` |
 | --- | --- | --- | --- |
-| Franja de video | 320 px | 320 px | 720 px |
+| Franja de video | 320 px | 320 px | 420 px |
 | Foto de pilar | 300 px de alto, ancho completo | 400 px de alto, ancho completo | 420 × 540 px |
-| Espacio entre pilares | 64 px | 64 px | 180 px |
+| Espacio entre pilares | 64 px | 64 px | 120 px |
 | Relleno inferior de pilares | 64 px | 64 px | 160 px |
 | Banner final | 420 px | 560 px | 820 px |
 
@@ -105,7 +105,7 @@ Medidas de cada ancho:
 
 **Franja**
 
-- [ ] A 1440 px, la franja mide 720 px y funde del fondo claro al petróleo, sin línea visible de corte.
+- [ ] A 1440 px, la franja mide 420 px y funde del fondo claro al petróleo, sin línea visible de corte.
 - [ ] La franja usa el video y el póster del hero.
 - [ ] Sin `hero.video` y con `hero.poster`, muestra el póster.
 - [ ] Sin `hero.video` ni `hero.poster`, no aparece.
@@ -178,6 +178,7 @@ Medidas de cada ancho:
 - **No:** `getTotalLength`. Habría que convertir la longitud a píxeles y medirla de nuevo en cada cambio de tamaño.
 - **Sí:** la franja y los pilares cargan su video a 100 px de la pantalla. Evita descargar dos veces el video del hero y cumple la carga bajo demanda del estándar.
 - **Sí:** traer la composición del hero, el compromiso y los pilares. Esta decisión reemplaza la de la versión aprobada, porque en la revisión visual del 2026-11-01 la página quedó muy por debajo de la referencia. Sagar debe confirmarla en el PR.
+- **Sí:** apartarse de la referencia en la franja (420 px), el espacio entre pilares (120 px) y la distancia entre texto y foto (218 px en todos los pilares). Había 768 px sin contenido tras el compromiso, con el mismo video del hero, y el pilar 2 quedaba a 320 px de su foto. Sagar debe confirmarlo en el PR.
 - **Sí:** quitar `.sheet` en Medioambiente. El fundido del hero a claro no admite el corte con esquinas redondeadas.
 - **No:** video en el banner. Pesa más del doble que los dos videos del sitio juntos.
 - **No:** campo nuevo para el video de la franja. No hay otro video previsto.
