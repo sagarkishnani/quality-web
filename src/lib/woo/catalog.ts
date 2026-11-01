@@ -27,7 +27,7 @@ export interface ProductSpec {
 export const DEFAULT_ATTRIBUTES: CatalogAttributes = { brand: "Marca", segment: "Segmento" };
 export const DATASHEET_META_KEY = "ficha_tecnica";
 
-const DATASHEET_URL = /^(https?:\/\/|\/(?![/\\]))/i;
+const DATASHEET_URL = /^https?:\/\//i;
 
 export function slugify(value: string): string {
   return value

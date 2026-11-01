@@ -1,5 +1,4 @@
 import type { WooProduct, WooCategory, WooTermRef } from "./types";
-import { DATASHEET_META_KEY } from "./catalog";
 
 const BASE = (import.meta.env.BASE_URL || "/").replace(/\/?$/, "/");
 
@@ -43,7 +42,6 @@ interface SampleSeed {
   specs?: [string, string][];
   description?: string;
   crossSells?: number[];
-  datasheet?: string;
 }
 
 const SEEDS: SampleSeed[] = [
@@ -61,7 +59,6 @@ const SEEDS: SampleSeed[] = [
     description:
       "<p>Esta impresora <strong>HP LaserJet con JetIntelligence</strong> combina un rendimiento excepcional y eficiencia energética con documentos de calidad profesional justo cuando los necesita, todo mientras protege su red de ataques con la seguridad más profunda de HP.</p>",
     crossSells: [104],
-    datasheet: "ficha-muestra.pdf",
   },
   { id: 103, name: "B215", slug: "b215", brand: "Xerox", segment: "Home & Home Office", categoryId: 11, images: ["b215"], tag: TAGS.new, featured: true },
   { id: 104, name: "LaserJet M2727 nf", slug: "laserjet-m2727-nf", brand: "HP", segment: "Small Business", categoryId: 11, images: ["laserjet-m2727"], onSale: true, featured: true },
@@ -101,7 +98,7 @@ function toProduct(seed: SampleSeed): WooProduct {
     ],
     related_ids: SEEDS.filter((s) => s.id !== seed.id && s.categoryId === seed.categoryId).map((s) => s.id),
     cross_sell_ids: seed.crossSells ?? [],
-    meta_data: seed.datasheet ? [{ key: DATASHEET_META_KEY, value: `${BASE}docs/${seed.datasheet}` }] : [],
+    meta_data: [],
   };
 }
 

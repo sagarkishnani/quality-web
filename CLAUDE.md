@@ -171,9 +171,9 @@ cotización. Las rutas son `/productos`, `/productos/<slug>` y
   de 3 en ese orden; “Te puede interesar”, los relacionados o la misma categoría.
 - Ficha técnica: el PDF se sube a Medios y su URL completa va en el campo
   personalizado `ficha_tecnica` del producto (guarda la URL, no el ID del
-  archivo). `datasheetUrlOf` solo acepta `http`, `https` o una ruta con una sola
-  `/` inicial; sin URL válida, el botón no aparece. Abre en una pestaña nueva y
-  el cambio se ve al recompilar.
+  archivo). `datasheetUrlOf` solo acepta `http` o `https`; sin URL válida, el botón no
+  aparece. Abre en una pestaña nueva y el cambio se ve al recompilar. El catálogo
+  de muestra no trae fichas.
 - `src/lib/woo/catalog.ts` convierte un `WooProduct` en lo que pintan las
   tarjetas y no toca credenciales: puede importarse desde islas.
 
