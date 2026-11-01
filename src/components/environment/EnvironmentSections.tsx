@@ -108,7 +108,7 @@ export function EnvironmentPillars(props: TinaProps & { leafIcon: string }) {
           vectorEffect="non-scaling-stroke"
         />
       </svg>
-      <div className="relative mx-auto w-full max-w-[1180px] space-y-16 px-5 md:px-8 lg:space-y-[180px] xl:px-0">
+      <div className="relative mx-auto w-full max-w-[1180px] space-y-16 px-5 md:px-8 lg:space-y-[120px] xl:px-0">
         {pillars.map((pillar: any, index: number) => {
           const mediaFirst = index % 2 === 0;
           const hasMedia = Boolean(pillar.video || pillar.image);
@@ -130,7 +130,7 @@ export function EnvironmentPillars(props: TinaProps & { leafIcon: string }) {
                   </div>
                 </div>
               )}
-              <div className="flex flex-col items-start gap-[18px] lg:max-w-[440px]">
+              <div className={`flex flex-col items-start gap-[18px] lg:w-full lg:max-w-[440px] ${hasMedia && !mediaFirst ? "lg:justify-self-end" : ""}`}>
                 <div className="flex items-center gap-3.5">
                   <span className="flex h-12 w-12 items-center justify-center rounded-full bg-brand-secondary">
                     <img src={props.leafIcon} alt="" width="22" height="22" className="h-[22px] w-[22px] brightness-0 invert" />
