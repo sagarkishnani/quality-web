@@ -122,7 +122,7 @@ export function EnvironmentPillars(props: TinaProps) {
                     mediaFirst ? "lg:justify-self-start" : "lg:order-2 lg:justify-self-end"
                   }`}
                 >
-                  <div aria-hidden data-parallax="-0.08" className="absolute inset-x-0 -top-[10%] h-[120%]">
+                  <div aria-hidden data-parallax="-0.08" className="absolute inset-x-0 -top-[15%] h-[130%]">
                     <BackgroundVideo
                       src={pillar.video}
                       poster={mediaUrl(pillar.image)}
