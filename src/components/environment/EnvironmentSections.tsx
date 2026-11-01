@@ -46,12 +46,15 @@ export function EnvironmentHero(props: TinaProps) {
   );
 }
 
-export function EnvironmentCommitment(props: TinaProps) {
+export function EnvironmentCommitment(props: TinaProps & { leafIcon: string }) {
   const commitment = useEnvironment(props)?.commitment;
   if (!commitment?.title) return <div hidden />;
 
   return (
-    <section className="relative mx-auto -mt-10 flex w-[min(860px,calc(100%-48px))] flex-col items-center gap-6 pb-6 pt-20 text-center">
+    <section className="relative mx-auto -mt-10 flex w-[min(860px,calc(100%-48px))] flex-col items-center gap-6 pb-6 text-center">
+      <span className="flex h-14 w-14 items-center justify-center rounded-full bg-brand-secondary-lightest">
+        <img src={props.leafIcon} alt="" width="26" height="26" className="h-[26px] w-[26px]" />
+      </span>
       {commitment.eyebrow && (
         <p className="eyebrow" data-tina-field={tinaField(commitment, "eyebrow")}>
           {commitment.eyebrow}

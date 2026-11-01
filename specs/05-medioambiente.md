@@ -150,7 +150,7 @@ Medidas de cada ancho:
 - [ ] Con `prefers-reduced-motion`, los videos de la página quedan detenidos.
 - [ ] A 375, 768 y 1024 px, Medioambiente no presenta scroll horizontal ni texto cortado o superpuesto.
 - [ ] A 1440 × 900 px, el hero mide 836 px, su título empieza a 333 px y funde a claro sin esquinas redondeadas.
-- [ ] El compromiso está centrado, con el texto a 680 px de ancho como máximo.
+- [ ] El compromiso está centrado, con el icono de hoja arriba y el texto a 680 px de ancho como máximo.
 - [ ] Desde `lg`, la primera foto de pilar empieza en x=130 a 1440 px y cada pilar lleva el icono de hoja.
 - [ ] El LCP de `/medioambiente` a 1440 px es menor a 2,5 s.
 - [ ] Las secciones con `client:tina` funcionan sin cargar React en producción.
