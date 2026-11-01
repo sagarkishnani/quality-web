@@ -93,6 +93,24 @@ export function EnvironmentPillars(props: TinaProps) {
 
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-petrol via-petrol-deep via-55% to-petrol pb-16 pt-6 text-white lg:pb-40">
+      <svg
+        aria-hidden
+        viewBox="0 0 100 300"
+        preserveAspectRatio="none"
+        className="pointer-events-none absolute inset-0 hidden h-full w-full overflow-visible lg:block"
+      >
+        <path
+          data-scroll-line
+          d="M -5 8 C 20 4, 30 30, 48 36 S 78 60, 70 84 S 20 112, 30 140 S 86 170, 76 198 S 26 228, 36 254 S 70 286, 52 302"
+          fill="none"
+          className="stroke-brand-secondary"
+          strokeWidth={2}
+          vectorEffect="non-scaling-stroke"
+          pathLength={1}
+          strokeDasharray={1}
+          strokeDashoffset={1}
+        />
+      </svg>
       <div className="container-xl relative space-y-16 lg:space-y-[180px]">
         {pillars.map((pillar: any, index: number) => {
           const mediaFirst = index % 2 === 0;
