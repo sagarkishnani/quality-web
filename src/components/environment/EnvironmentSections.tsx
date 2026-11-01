@@ -1,5 +1,4 @@
 import { useTina, tinaField } from "tinacms/dist/react";
-import ImageBanner from "../ui/ImageBanner";
 import { mediaUrl } from "../../utils/mediaUrl";
 
 interface TinaProps {
@@ -160,24 +159,37 @@ export function EnvironmentPillars(props: TinaProps) {
 export function EnvironmentBanner(props: TinaProps) {
   const banner = useEnvironment(props)?.banner;
   if (!banner?.title) return <div hidden />;
+  const image = mediaUrl(banner.image);
 
   return (
-    <section className="pb-16 md:pb-24">
-      <div className="container-xl">
-        <ImageBanner
-          parallax={0.22}
-          eyebrow={banner.eyebrow}
-          title={banner.title}
-          image={mediaUrl(banner.image)}
-          buttonLabel={banner.buttonLabel}
-          buttonUrl={banner.buttonUrl}
-          tina={{
-            eyebrow: tinaField(banner, "eyebrow"),
-            title: tinaField(banner, "title"),
-            image: tinaField(banner, "image"),
-            button: tinaField(banner, "buttonLabel"),
-          }}
-        />
+    <section className="relative flex min-h-[420px] items-center justify-center overflow-hidden bg-petrol px-6 py-20 text-center text-white md:min-h-[560px] lg:min-h-[820px]">
+      {image && (
+        <div aria-hidden data-parallax="0.22" className="absolute inset-x-0 -top-[16%] h-[132%]">
+          <img
+            src={image}
+            alt=""
+            loading="lazy"
+            decoding="async"
+            className="h-full w-full object-cover"
+            data-tina-field={tinaField(banner, "image")}
+          />
+        </div>
+      )}
+      <div className="environment-banner-scrim absolute inset-0" aria-hidden />
+      <div className="relative max-w-3xl">
+        {banner.eyebrow && (
+          <p className="text-body-sm font-semibold uppercase tracking-[0.12em] text-brand-secondary-light" data-tina-field={tinaField(banner, "eyebrow")}>
+            {banner.eyebrow}
+          </p>
+        )}
+        <h2 className="mt-4 text-heading-xl [text-shadow:0_4px_30px_rgba(0,0,0,0.35)]" data-tina-field={tinaField(banner, "title")}>
+          {banner.title}
+        </h2>
+        {banner.buttonLabel && banner.buttonUrl && (
+          <a href={banner.buttonUrl} className="btn-light mt-8" data-tina-field={tinaField(banner, "buttonLabel")}>
+            {banner.buttonLabel}
+          </a>
+        )}
       </div>
     </section>
   );
