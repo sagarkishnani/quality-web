@@ -51,24 +51,20 @@ export function EnvironmentCommitment(props: TinaProps) {
   if (!commitment?.title) return <div hidden />;
 
   return (
-    <section className="section">
-      <div className="container-xl grid gap-8 md:grid-cols-2 md:gap-16">
-        <div>
-          {commitment.eyebrow && (
-            <p className="eyebrow" data-tina-field={tinaField(commitment, "eyebrow")}>
-              {commitment.eyebrow}
-            </p>
-          )}
-          <h2 className="mt-3 text-heading-md" data-tina-field={tinaField(commitment, "title")}>
-            {commitment.title}
-          </h2>
-        </div>
-        {commitment.text && (
-          <p className="self-end text-body-lg leading-8 text-content-muted" data-tina-field={tinaField(commitment, "text")}>
-            {commitment.text}
-          </p>
-        )}
-      </div>
+    <section className="relative mx-auto -mt-10 flex w-[min(860px,calc(100%-48px))] flex-col items-center gap-6 pb-6 pt-20 text-center">
+      {commitment.eyebrow && (
+        <p className="eyebrow" data-tina-field={tinaField(commitment, "eyebrow")}>
+          {commitment.eyebrow}
+        </p>
+      )}
+      <h2 className="-mt-2 text-heading-md" data-tina-field={tinaField(commitment, "title")}>
+        {commitment.title}
+      </h2>
+      {commitment.text && (
+        <p className="max-w-[680px] text-pretty text-body-lg leading-[1.7] text-content-muted" data-tina-field={tinaField(commitment, "text")}>
+          {commitment.text}
+        </p>
+      )}
     </section>
   );
 }
