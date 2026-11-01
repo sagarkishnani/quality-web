@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { FaMinus, FaPlus, FaWhatsapp, FaArrowRight } from "react-icons/fa6";
+import { FaArrowRight, FaDownload, FaMinus, FaPlus, FaWhatsapp } from "react-icons/fa6";
 import { fillTemplate, quoteUrl } from "./quote";
 
 interface Props {
@@ -11,6 +11,8 @@ interface Props {
   advisorTitle: string;
   advisorText: string;
   whatsappUrl?: string;
+  datasheetUrl?: string;
+  datasheetLabel: string;
 }
 
 function Stepper({ quantity, onChange, compact = false }: { quantity: number; onChange: (value: number) => void; compact?: boolean }) {
@@ -64,6 +66,17 @@ export default function QuoteBoxReact(props: Props) {
             {label}
           </a>
         </div>
+        {props.datasheetUrl && (
+          <a
+            href={props.datasheetUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-3 flex h-14 w-full items-center justify-center gap-2.5 rounded-md border border-line-strong text-body-md font-semibold transition-colors hover:border-ink"
+          >
+            <FaDownload className="h-4 w-4" aria-hidden />
+            {props.datasheetLabel}
+          </a>
+        )}
         {props.whatsappUrl && (
           <a
             href={props.whatsappUrl}
