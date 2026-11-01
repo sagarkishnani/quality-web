@@ -51,6 +51,10 @@ export default {
           DEFAULT: '#111316',
           soft:    '#24272A',
         },
+        petrol: {
+          DEFAULT: '#0D4553',
+          deep:    '#0B3B47',
+        },
         semantics: {
           success: { dark: '#267C35', DEFAULT: '#37B24D', lightest: '#EBF7ED' },
           alert:   { dark: '#CA7900', DEFAULT: '#FC9700', lightest: '#FFF4D8' },

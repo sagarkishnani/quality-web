@@ -23,7 +23,7 @@ export function EnvironmentHero(props: TinaProps) {
   if (!hero) return <div hidden />;
 
   return (
-    <section className="relative flex min-h-[calc(100svh-4rem)] items-end overflow-hidden bg-[#0D4553] pb-28 text-white md:min-h-[820px]">
+    <section className="relative flex min-h-[calc(100svh-4rem)] items-end overflow-hidden bg-petrol pb-28 text-white md:min-h-[820px]">
       <div aria-hidden data-parallax="0.3" className="absolute inset-x-0 -top-[14%] h-[128%]">
         <BackgroundVideo src={hero.video} poster={mediaUrl(hero.poster)} className="h-full w-full object-cover" />
       </div>
