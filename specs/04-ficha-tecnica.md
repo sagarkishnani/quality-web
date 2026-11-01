@@ -181,7 +181,7 @@ Los productos de `src/lib/woo/sample.ts` llevan `meta_data: []`. Ninguno tiene f
 
 - `datasheetUrlOf` también rechaza rutas que empiezan con `/\`, porque el navegador las trata como `//`.
 - `tina/tina-lock.json` cambió con el schema y va en la rama.
-- "Comunícate con un asesor" pasa a `rounded-md`, para alinearse con los 8 px de los controles del bloque.
+- "Comunícate con un asesor" pasa a `rounded-md`, para alinearse con los 8 px de los controles del bloque, y pierde la flecha.
 - El botón usa `min-h-14` en lugar de `h-14`, porque el texto se edita en Tina y uno largo puede pasar a varias líneas.
 
 ## QA realizada
