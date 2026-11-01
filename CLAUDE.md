@@ -112,7 +112,7 @@ Colecciones:
   los que van en el bento del inicio e `image` es la foto del hero del detalle.
 - `servicesPage` — `/servicios` y los textos comunes del detalle de servicio;
   `hero.image` es la foto de fondo.
-- `environment` — `/medioambiente`.
+- `environment` — `/medioambiente`. La franja de video reutiliza `hero.video` y `hero.poster`.
 - `contactPage` — textos de `/contacto` (los datos salen de `global.contact`).
 - `shop` — textos de `/productos`, banners promocionales, textos de la ficha y
   qué atributos de WooCommerce son la marca y el segmento.
@@ -212,6 +212,7 @@ semánticos, y por eso el tema se puede cambiar sin tocar una sola clase.
 | `line` / `line-soft` / `line-strong` | Bordes | `#E6E8EB` / `#ECEEF0` / `#DADDE1` |
 | `accent` | Marca en cifras y acentos | `#00A0DF` |
 | `ink` / `ink-soft` | Botón primario, heros oscuros | `#111316` / `#24272A` |
+| `petrol` / `petrol-deep` | Hero, franja, pilares y banner de Medioambiente | `#0D4553` / `#0B3B47` |
 
 Los tonos siguen la referencia visual. `accent`, `content-faint`, `brand-secondary-dark` y el texto
 blanco sobre `brand-primary` no llegan a 4.5:1: es una excepción registrada en `specs/01-tokens.md`,
@@ -250,6 +251,13 @@ sin imagen, el hero es el bloque oscuro.
 sin `prefers-reduced-motion`. La capa va dentro de un bloque con `overflow-hidden`, es más alta que
 él y nunca contiene texto. Los heroes fijos suman `data-parallax-pinned`, porque calculan con
 `scrollY`: sobre una sección fija, la distancia al centro no cambia.
+
+**Línea de Medioambiente**: `src/utils/scrollLine.ts` dibuja el `path` con `data-scroll-line` según el
+avance de su `section`, desde `lg`. Con `prefers-reduced-motion` queda completa y quieta. Por debajo
+de `lg`, el `svg` no se muestra.
+
+**Videos**: `BackgroundVideo` marca sus videos con `data-motion-video`, y
+`src/utils/reducedMotionVideo.ts` los detiene con `prefers-reduced-motion`.
 
 **Islas**: las secciones sin interacción usan `client:tina` (sin JavaScript en
 producción). Solo hidratan de verdad el header, el slider del inicio, el
