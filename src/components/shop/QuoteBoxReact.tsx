@@ -82,7 +82,7 @@ export default function QuoteBoxReact(props: Props) {
             href={props.whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="group mt-5 flex items-center gap-4 rounded-2xl bg-brand-secondary-lightest px-5 py-4"
+            className="group mt-5 flex items-center gap-4 rounded-md bg-brand-secondary-lightest px-5 py-4"
           >
             <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-brand-secondary text-white">
               <FaWhatsapp className="h-5 w-5" aria-hidden />
