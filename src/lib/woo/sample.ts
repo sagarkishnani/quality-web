@@ -98,6 +98,7 @@ function toProduct(seed: SampleSeed): WooProduct {
     ],
     related_ids: SEEDS.filter((s) => s.id !== seed.id && s.categoryId === seed.categoryId).map((s) => s.id),
     cross_sell_ids: seed.crossSells ?? [],
+    meta_data: [],
   };
 }
 

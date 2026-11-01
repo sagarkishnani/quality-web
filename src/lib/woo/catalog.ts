@@ -25,6 +25,9 @@ export interface ProductSpec {
 }
 
 export const DEFAULT_ATTRIBUTES: CatalogAttributes = { brand: "Marca", segment: "Segmento" };
+export const DATASHEET_META_KEY = "ficha_tecnica";
+
+const DATASHEET_URL = /^(https?:\/\/|\/(?![/\\]))/i;
 
 export function slugify(value: string): string {
   return value
@@ -54,6 +57,13 @@ export function specsOf(product: WooProduct, attributes: CatalogAttributes): Pro
     .filter((a) => !sameName(a.name, attributes.brand) && !sameName(a.name, attributes.segment))
     .map((a) => ({ label: a.name, value: a.options.join(", ") }))
     .filter((spec) => spec.value);
+}
+
+export function datasheetUrlOf(product: WooProduct): string | undefined {
+  const value = product.meta_data.find((meta) => meta.key === DATASHEET_META_KEY)?.value;
+  if (typeof value !== "string") return undefined;
+  const url = value.trim();
+  return DATASHEET_URL.test(url) ? url : undefined;
 }
 
 export function toCatalogItem(product: WooProduct, attributes: CatalogAttributes): CatalogItem {
