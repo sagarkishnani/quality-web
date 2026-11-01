@@ -130,3 +130,20 @@ Un producto de `src/lib/woo/sample.ts` apunta a `${BASE}docs/ficha-muestra.pdf`,
 - Fichas por variación de producto.
 - Subir PDF desde Tina.
 - Plugins de WooCommerce.
+
+## Notas de implementación
+
+- `datasheetUrlOf` también rechaza rutas que empiezan con `/\`, porque el navegador las trata como `//`.
+- `DATASHEET_META_KEY` se reutiliza en `src/lib/woo/sample.ts`.
+- `tina/tina-lock.json` cambió con el schema y va en la rama.
+
+## QA realizada
+
+- **Navegador:** 15 de 15 comprobaciones en Chromium, sobre el build estático con catálogo de muestra. Cubren posición, 56 px de alto, ancho de columna, pestaña nueva con clic y con Enter, foco visible, producto sin ficha, 375 px, barra fija y consola sin errores.
+- **Pestaña nueva:** se probó con la navegación al PDF simulada, porque Chromium sin interfaz no abrió la pestaña con el PDF real en la prueba inicial. Aparte se confirmó que `/docs/ficha-muestra.pdf` responde 200 con `application/pdf`.
+- **`datasheetUrlOf`:** 12 de 12 casos, con la función real.
+- **Texto en Tina:** se cambió `datasheetLabel` en `src/content/shop/index.json`, el build mostró el texto nuevo y el cambio se revirtió.
+- **`npm run typecheck`:** sin errores.
+- **`npm run check:standard`:** 0 errores y 1 aviso, con build sin catálogo de muestra.
+- **`npm run build`:** falla porque no hay credenciales de TinaCloud (`Missing clientId, token`). `npm run build:local` terminó sin errores, con y sin catálogo de muestra.
+- **Sin probar:** `meta_data` contra una API real de WooCommerce, porque todavía no existe.
