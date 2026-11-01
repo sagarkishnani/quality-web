@@ -12,8 +12,8 @@ function useEnvironment({ query, variables, data }: TinaProps) {
   return useTina({ query, variables, data }).data?.environment;
 }
 
-function BackgroundVideo({ src, poster, className }: { src?: string | null; poster?: string; className: string }) {
-  if (!src) return poster ? <img src={poster} alt="" className={className} /> : null;
+function BackgroundVideo({ src, poster, className, lazy }: { src?: string | null; poster?: string; className: string; lazy?: boolean }) {
+  if (!src) return poster ? <img src={poster} alt="" className={className} loading={lazy ? "lazy" : undefined} decoding={lazy ? "async" : undefined} /> : null;
   return <video className={className} src={mediaUrl(src)} poster={poster} autoPlay muted loop playsInline preload="metadata" aria-hidden />;
 }
 
@@ -93,19 +93,27 @@ export function EnvironmentPillars(props: TinaProps) {
 
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-petrol via-petrol-deep via-55% to-petrol pb-16 pt-6 text-white lg:pb-40">
-      <div className="container-xl relative space-y-6">
+      <div className="container-xl relative space-y-16 lg:space-y-[180px]">
         {pillars.map((pillar: any, index: number) => {
           const mediaFirst = index % 2 === 0;
+          const hasMedia = Boolean(pillar.video || pillar.image);
           return (
-            <article key={index} className="grid md:grid-cols-2">
-              <div className={`relative min-h-[300px] md:min-h-[460px] ${mediaFirst ? "" : "md:order-2"}`}>
-                <BackgroundVideo
-                  src={pillar.video}
-                  poster={mediaUrl(pillar.image)}
-                  className="absolute inset-0 h-full w-full object-cover"
-                />
-              </div>
-              <div className="flex flex-col justify-center p-8 md:p-14">
+            <article key={index} className="grid items-center gap-8 lg:grid-cols-2 lg:gap-24">
+              {hasMedia && (
+                <div
+                  className={`relative h-[300px] w-full overflow-hidden rounded-panel shadow-deep md:h-[400px] lg:h-[540px] lg:max-w-[420px] ${
+                    mediaFirst ? "lg:justify-self-start" : "lg:order-2 lg:justify-self-end"
+                  }`}
+                >
+                  <BackgroundVideo
+                    src={pillar.video}
+                    poster={mediaUrl(pillar.image)}
+                    className="absolute inset-0 h-full w-full object-cover"
+                    lazy
+                  />
+                </div>
+              )}
+              <div className="flex flex-col items-start lg:max-w-[440px]">
                 <p className="text-body-sm font-semibold text-brand-secondary-light">{String(index + 1).padStart(2, "0")}</p>
                 <h2 className="mt-3 text-heading-md" data-tina-field={tinaField(pillar, "title")}>
                   {pillar.title}
