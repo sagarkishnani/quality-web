@@ -1,5 +1,4 @@
 import { useTina, tinaField } from "tinacms/dist/react";
-import { FaArrowRight } from "react-icons/fa6";
 import ImageBanner from "../ui/ImageBanner";
 import { mediaUrl } from "../../utils/mediaUrl";
 
@@ -93,12 +92,12 @@ export function EnvironmentPillars(props: TinaProps) {
   if (!pillars.length) return <div hidden />;
 
   return (
-    <section className="pb-16 md:pb-24">
-      <div className="container-xl space-y-6">
+    <section className="relative overflow-hidden bg-gradient-to-b from-petrol via-petrol-deep via-55% to-petrol pb-16 pt-6 text-white lg:pb-40">
+      <div className="container-xl relative space-y-6">
         {pillars.map((pillar: any, index: number) => {
           const mediaFirst = index % 2 === 0;
           return (
-            <article key={index} className="grid overflow-hidden rounded-3xl bg-surface-raised md:grid-cols-2">
+            <article key={index} className="grid md:grid-cols-2">
               <div className={`relative min-h-[300px] md:min-h-[460px] ${mediaFirst ? "" : "md:order-2"}`}>
                 <BackgroundVideo
                   src={pillar.video}
@@ -107,19 +106,18 @@ export function EnvironmentPillars(props: TinaProps) {
                 />
               </div>
               <div className="flex flex-col justify-center p-8 md:p-14">
-                <p className="text-body-sm font-semibold text-brand-secondary-dark">{String(index + 1).padStart(2, "0")}</p>
+                <p className="text-body-sm font-semibold text-brand-secondary-light">{String(index + 1).padStart(2, "0")}</p>
                 <h2 className="mt-3 text-heading-md" data-tina-field={tinaField(pillar, "title")}>
                   {pillar.title}
                 </h2>
                 {pillar.text && (
-                  <p className="mt-4 text-body-lg text-content-muted" data-tina-field={tinaField(pillar, "text")}>
+                  <p className="mt-4 text-body-lg text-white/90" data-tina-field={tinaField(pillar, "text")}>
                     {pillar.text}
                   </p>
                 )}
                 {pillar.linkLabel && pillar.linkUrl && (
-                  <a href={pillar.linkUrl} className="link-arrow mt-8" data-tina-field={tinaField(pillar, "linkLabel")}>
+                  <a href={pillar.linkUrl} className="btn-light mt-8" data-tina-field={tinaField(pillar, "linkLabel")}>
                     {pillar.linkLabel}
-                    <FaArrowRight className="h-3 w-3" aria-hidden />
                   </a>
                 )}
               </div>
