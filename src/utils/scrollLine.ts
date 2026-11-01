@@ -5,11 +5,11 @@ const DRAW_START_VIEWPORT_RATIO = 0.75;
 const desktop = () => window.matchMedia(DESKTOP_QUERY);
 const reducedMotion = () => window.matchMedia(REDUCED_MOTION_QUERY);
 
-let lines: SVGPathElement[] = [];
+let lines: SVGSVGElement[] = [];
 let pendingFrame = 0;
 let listening = false;
 
-function drawProgress(line: SVGPathElement) {
+function drawProgress(line: SVGSVGElement) {
   const section = line.closest("section");
   if (!section) return 1;
   const { top, height } = section.getBoundingClientRect();
@@ -22,7 +22,7 @@ function drawLines() {
   if (!desktop().matches) return;
   for (const line of lines) {
     const progress = reducedMotion().matches ? 1 : drawProgress(line);
-    line.style.strokeDashoffset = (1 - progress).toFixed(4);
+    line.style.clipPath = `inset(0 0 ${((1 - progress) * 100).toFixed(2)}% 0)`;
   }
 }
 
@@ -31,7 +31,7 @@ function scheduleDraw() {
 }
 
 export function startScrollLine() {
-  lines = Array.from(document.querySelectorAll<SVGPathElement>("[data-scroll-line]"));
+  lines = Array.from(document.querySelectorAll<SVGSVGElement>("[data-scroll-line]"));
   scheduleDraw();
 
   if (listening) return;
