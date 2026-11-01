@@ -1,4 +1,4 @@
-const NEAR_VIEWPORT_MARGIN = "50% 0px";
+const NEAR_VIEWPORT_MARGIN = "100px 0px";
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
 
 let observer: IntersectionObserver | null = null;
