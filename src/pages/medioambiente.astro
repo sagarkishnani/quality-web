@@ -11,10 +11,8 @@ const tina = { query, variables, data };
 
 <BaseLayout title={seo?.title} description={seo?.description}>
   <EnvironmentHero {...tina} client:tina />
-  <div class="sheet">
-    <div class="reveal"><EnvironmentCommitment {...tina} client:tina /></div>
-    <EnvironmentVideoBand {...tina} client:tina />
-    <EnvironmentPillars {...tina} client:tina />
-    <EnvironmentBanner {...tina} client:tina />
-  </div>
+  <div class="reveal"><EnvironmentCommitment {...tina} client:tina /></div>
+  <EnvironmentVideoBand {...tina} client:tina />
+  <EnvironmentPillars {...tina} client:tina />
+  <EnvironmentBanner {...tina} client:tina />
 </BaseLayout>

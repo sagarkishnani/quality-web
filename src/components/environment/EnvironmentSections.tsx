@@ -22,22 +22,22 @@ export function EnvironmentHero(props: TinaProps) {
   if (!hero) return <div hidden />;
 
   return (
-    <section className="relative flex min-h-[calc(100svh-4rem)] items-end overflow-hidden bg-petrol pb-28 text-white md:min-h-[820px]">
+    <section className="relative h-[calc(100svh-4rem)] min-h-[640px] overflow-hidden bg-petrol text-white">
       <div aria-hidden data-parallax="0.3" className="absolute inset-x-0 -top-[14%] h-[128%]">
         <BackgroundVideo src={hero.video} poster={mediaUrl(hero.poster)} className="h-full w-full object-cover" />
       </div>
-      <div className="absolute inset-0 bg-gradient-to-t from-ink/70 via-ink/10 to-transparent" aria-hidden />
-      <div className="container-xl relative text-center">
+      <div className="environment-hero-scrim absolute inset-0" aria-hidden />
+      <div className="absolute inset-x-0 top-[28%] flex flex-col items-center gap-[18px] px-6 text-center">
         {hero.eyebrow && (
           <p className="eyebrow-caps text-brand-secondary-light" data-tina-field={tinaField(hero, "eyebrow")}>
             {hero.eyebrow}
           </p>
         )}
-        <h1 className="mx-auto mt-4 max-w-3xl text-heading-xl [text-shadow:0_8px_32px_rgba(0,0,0,0.35)]" data-tina-field={tinaField(hero, "title")}>
+        <h1 className="max-w-[820px] text-balance text-heading-xl [text-shadow:0_4px_30px_rgba(0,0,0,0.35)]" data-tina-field={tinaField(hero, "title")}>
           {hero.title}
         </h1>
         {hero.buttonLabel && hero.buttonUrl && (
-          <a href={hero.buttonUrl} className="btn-light mt-9" data-tina-field={tinaField(hero, "buttonLabel")}>
+          <a href={hero.buttonUrl} className="btn-light" data-tina-field={tinaField(hero, "buttonLabel")}>
             {hero.buttonLabel}
           </a>
         )}
