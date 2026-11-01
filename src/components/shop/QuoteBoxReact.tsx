@@ -71,7 +71,7 @@ export default function QuoteBoxReact(props: Props) {
             href={props.datasheetUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-3 flex h-14 w-full items-center justify-center gap-2.5 rounded-md border border-line-strong text-body-md font-semibold transition-colors hover:border-ink"
+            className="mt-3 flex min-h-14 w-full items-center justify-center gap-2.5 rounded-md border border-line-strong py-2 text-center text-body-md font-semibold transition-colors hover:border-ink"
           >
             <FaDownload className="h-4 w-4" aria-hidden />
             {props.datasheetLabel}

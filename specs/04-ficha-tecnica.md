@@ -80,7 +80,7 @@ Un producto de `src/lib/woo/sample.ts` apunta a `${BASE}docs/ficha-muestra.pdf`,
 
 1. Agregar `meta_data` a `WooProduct` y `meta_data: []` a los productos de `src/lib/woo/sample.ts`. Agregar `DATASHEET_META_KEY` y `datasheetUrlOf` a `src/lib/woo/catalog.ts`. Prueba: `npm run typecheck`.
 2. Agregar `datasheetLabel` a `product` en `tina/collections/shop.ts` y su valor en `src/content/shop/`. Regenerar `tina/__generated__/` y el lock con el build local.
-3. Agregar `datasheetUrl` y `datasheetLabel` a `QuoteBoxReact`. Renderizar el enlace entre la fila de cotización y el bloque de WhatsApp, con `target="_blank"`, `rel="noopener noreferrer"` y el icono `FaDownload` con `aria-hidden`. Usar `h-14`, `rounded-md` y borde `line-strong`, que cambia a `ink` en hover.
+3. Agregar `datasheetUrl` y `datasheetLabel` a `QuoteBoxReact`. Renderizar el enlace entre la fila de cotización y el bloque de WhatsApp, con `target="_blank"`, `rel="noopener noreferrer"` y el icono `FaDownload` con `aria-hidden`. Usar `min-h-14`, `py-2`, `text-center`, `rounded-md` y borde `line-strong`, que cambia a `ink` en hover.
 4. En `src/pages/productos/[slug].astro`, pasar `datasheetUrlOf(product)` y `texts?.datasheetLabel || "Descargar ficha técnica"`. Prueba: sin URL, la ficha se ve igual que antes.
 5. Crear `public/docs/ficha-muestra.pdf` y apuntar un producto de muestra a esa ruta. Prueba: con `WOO_SAMPLE_CATALOG=true`, ese producto muestra el botón y el PDF abre.
 6. Documentar en la sección de catálogo de `CLAUDE.md` cómo cargar `ficha_tecnica` en WooCommerce.
@@ -88,7 +88,7 @@ Un producto de `src/lib/woo/sample.ts` apunta a `${BASE}docs/ficha-muestra.pdf`,
 ## Criterios de aceptación
 
 - [ ] Un producto con `ficha_tecnica` válida muestra el botón entre la fila de cotización y el bloque de WhatsApp.
-- [ ] El botón mide 56 px de alto y ocupa todo el ancho de la columna.
+- [ ] Con el texto por defecto, el botón mide 56 px de alto y ocupa todo el ancho de la columna.
 - [ ] El clic abre el PDF en una pestaña nueva.
 - [ ] Un producto sin `ficha_tecnica` no muestra el botón ni deja un espacio vacío.
 - [ ] `datasheetUrlOf` acepta `https://…`, `http://…` y `/docs/ficha.pdf`.
@@ -136,6 +136,7 @@ Un producto de `src/lib/woo/sample.ts` apunta a `${BASE}docs/ficha-muestra.pdf`,
 - `datasheetUrlOf` también rechaza rutas que empiezan con `/\`, porque el navegador las trata como `//`.
 - `DATASHEET_META_KEY` se reutiliza en `src/lib/woo/sample.ts`.
 - `tina/tina-lock.json` cambió con el schema y va en la rama.
+- El botón usa `min-h-14` en lugar de `h-14`, porque el texto se edita en Tina y uno largo puede pasar a varias líneas.
 
 ## QA realizada
 
