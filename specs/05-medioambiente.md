@@ -37,14 +37,14 @@ Pantalla "Medioambiente" de `Quality Sumprint Desktop.html`, a 1440 px:
 - Parallax en la franja y en las fotos de los pilares, desde `lg`.
 - Banner final a todo el ancho, con imagen y fundido desde petróleo.
 - Videos de la página detenidos con `prefers-reduced-motion`.
+- Hero y compromiso con la composición de la referencia, añadidos tras la revisión visual del 2026-11-01.
+- Icono de hoja junto a la numeración de los pilares y columna de 1180 px desde `lg`.
 - Sección de estilos de `CLAUDE.md`, actualizada en el mismo PR.
 
 **Qué no entra (para specs futuras):**
 
-- Hero y sección de compromiso de Medioambiente: se quedan como están.
 - Video en el banner final: el de la referencia pesa 7 MB.
 - Línea por debajo de `lg`.
-- Círculo con icono sobre la numeración de los pilares.
 - Campos nuevos en Tina.
 - Contenido y textos de la página (spec 06).
 - Corregir los ciclos duplicados de `startLenis`.
@@ -149,7 +149,9 @@ Medidas de cada ancho:
 
 - [ ] Con `prefers-reduced-motion`, los videos de la página quedan detenidos.
 - [ ] A 375, 768 y 1024 px, Medioambiente no presenta scroll horizontal ni texto cortado o superpuesto.
-- [ ] El hero y el compromiso de Medioambiente no cambian.
+- [ ] A 1440 × 900 px, el hero mide 836 px, su título empieza a 333 px y funde a claro sin esquinas redondeadas.
+- [ ] El compromiso está centrado, con el texto a 680 px de ancho como máximo.
+- [ ] Desde `lg`, la primera foto de pilar empieza en x=130 a 1440 px y cada pilar lleva el icono de hoja.
 - [ ] El LCP de `/medioambiente` a 1440 px es menor a 2,5 s.
 - [ ] Las secciones con `client:tina` funcionan sin cargar React en producción.
 - [ ] No quedan `#0D4553` ni `#0B3B47` en `src/`, fuera de `.environment-banner-scrim` y `.video-band-mask`.
@@ -175,8 +177,8 @@ Medidas de cada ancho:
 - **Sí:** la línea se revela con un `clip-path` vertical sobre el `svg`. Con `non-scaling-stroke`, el guion se mide en píxeles de pantalla e ignora `pathLength`, y la línea salía cortada en tramos.
 - **No:** `getTotalLength`. Habría que convertir la longitud a píxeles y medirla de nuevo en cada cambio de tamaño.
 - **Sí:** la franja y los pilares cargan su video a 100 px de la pantalla. Evita descargar dos veces el video del hero y cumple la carga bajo demanda del estándar.
-- **No:** círculo con icono sobre la numeración. Es un cambio solo visual, fuera del criterio de Sagar.
-- **No:** rediseñar el hero o el compromiso. Mismo motivo.
+- **Sí:** traer la composición del hero, el compromiso y los pilares. Esta decisión reemplaza la de la versión aprobada, porque en la revisión visual del 2026-11-01 la página quedó muy por debajo de la referencia. Sagar debe confirmarla en el PR.
+- **Sí:** quitar `.sheet` en Medioambiente. El fundido del hero a claro no admite el corte con esquinas redondeadas.
 - **No:** video en el banner. Pesa más del doble que los dos videos del sitio juntos.
 - **No:** campo nuevo para el video de la franja. No hay otro video previsto.
 - **No:** una biblioteca de animación. El cálculo cabe en pocas líneas.
