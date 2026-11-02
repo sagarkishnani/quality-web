@@ -1,6 +1,6 @@
 # SPEC 06 — Contenido y QA final
 
-> **Estado:** Aprobado
+> **Estado:** Implementado
 > **Depende de:** SPEC 01, SPEC 02, SPEC 03, SPEC 04, SPEC 05
 > **Fecha:** 2026-11-01
 > **Objetivo:** Validar las 8 pantallas a 1440 px contra la referencia y corregir los errores claros antes de publicar.
@@ -68,8 +68,8 @@ Esta spec no agrega ni cambia estructuras de datos. Reutiliza las colecciones de
 - [x] `npm run typecheck` termina sin errores.
 - [x] `npm run build:local` termina sin errores.
 - [x] `npm run check:standard` da 0 errores con un build sin catálogo de muestra.
-- [ ] La descripción del PR lista las diferencias de diseño para Sagar.
-- [ ] La descripción del PR indica que las URLs de redes siguen pendientes.
+- [x] La descripción del PR lista las diferencias de diseño para Sagar.
+- [x] La descripción del PR indica que las URLs de redes siguen pendientes.
 
 ## Decisiones
 
