@@ -42,32 +42,32 @@ Esta spec no agrega ni cambia estructuras de datos. Reutiliza las colecciones de
 
 **Comparación**
 
-- [ ] Hay capturas a 1440 px del sitio y de la referencia para las 8 pantallas.
-- [ ] Cada diferencia encontrada figura en esta spec como corregida o como diferencia de diseño.
+- [x] Hay capturas a 1440 px del sitio y de la referencia para las 8 pantallas.
+- [x] Cada diferencia encontrada figura en esta spec como corregida o como diferencia de diseño.
 
 **Funcionamiento a 1440 px**
 
-- [ ] Ninguna de las 8 pantallas tiene scroll horizontal.
-- [ ] Ningún enlace interno de las 8 pantallas, el header o el footer responde 404.
-- [ ] Ninguna imagen de las 8 pantallas falla al cargar.
-- [ ] Ninguna de las 8 pantallas registra errores en la consola, salvo los del captcha o el backend simulados.
-- [ ] El megamenú de Servicios y el de Productos abren y sus enlaces llevan a páginas existentes.
-- [ ] Los filtros de `/productos` cambian los productos listados.
-- [ ] La galería de la ficha cambia la imagen principal.
-- [ ] El explorador de servicios cambia el servicio mostrado.
-- [ ] "Ver cotización" lleva a `/contacto` con el campo `requerimiento` precargado.
+- [x] Ninguna de las 8 pantallas tiene scroll horizontal.
+- [x] Ningún enlace interno de las 8 pantallas, el header o el footer responde 404.
+- [x] Ninguna imagen de las 8 pantallas falla al cargar.
+- [x] Ninguna de las 8 pantallas registra errores en la consola, salvo los del captcha o el backend simulados.
+- [x] El megamenú de Servicios y el de Productos abren y sus enlaces llevan a páginas existentes.
+- [x] Los filtros de `/productos` cambian los productos listados.
+- [x] La galería de la ficha cambia la imagen principal.
+- [x] El explorador de servicios cambia el servicio mostrado.
+- [x] "Ver cotización" lleva a `/contacto` con el campo `requerimiento` precargado.
 
 **Decisiones de contenido**
 
-- [ ] `order` de los 7 servicios, `contact.address` y `summary` no cambian.
-- [ ] El footer no muestra iconos de redes mientras sus URLs estén vacías.
-- [ ] El schema de Tina no tiene campos nuevos.
+- [x] `order` de los 7 servicios, `contact.address` y `summary` no cambian.
+- [x] El footer no muestra iconos de redes mientras sus URLs estén vacías.
+- [x] El schema de Tina no tiene campos nuevos.
 
 **Cierre**
 
-- [ ] `npm run typecheck` termina sin errores.
-- [ ] `npm run build:local` termina sin errores.
-- [ ] `npm run check:standard` da 0 errores con un build sin catálogo de muestra.
+- [x] `npm run typecheck` termina sin errores.
+- [x] `npm run build:local` termina sin errores.
+- [x] `npm run check:standard` da 0 errores con un build sin catálogo de muestra.
 - [ ] La descripción del PR lista las diferencias de diseño para Sagar.
 - [ ] La descripción del PR indica que las URLs de redes siguen pendientes.
 
@@ -109,3 +109,46 @@ Esta spec no agrega ni cambia estructuras de datos. Reutiliza las colecciones de
 - QA con datos reales de WooCommerce.
 
 Si alguno de estos entra, va en su propia spec.
+
+## Notas de implementación
+
+El QA no encontró errores claros, así que esta spec no cambia código ni contenido. El paso 5 no generó commits.
+
+Las capturas lado a lado están en `quality-contexto/qa-06/`, fuera del repo.
+
+Diferencias de diseño, para que decida Sagar:
+
+| Pantalla | Sitio | Referencia |
+| --- | --- | --- |
+| Productos | Categorías con Escáner primero y conteo alineado a la derecha | Multifuncional primero y conteo junto al nombre |
+| Productos | Banners negro y claro | Banners azul y negro con foto |
+| Detalle de producto | Imagen de la descripción de unos 430 px | Imagen de unos 580 px |
+| Detalle de producto | Barra fija con marca y modelo en una línea | Marca sobre el modelo |
+| Servicios | Título del hero en dos líneas, sin corte forzado | Corte en "acorde / a tus necesidades" |
+| Detalle de servicio | Título del hero más ancho | Título en una columna más angosta |
+| Medioambiente | Franja de 420 px | Franja de 720 px |
+
+La franja de Medioambiente ya figura en la spec 05, a la espera de Sagar.
+
+Diferencias que dependen del catálogo de muestra, sin decisión de diseño:
+
+- La ficha no muestra "Descargar ficha técnica", porque el catálogo de muestra no trae fichas.
+- "Puedes comprar con" sugiere una impresora en lugar del tóner de la referencia. El tóner sigue sin definirse.
+- "Te puede interesar" muestra 1 producto, frente a 4 en la referencia. La muestra solo relaciona productos de la misma categoría.
+- La galería tiene 6 imágenes y empieza por la vista frontal. La referencia tiene 5.
+
+Observaciones de texto, sin corregir porque coinciden con la referencia:
+
+- "deshechos" debería ser "desechos" en `src/content/home/index.json` y `src/content/environment/index.json`.
+- "Servicios acorde a tus necesidades" debería ser "acordes" en `src/content/services-page/index.json`.
+
+## QA realizada
+
+- **Comparación:** las 8 pantallas a 1440 × 900 contra la referencia, con `npm run dev` y catálogo de muestra. Se revisaron todas las capturas. Las capturas completas muestran la página en la posición inicial, así que no sirven para juzgar parallax ni la línea de Medioambiente.
+- **Automático:** sin scroll horizontal, sin imágenes rotas, sin errores de consola y sin respuestas de error en las 8 pantallas. Los 32 enlaces internos únicos responden sin error.
+- **Interacción:** megamenús de Servicios y Productos, filtro de categoría (de 7 a 2 productos), galería por miniatura y flecha, explorador de servicios, precarga de `requerimiento` y validación del formulario vacío.
+- **Contenido:** `order`, `contact.address`, `summary` y el schema de Tina no cambian. El footer no muestra redes.
+- **`npm run typecheck`:** sin errores.
+- **`npm run build:local`:** sin errores, 14 páginas sin catálogo de muestra.
+- **`npm run check:standard`:** 0 errores y 1 aviso (14 páginas sin `og:image`).
+- **Sin probar:** `npm run build` con TinaCloud, datos reales de WooCommerce, el envío real del formulario y otros anchos.
