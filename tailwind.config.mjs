@@ -8,7 +8,7 @@ export default {
       mono: ['Space Mono', 'ui-monospace', 'monospace'],
     },
     fontSize: {
-      'heading-xl':  ['clamp(2.25rem, 4.75vw + 0.75rem, 3.25rem)', { lineHeight: '1.05', fontWeight: '700', letterSpacing: '-0.035em' }],
+      'heading-xl':  ['clamp(2rem, 4.75vw + 0.75rem, 3.25rem)', { lineHeight: '1.05', fontWeight: '700', letterSpacing: '-0.035em' }],
       'heading-lg':  ['clamp(2rem, 4.25vw + 0.5rem, 3rem)',        { lineHeight: '1',    fontWeight: '700', letterSpacing: '-0.04em' }],
       'heading-md':  ['clamp(1.875rem, 3.5vw + 0.5rem, 2.5rem)',   { lineHeight: '1.05', fontWeight: '700', letterSpacing: '-0.035em' }],
       'heading-sm':  ['clamp(1.625rem, 3vw + 0.5rem, 2.25rem)',    { lineHeight: '1.1',  fontWeight: '700', letterSpacing: '-0.03em' }],
