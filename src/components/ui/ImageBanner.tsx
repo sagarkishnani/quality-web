@@ -1,6 +1,5 @@
 const PARALLAX_LAYERS = {
   0.16: "inset-x-0 -top-[18%] h-[136%]",
-  0.22: "inset-x-0 -top-[16%] h-[132%]",
 };
 
 interface Props {

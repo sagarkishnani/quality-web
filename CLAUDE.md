@@ -112,7 +112,7 @@ Colecciones:
   los que van en el bento del inicio e `image` es la foto del hero del detalle.
 - `servicesPage` — `/servicios` y los textos comunes del detalle de servicio;
   `hero.image` es la foto de fondo.
-- `environment` — `/medioambiente`.
+- `environment` — `/medioambiente`. La franja de video reutiliza `hero.video` y `hero.poster`.
 - `contactPage` — textos de `/contacto` (los datos salen de `global.contact`).
 - `shop` — textos de `/productos`, banners promocionales, textos de la ficha y
   qué atributos de WooCommerce son la marca y el segmento.
@@ -212,6 +212,7 @@ semánticos, y por eso el tema se puede cambiar sin tocar una sola clase.
 | `line` / `line-soft` / `line-strong` | Bordes | `#E6E8EB` / `#ECEEF0` / `#DADDE1` |
 | `accent` | Marca en cifras y acentos | `#00A0DF` |
 | `ink` / `ink-soft` | Botón primario, heros oscuros | `#111316` / `#24272A` |
+| `petrol` / `petrol-deep` | Hero, franja, pilares y banner de Medioambiente | `#0D4553` / `#0B3B47` |
 
 Los tonos siguen la referencia visual. `accent`, `content-faint`, `brand-secondary-dark` y el texto
 blanco sobre `brand-primary` no llegan a 4.5:1: es una excepción registrada en `specs/01-tokens.md`,
@@ -238,7 +239,7 @@ Tamaños: `btn` (46 px), `btn-sm` (40 px), `btn-lg` (48 px) y `btn-xl` (52 px).
 Antetítulos: `eyebrow` (verde) y `eyebrow-caps` (mayúsculas, sobre fotos).
 
 **Secciones**: las páginas con hero oscuro continúan en `<div class="sheet">`,
-que sube 48 px con esquinas redondeadas. Envolver una sección en
+que sube 48 px con esquinas redondeadas. Medioambiente no lo usa: su hero funde a claro. Envolver una sección en
 `<div class="reveal">` la hace aparecer al entrar en pantalla; va siempre en el
 `.astro`, nunca dentro de un componente React (la hidratación borraría la clase).
 
@@ -250,6 +251,15 @@ sin imagen, el hero es el bloque oscuro.
 sin `prefers-reduced-motion`. La capa va dentro de un bloque con `overflow-hidden`, es más alta que
 él y nunca contiene texto. Los heroes fijos suman `data-parallax-pinned`, porque calculan con
 `scrollY`: sobre una sección fija, la distancia al centro no cambia.
+
+**Línea de Medioambiente**: `src/utils/scrollLine.ts` revela el `svg` con `data-scroll-line` según el
+avance de su `section`, desde `lg`, con un `clip-path` vertical. `stroke-dasharray` no sirve aquí:
+con `non-scaling-stroke`, el guion se mide en píxeles de pantalla e ignora `pathLength`. Con `prefers-reduced-motion` queda completa y quieta. Por debajo
+de `lg`, el `svg` no se muestra.
+
+**Videos**: `BackgroundVideo` marca sus videos con `data-motion-video`, y
+`src/utils/reducedMotionVideo.ts` los detiene con `prefers-reduced-motion`. Con `lazy`, el video no
+se carga hasta acercarse a la pantalla (`src/utils/lazyVideo.ts`); debajo del fold, siempre con `lazy`.
 
 **Islas**: las secciones sin interacción usan `client:tina` (sin JavaScript en
 producción). Solo hidratan de verdad el header, el slider del inicio, el
