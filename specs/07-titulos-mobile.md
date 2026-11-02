@@ -93,3 +93,15 @@ El valor central y el máximo no cambian. Por eso solo cambia el tamaño por deb
 - El resto de la adaptación mobile (specs 08 a 11).
 
 Si alguno de estos entra, va en su propia spec.
+
+## Notas de implementación
+
+Diferencias aceptadas con la referencia mobile a 390 px:
+
+| Elemento | Sitio | Referencia |
+|---|---|---|
+| H1 de Contacto | 28 px | 32 px |
+| Cifras de Inicio y Nosotros | 32 px | 34 px |
+| Compromiso de Medioambiente | 28 px | 26 px |
+
+Con el cambio, el título de la ficha cabe en una línea a 390 px, y el del hero de Nosotros pasa a dos líneas, como en la referencia.
