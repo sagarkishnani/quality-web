@@ -1,6 +1,6 @@
 # SPEC 07 — Títulos mobile
 
-> **Estado:** Aprobado
+> **Estado:** Implementado
 > **Depende de:** SPEC 06
 > **Fecha:** 2026-11-02
 > **Objetivo:** Bajar los mínimos de `heading-xl` y `heading-md` a los de la referencia mobile sin cambiar desktop.
@@ -47,25 +47,25 @@ El valor central y el máximo no cambian. Por eso solo cambia el tamaño por deb
 
 **Mobile**
 
-- [ ] A 390 px, el título de los heroes de Inicio, Nosotros, Productos, Servicios, detalle de servicio y Medioambiente mide 32 px.
-- [ ] A 390 px, el título de la ficha, el de los CTA y el H1 de Contacto miden 28 px.
-- [ ] A 390 px, los títulos con `heading-lg`, `heading-sm` y `heading-xs` miden lo mismo que en `staging`.
-- [ ] A 375 px, ninguna de las 8 pantallas tiene scroll horizontal.
+- [x] A 390 px, el título de los heroes de Inicio, Nosotros, Productos, Servicios, detalle de servicio y Medioambiente mide 32 px.
+- [x] A 390 px, el título de la ficha, el de los CTA y el H1 de Contacto miden 28 px.
+- [x] A 390 px, los títulos con `heading-lg`, `heading-sm` y `heading-xs` miden lo mismo que en `staging`.
+- [x] A 375 px, ninguna de las 8 pantallas tiene scroll horizontal.
 
 **Desktop**
 
-- [ ] A 768 y 1440 px, todos los títulos miden lo mismo que en `staging`.
+- [x] A 768 y 1440 px, todos los títulos miden lo mismo que en `staging`.
 
 **Código**
 
-- [ ] El diff de `tailwind.config.mjs` cambia solo los mínimos de `heading-xl` y `heading-md`.
-- [ ] Ningún componente cambia.
+- [x] El diff de `tailwind.config.mjs` cambia solo los mínimos de `heading-xl` y `heading-md`.
+- [x] Ningún componente cambia.
 
 **Cierre**
 
-- [ ] `npm run typecheck` termina sin errores.
-- [ ] `npm run build:local` termina sin errores.
-- [ ] `npm run check:standard` da 0 errores con un build sin catálogo de muestra.
+- [x] `npm run typecheck` termina sin errores.
+- [x] `npm run build:local` termina sin errores.
+- [x] `npm run check:standard` da 0 errores con un build sin catálogo de muestra.
 
 ## Decisiones
 
@@ -105,3 +105,16 @@ Diferencias aceptadas con la referencia mobile a 390 px:
 | Compromiso de Medioambiente | 28 px | 26 px |
 
 Con el cambio, el título de la ficha cabe en una línea a 390 px, y el del hero de Nosotros pasa a dos líneas, como en la referencia.
+
+## QA realizada
+
+- **Medición:** tamaño calculado de todos los títulos `heading-*` de las 8 pantallas a 375, 390, 600, 768 y 1440 px, antes y después del cambio, con `npm run dev` y catálogo de muestra.
+- **Mobile:** a 375 y 390 px, `heading-xl` pasa de 36 a 32 px y `heading-md` de 30 a 28 px. `heading-lg` (32 px), `heading-sm` (26 px) y `heading-xs` (24 px) no cambian.
+- **600 px:** `heading-md` pasa de 30 a 29 px y `heading-xl` no cambia; la jerarquía se mantiene.
+- **Desktop:** a 768 y 1440 px ningún título cambia.
+- **Scroll horizontal:** ninguno a 375, 390, 600, 768 ni 1440 px.
+- **Capturas:** inicio de las 8 pantallas a 390 px, revisado tras el cambio.
+- **`npm run typecheck`:** sin errores.
+- **`npm run build:local`:** sin errores, 14 páginas sin catálogo de muestra.
+- **`npm run check:standard`:** 0 errores y 1 aviso (14 páginas sin `og:image`).
+- **Sin probar:** `npm run build` con TinaCloud y dispositivos reales.
