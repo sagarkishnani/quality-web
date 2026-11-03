@@ -145,7 +145,7 @@ export default function HeaderReact({ query, variables, data: initialData, local
 
   const links = (nav?.links || []).filter(Boolean);
   const panelOpen = menu !== null;
-  const solid = scrolled && !panelOpen;
+  const solid = scrolled && !panelOpen && !mobilePanel;
   const promoImage = mediaUrl(servicesMenu?.promoImage);
 
   return (
@@ -319,8 +319,14 @@ export default function HeaderReact({ query, variables, data: initialData, local
           </div>
         </div>
 
-        {mobilePanel === "menu" && (
-          <div className="h-[calc(100dvh-4rem)] overflow-y-auto border-t border-line bg-surface lg:hidden">
+        <div
+          id="mobile-menu"
+          inert={mobilePanel !== "menu"}
+          data-lenis-prevent
+          className={`absolute inset-x-0 top-full h-[calc(100dvh-4rem)] overflow-y-auto border-t border-line bg-surface transition-[transform,opacity] duration-300 lg:hidden ${
+            mobilePanel === "menu" ? "translate-x-0 opacity-100" : "pointer-events-none translate-x-full opacity-0"
+          }`}
+        >
             <nav className="container-xl flex flex-col py-6" aria-label="Principal">
               {links.map((link: any, index: number) => (
                 <div key={index} className="border-b border-line py-3">
@@ -357,8 +363,7 @@ export default function HeaderReact({ query, variables, data: initialData, local
                 </a>
               )}
             </nav>
-          </div>
-        )}
+        </div>
       </header>
     </>
   );
