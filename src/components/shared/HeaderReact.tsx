@@ -8,6 +8,9 @@ import type { CatalogNav, NavLink } from "../../lib/content/catalogNav";
 
 type MenuKey = "services" | "products" | "search";
 type MobilePanel = "menu" | "search" | null;
+type MobileSection = "services" | "products" | null;
+
+const mobileSubLink = "py-2.5 text-body-md text-content-strong";
 
 interface Props {
   query: string;
@@ -102,6 +105,7 @@ export default function HeaderReact({ query, variables, data: initialData, local
 
   const [menu, setMenu] = useState<MenuKey | null>(null);
   const [mobilePanel, setMobilePanel] = useState<MobilePanel>(null);
+  const [mobileSection, setMobileSection] = useState<MobileSection>(null);
   const [scrolled, setScrolled] = useState(false);
   const closeTimer = useRef<number | undefined>(undefined);
 
@@ -122,6 +126,10 @@ export default function HeaderReact({ query, variables, data: initialData, local
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, []);
+
+  useEffect(() => {
+    if (mobilePanel !== "menu") setMobileSection(null);
+  }, [mobilePanel]);
 
   useEffect(() => {
     document.body.style.overflow = mobilePanel ? "hidden" : "";
@@ -327,42 +335,74 @@ export default function HeaderReact({ query, variables, data: initialData, local
             mobilePanel === "menu" ? "translate-x-0 opacity-100" : "pointer-events-none translate-x-full opacity-0"
           }`}
         >
-            <nav className="container-xl flex flex-col py-6" aria-label="Principal">
-              {links.map((link: any, index: number) => (
-                <div key={index} className="border-b border-line py-3">
+          <nav className="container-xl flex flex-col py-3" aria-label="Principal">
+            {links.map((link: any, index: number) => {
+              const section: MobileSection = link.menu === "services" || link.menu === "products" ? link.menu : null;
+              if (!section) {
+                return (
                   <a
+                    key={index}
                     href={localizeHref(link.url, locale, link.external)}
                     onClick={close}
-                    className="block py-1 text-subtitle-sm font-medium"
+                    className="border-b border-line py-4 text-subtitle-md font-semibold"
                   >
                     {tField(link, "label", locale)}
                   </a>
-                  {link.menu === "services" && (
-                    <div className="mt-2 grid gap-1 pl-1">
-                      {services.map((s) => (
-                        <a key={s.href} href={s.href} onClick={close} className="py-1 text-body-sm text-content-muted">
-                          {s.label}
-                        </a>
-                      ))}
-                    </div>
-                  )}
-                  {link.menu === "products" && (
-                    <div className="mt-2 grid gap-1 pl-1">
-                      {[...catalog.segments, ...catalog.categories].map((s) => (
-                        <a key={s.href} href={s.href} onClick={close} className="py-1 text-body-sm text-content-muted">
-                          {s.label}
-                        </a>
-                      ))}
+                );
+              }
+              const expanded = mobileSection === section;
+              const listId = `mobile-menu-${section}`;
+              return (
+                <div key={index} className="border-b border-line">
+                  <button
+                    type="button"
+                    onClick={() => setMobileSection(expanded ? null : section)}
+                    aria-expanded={expanded}
+                    aria-controls={listId}
+                    className="flex w-full items-center justify-between py-4 text-left text-subtitle-md font-semibold"
+                  >
+                    {tField(link, "label", locale)}
+                    <FaChevronDown className={`h-4 w-4 transition-transform duration-300 ${expanded ? "rotate-180" : ""}`} aria-hidden />
+                  </button>
+                  {expanded && (
+                    <div id={listId} className="flex flex-col pb-4">
+                      <a href={localizeHref(link.url, locale)} onClick={close} className={`${mobileSubLink} font-semibold text-brand-secondary-dark`}>
+                        {section === "services" ? "Ver todos los servicios" : "Ver todos los productos"}
+                      </a>
+                      {section === "services" &&
+                        services.map((item) => (
+                          <a key={item.href} href={item.href} onClick={close} className={mobileSubLink}>
+                            {item.label}
+                          </a>
+                        ))}
+                      {section === "products" && (
+                        <>
+                          {catalog.segments.map((item) => (
+                            <a key={item.href} href={item.href} onClick={close} className={mobileSubLink}>
+                              {item.label}
+                            </a>
+                          ))}
+                          {productsMenu?.categoriesTitle && (
+                            <p className="mb-1 mt-3 text-caption-md text-content-subtle">{productsMenu.categoriesTitle}</p>
+                          )}
+                          {catalog.categories.map((item) => (
+                            <a key={item.href} href={item.href} onClick={close} className={mobileSubLink}>
+                              {item.label}
+                            </a>
+                          ))}
+                        </>
+                      )}
                     </div>
                   )}
                 </div>
-              ))}
-              {nav?.cta?.label && (
-                <a href={localizeHref(nav.cta.url, locale)} onClick={close} className="btn-accent mt-6">
-                  {tField(nav.cta, "label", locale)}
-                </a>
-              )}
-            </nav>
+              );
+            })}
+            {nav?.cta?.label && (
+              <a href={localizeHref(nav.cta.url, locale)} onClick={close} className="btn-accent btn-xl mt-8">
+                {tField(nav.cta, "label", locale)}
+              </a>
+            )}
+          </nav>
         </div>
       </header>
     </>
