@@ -57,19 +57,22 @@ function whatsappHref(contact: any): string | null {
   return `https://wa.me/${number}${message}`;
 }
 
-function SearchPanel({ products, placeholder, popularTitle, onNavigate }: {
+function SearchPanel({ products, placeholder, popularTitle, onNavigate, onClose, active = true }: {
   products: NavLink[];
   placeholder: string;
   popularTitle: string;
   onNavigate: () => void;
+  onClose?: () => void;
+  active?: boolean;
 }) {
   const [term, setTerm] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
+    if (!active) return;
     const id = window.setTimeout(() => inputRef.current?.focus(), 150);
     return () => window.clearTimeout(id);
-  }, []);
+  }, [active]);
 
   const normalized = term.trim().toLowerCase();
   const results = normalized ? products.filter((p) => p.label.toLowerCase().includes(normalized)) : products.slice(0, 6);
@@ -77,18 +80,25 @@ function SearchPanel({ products, placeholder, popularTitle, onNavigate }: {
 
   return (
     <div className="mx-auto max-w-3xl">
-      <label className="flex items-center gap-4 border-b border-line-strong pb-4">
-        <FaMagnifyingGlass className="h-5 w-5 text-content-subtle" aria-hidden />
-        <span className="sr-only">{placeholder}</span>
-        <input
-          ref={inputRef}
-          type="search"
-          value={term}
-          onChange={(event) => setTerm(event.target.value)}
-          placeholder={placeholder}
-          className="w-full bg-transparent text-subtitle-sm font-medium placeholder:text-content-subtle focus:outline-none"
-        />
-      </label>
+      <div className="flex items-center gap-4 border-b border-line-strong pb-4">
+        <label className="flex flex-1 items-center gap-4">
+          <FaMagnifyingGlass className="h-5 w-5 text-content-subtle" aria-hidden />
+          <span className="sr-only">{placeholder}</span>
+          <input
+            ref={inputRef}
+            type="search"
+            value={term}
+            onChange={(event) => setTerm(event.target.value)}
+            placeholder={placeholder}
+            className="w-full bg-transparent text-subtitle-sm font-medium placeholder:text-content-subtle focus:outline-none"
+          />
+        </label>
+        {onClose && (
+          <button type="button" onClick={onClose} aria-label="Cerrar búsqueda" className="-mr-2.5 flex h-11 w-11 shrink-0 items-center justify-center text-content-muted">
+            <FaXmark className="h-5 w-5" aria-hidden />
+          </button>
+        )}
+      </div>
       <p className="mt-6 text-caption-sm font-semibold uppercase tracking-[0.14em] text-content-subtle">{heading}</p>
       <ul className="mt-3 grid gap-1 sm:grid-cols-2">
         {results.slice(0, 10).map((product) => (
@@ -263,6 +273,16 @@ export default function HeaderReact({ query, variables, data: initialData, local
           <div className="ml-auto flex items-center lg:hidden">
             <button
               type="button"
+              onClick={() => setMobilePanel((panel) => (panel === "search" ? null : "search"))}
+              className="flex h-11 w-11 items-center justify-center text-content"
+              aria-label="Buscar productos"
+              aria-expanded={mobilePanel === "search"}
+              aria-controls="mobile-search"
+            >
+              <FaMagnifyingGlass className="h-5 w-5" aria-hidden />
+            </button>
+            <button
+              type="button"
               onClick={() => setMobilePanel((panel) => (panel === "menu" ? null : "menu"))}
               className="-mr-2.5 flex h-11 w-11 flex-col items-center justify-center gap-1.5"
               aria-label={mobilePanel === "menu" ? "Cerrar menú" : "Abrir menú"}
@@ -418,6 +438,26 @@ export default function HeaderReact({ query, variables, data: initialData, local
               </a>
             )}
           </nav>
+        </div>
+
+        <div
+          id="mobile-search"
+          inert={mobilePanel !== "search"}
+          data-lenis-prevent
+          className={`absolute inset-x-0 top-full h-[calc(100dvh-4rem)] overflow-y-auto border-t border-line bg-surface transition-[transform,opacity] duration-300 lg:hidden ${
+            mobilePanel === "search" ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-4 opacity-0"
+          }`}
+        >
+          <div className="container-xl py-6">
+            <SearchPanel
+              products={catalog.products}
+              placeholder={nav?.search?.placeholder || "Buscar productos"}
+              popularTitle={nav?.search?.popularTitle || "Productos populares"}
+              onNavigate={close}
+              onClose={() => setMobilePanel(null)}
+              active={mobilePanel === "search"}
+            />
+          </div>
         </div>
       </header>
     </>
