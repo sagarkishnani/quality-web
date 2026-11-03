@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useTina, tinaField } from "tinacms/dist/react";
-import { FaBars, FaXmark, FaMagnifyingGlass, FaArrowRight, FaChevronDown } from "react-icons/fa6";
+import { FaXmark, FaMagnifyingGlass, FaArrowRight, FaChevronDown } from "react-icons/fa6";
 import { tField, localizeHref } from "../../utils/i18n";
 import { mediaUrl } from "../../utils/mediaUrl";
 import type { Locale } from "../../i18n/config";
@@ -243,15 +243,25 @@ export default function HeaderReact({ query, variables, data: initialData, local
             )}
           </div>
 
-          <button
-            type="button"
-            onClick={() => setMobilePanel((panel) => (panel === "menu" ? null : "menu"))}
-            className="ml-auto p-2 text-content lg:hidden"
-            aria-label={mobilePanel === "menu" ? "Cerrar menú" : "Abrir menú"}
-            aria-expanded={mobilePanel === "menu"}
-          >
-            {mobilePanel === "menu" ? <FaXmark size={22} /> : <FaBars size={22} />}
-          </button>
+          <div className="ml-auto flex items-center lg:hidden">
+            <button
+              type="button"
+              onClick={() => setMobilePanel((panel) => (panel === "menu" ? null : "menu"))}
+              className="-mr-2.5 flex h-11 w-11 flex-col items-center justify-center gap-1.5"
+              aria-label={mobilePanel === "menu" ? "Cerrar menú" : "Abrir menú"}
+              aria-expanded={mobilePanel === "menu"}
+              aria-controls="mobile-menu"
+            >
+              <span
+                aria-hidden
+                className={`h-0.5 w-5 rounded-full bg-ink transition-transform duration-300 ${mobilePanel === "menu" ? "translate-y-1 rotate-45" : ""}`}
+              />
+              <span
+                aria-hidden
+                className={`h-0.5 w-5 rounded-full bg-ink transition-transform duration-300 ${mobilePanel === "menu" ? "-translate-y-1 -rotate-45" : ""}`}
+              />
+            </button>
+          </div>
         </div>
 
         <div
