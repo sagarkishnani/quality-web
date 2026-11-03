@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useTina, tinaField } from "tinacms/dist/react";
-import { FaXmark, FaMagnifyingGlass, FaArrowRight, FaChevronDown } from "react-icons/fa6";
+import { FaXmark, FaMagnifyingGlass, FaArrowRight, FaChevronDown, FaWhatsapp } from "react-icons/fa6";
 import { tField, localizeHref } from "../../utils/i18n";
 import { mediaUrl } from "../../utils/mediaUrl";
 import type { Locale } from "../../i18n/config";
@@ -48,6 +48,13 @@ function MenuColumn({ title, links, onNavigate }: { title?: string | null; links
       </ul>
     </div>
   );
+}
+
+function whatsappHref(contact: any): string | null {
+  const number = (contact?.whatsappNumber || "").replace(/\D/g, "");
+  if (!number) return null;
+  const message = contact?.whatsappMessage ? `?text=${encodeURIComponent(contact.whatsappMessage)}` : "";
+  return `https://wa.me/${number}${message}`;
 }
 
 function SearchPanel({ products, placeholder, popularTitle, onNavigate }: {
@@ -102,6 +109,8 @@ export default function HeaderReact({ query, variables, data: initialData, local
   const nav = data?.global?.nav;
   const servicesMenu = nav?.servicesMenu;
   const productsMenu = nav?.productsMenu;
+  const contact = data?.global?.contact;
+  const advisorHref = whatsappHref(contact);
 
   const [menu, setMenu] = useState<MenuKey | null>(null);
   const [mobilePanel, setMobilePanel] = useState<MobilePanel>(null);
@@ -400,6 +409,12 @@ export default function HeaderReact({ query, variables, data: initialData, local
             {nav?.cta?.label && (
               <a href={localizeHref(nav.cta.url, locale)} onClick={close} className="btn-accent btn-xl mt-8">
                 {tField(nav.cta, "label", locale)}
+              </a>
+            )}
+            {advisorHref && (
+              <a href={advisorHref} target="_blank" rel="noopener noreferrer" onClick={close} className="btn-secondary btn-xl mt-3 gap-3">
+                <FaWhatsapp className="h-5 w-5 text-brand-secondary" aria-hidden />
+                {contact?.whatsappLabel || "Comunícate con un asesor"}
               </a>
             )}
           </nav>
