@@ -39,8 +39,8 @@ export default function FooterReact({ query, variables, data: initialData, local
   return (
     <footer className="border-t border-line bg-surface">
       <div className="container-xl pb-10 pt-16">
-        <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-[1.3fr_repeat(4,1fr)]">
-          <div>
+        <div className="grid grid-cols-2 gap-x-6 gap-y-10 md:gap-12 lg:grid-cols-[1.3fr_repeat(4,1fr)]">
+          <div className="col-span-2 md:col-span-1">
             {nav?.logo && (
               <img src={mediaUrl(nav.logo)} alt={nav?.logoAlt || "Quality Sumprint"} width="180" height="32" className="h-8 w-auto" loading="lazy" />
             )}
