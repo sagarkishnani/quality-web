@@ -151,6 +151,15 @@ export default function HeaderReact({ query, variables, data: initialData, local
   }, [mobilePanel]);
 
   useEffect(() => {
+    const desktop = window.matchMedia("(min-width: 1024px)");
+    const closeOnDesktop = (event: MediaQueryListEvent) => {
+      if (event.matches) setMobilePanel(null);
+    };
+    desktop.addEventListener("change", closeOnDesktop);
+    return () => desktop.removeEventListener("change", closeOnDesktop);
+  }, []);
+
+  useEffect(() => {
     document.body.style.overflow = mobilePanel ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
