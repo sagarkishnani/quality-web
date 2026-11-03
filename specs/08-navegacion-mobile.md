@@ -21,7 +21,7 @@ Por debajo de `lg`, el sitio no tiene búsqueda, y el menú despliega todos los 
   - Productos: "Ver todos los productos", los segmentos y, bajo `categoriesTitle`, las categorías.
 - Botones del menú: "Contáctanos" y "Comunícate con un asesor", con los datos de WhatsApp de `global.contact`.
 - Menú desde la derecha y búsqueda desde arriba, en 300 ms, sin animación con `prefers-reduced-motion`.
-- Footer en grilla de 2 columnas: el logo arriba, y debajo Productos | Servicios y Empresa | Contacto.
+- Footer en grilla de 2 columnas: el logo arriba, debajo Productos | Servicios y Empresa, y Contacto a todo el ancho.
 
 **No entra:**
 
@@ -65,7 +65,7 @@ Datos que se reutilizan:
 6. **Botones del menú.** Agregar "Comunícate con un asesor" bajo "Contáctanos".
 7. **Búsqueda mobile.** Agregar la lupa y el panel con `SearchPanel` y su botón de cerrar. Baja desde arriba en 300 ms.
 8. **Movimiento reducido.** Sin transiciones con `prefers-reduced-motion`.
-9. **Footer.** Grilla de 2 columnas por debajo de `md`, con el logo a todo el ancho.
+9. **Footer.** Grilla de 2 columnas por debajo de `md`, con el logo y Contacto a todo el ancho.
 10. **Registro.** Actualizar la sección de estilos de `CLAUDE.md` si cambia algún patrón, y el brief en `quality-contexto/README.md`.
 11. **Cierre.** Ejecutar `npm run typecheck`, `npm run build:local` y `npm run check:standard` sin catálogo de muestra. Probar a 375, 390, 768 y 1440 px.
 
@@ -100,7 +100,7 @@ Datos que se reutilizan:
 
 **Footer (390 px)**
 
-- [ ] El logo va a todo el ancho y, debajo, van Productos | Servicios y Empresa | Contacto en 2 columnas.
+- [ ] El logo va a todo el ancho; debajo van Productos | Servicios y Empresa en 2 columnas, y Contacto a todo el ancho.
 - [ ] El correo y la dirección se leen completos, sin desbordar su columna.
 
 **Desktop (1024 y 1440 px)**
@@ -123,6 +123,7 @@ Datos que se reutilizan:
 - **Sí:** el header mantiene 64 px y el logo de 30 px. Bajar a 56 px cambiaría el desplazamiento superior de todas las páginas por 8 px.
 - **Sí:** el footer usa una grilla de 2 columnas con las mismas columnas de Tina. Lo acorta sin que mobile y desktop tengan enlaces distintos.
 - **No:** copiar el footer de la referencia, que oculta Servicios y cambia los enlaces de Empresa solo en mobile.
+- **Sí:** Contacto a todo el ancho en mobile. En una columna de 163 px, el correo se cortaba a mitad de palabra; la referencia también pone correo y dirección a todo el ancho. Decidido por Esteban durante la implementación, el 2026-11-02.
 - **Sí:** el acordeón de Productos sigue a la referencia y no muestra marcas. Las marcas siguen en el megamenú de desktop y en los filtros del catálogo.
 - **Sí:** el menú y la búsqueda se mueven como en la referencia, pero en 300 ms en lugar de 700 ms. El estándar pide de 150 a 300 ms.
 - **Sí:** el menú queda siempre montado y con `inert` cuando está cerrado. Es necesario para animarlo sin que sus enlaces reciban foco.

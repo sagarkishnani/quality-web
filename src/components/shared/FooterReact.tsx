@@ -69,7 +69,7 @@ export default function FooterReact({ query, variables, data: initialData, local
           ))}
 
           {contact && (
-            <div>
+            <div className="col-span-2 md:col-span-1">
               <p className={columnTitle}>Contacto</p>
               <ul className="mt-5 space-y-3">
                 <li>
