@@ -7,6 +7,7 @@ import type { Locale } from "../../i18n/config";
 import type { CatalogNav, NavLink } from "../../lib/content/catalogNav";
 
 type MenuKey = "services" | "products" | "search";
+type MobilePanel = "menu" | "search" | null;
 
 interface Props {
   query: string;
@@ -100,7 +101,7 @@ export default function HeaderReact({ query, variables, data: initialData, local
   const productsMenu = nav?.productsMenu;
 
   const [menu, setMenu] = useState<MenuKey | null>(null);
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobilePanel, setMobilePanel] = useState<MobilePanel>(null);
   const [scrolled, setScrolled] = useState(false);
   const closeTimer = useRef<number | undefined>(undefined);
 
@@ -115,7 +116,7 @@ export default function HeaderReact({ query, variables, data: initialData, local
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setMenu(null);
-        setMobileOpen(false);
+        setMobilePanel(null);
       }
     };
     window.addEventListener("keydown", onKey);
@@ -123,11 +124,11 @@ export default function HeaderReact({ query, variables, data: initialData, local
   }, []);
 
   useEffect(() => {
-    document.body.style.overflow = mobileOpen ? "hidden" : "";
+    document.body.style.overflow = mobilePanel ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
-  }, [mobileOpen]);
+  }, [mobilePanel]);
 
   const openMenu = (key: MenuKey) => {
     window.clearTimeout(closeTimer.current);
@@ -139,7 +140,7 @@ export default function HeaderReact({ query, variables, data: initialData, local
   };
   const close = () => {
     setMenu(null);
-    setMobileOpen(false);
+    setMobilePanel(null);
   };
 
   const links = (nav?.links || []).filter(Boolean);
@@ -244,12 +245,12 @@ export default function HeaderReact({ query, variables, data: initialData, local
 
           <button
             type="button"
-            onClick={() => setMobileOpen((open) => !open)}
+            onClick={() => setMobilePanel((panel) => (panel === "menu" ? null : "menu"))}
             className="ml-auto p-2 text-content lg:hidden"
-            aria-label={mobileOpen ? "Cerrar menú" : "Abrir menú"}
-            aria-expanded={mobileOpen}
+            aria-label={mobilePanel === "menu" ? "Cerrar menú" : "Abrir menú"}
+            aria-expanded={mobilePanel === "menu"}
           >
-            {mobileOpen ? <FaXmark size={22} /> : <FaBars size={22} />}
+            {mobilePanel === "menu" ? <FaXmark size={22} /> : <FaBars size={22} />}
           </button>
         </div>
 
@@ -308,7 +309,7 @@ export default function HeaderReact({ query, variables, data: initialData, local
           </div>
         </div>
 
-        {mobileOpen && (
+        {mobilePanel === "menu" && (
           <div className="h-[calc(100dvh-4rem)] overflow-y-auto border-t border-line bg-surface lg:hidden">
             <nav className="container-xl flex flex-col py-6" aria-label="Principal">
               {links.map((link: any, index: number) => (
