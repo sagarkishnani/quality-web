@@ -291,11 +291,11 @@ export default function HeaderReact({ query, variables, data: initialData, local
             >
               <span
                 aria-hidden
-                className={`h-0.5 w-5 rounded-full bg-ink transition-transform duration-300 ${mobilePanel === "menu" ? "translate-y-1 rotate-45" : ""}`}
+                className={`h-0.5 w-5 rounded-full bg-ink transition-transform duration-300 motion-reduce:transition-none ${mobilePanel === "menu" ? "translate-y-1 rotate-45" : ""}`}
               />
               <span
                 aria-hidden
-                className={`h-0.5 w-5 rounded-full bg-ink transition-transform duration-300 ${mobilePanel === "menu" ? "-translate-y-1 -rotate-45" : ""}`}
+                className={`h-0.5 w-5 rounded-full bg-ink transition-transform duration-300 motion-reduce:transition-none ${mobilePanel === "menu" ? "-translate-y-1 -rotate-45" : ""}`}
               />
             </button>
           </div>
@@ -360,7 +360,7 @@ export default function HeaderReact({ query, variables, data: initialData, local
           id="mobile-menu"
           inert={mobilePanel !== "menu"}
           data-lenis-prevent
-          className={`absolute inset-x-0 top-full h-[calc(100dvh-4rem)] overflow-y-auto border-t border-line bg-surface transition-[transform,opacity] duration-300 lg:hidden ${
+          className={`absolute inset-x-0 top-full h-[calc(100dvh-4rem)] overflow-y-auto border-t border-line bg-surface transition-[transform,opacity] duration-300 motion-reduce:transition-none lg:hidden ${
             mobilePanel === "menu" ? "translate-x-0 opacity-100" : "pointer-events-none translate-x-full opacity-0"
           }`}
         >
@@ -391,7 +391,7 @@ export default function HeaderReact({ query, variables, data: initialData, local
                     className="flex w-full items-center justify-between py-4 text-left text-subtitle-md font-semibold"
                   >
                     {tField(link, "label", locale)}
-                    <FaChevronDown className={`h-4 w-4 transition-transform duration-300 ${expanded ? "rotate-180" : ""}`} aria-hidden />
+                    <FaChevronDown className={`h-4 w-4 transition-transform duration-300 motion-reduce:transition-none ${expanded ? "rotate-180" : ""}`} aria-hidden />
                   </button>
                   {expanded && (
                     <div id={listId} className="flex flex-col pb-4">
@@ -444,7 +444,7 @@ export default function HeaderReact({ query, variables, data: initialData, local
           id="mobile-search"
           inert={mobilePanel !== "search"}
           data-lenis-prevent
-          className={`absolute inset-x-0 top-full h-[calc(100dvh-4rem)] overflow-y-auto border-t border-line bg-surface transition-[transform,opacity] duration-300 lg:hidden ${
+          className={`absolute inset-x-0 top-full h-[calc(100dvh-4rem)] overflow-y-auto border-t border-line bg-surface transition-[transform,opacity] duration-300 motion-reduce:transition-none lg:hidden ${
             mobilePanel === "search" ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-4 opacity-0"
           }`}
         >
