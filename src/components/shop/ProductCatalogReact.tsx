@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { FaMagnifyingGlass, FaChevronUp, FaCheck, FaSliders } from "react-icons/fa6";
 import ProductTile from "../ui/ProductTile";
 import { slugify, type CatalogItem } from "../../lib/woo/catalog";
@@ -95,6 +96,94 @@ function Chip({ label, pressed, onClick }: ChipProps) {
   );
 }
 
+interface FilterSheetProps {
+  open: boolean;
+  onClose: () => void;
+  onClear: () => void;
+  groups: FacetGroupProps[];
+  resultLabel: string;
+}
+
+function FilterSheet({ open, onClose, onClear, groups, resultLabel }: FilterSheetProps) {
+  const titleRef = useRef<HTMLHeadingElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    titleRef.current?.focus();
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onClose();
+    };
+    const desktop = window.matchMedia("(min-width: 1024px)");
+    const closeOnDesktop = (event: MediaQueryListEvent) => {
+      if (event.matches) onClose();
+    };
+    window.addEventListener("keydown", closeOnEscape);
+    desktop.addEventListener("change", closeOnDesktop);
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      window.removeEventListener("keydown", closeOnEscape);
+      desktop.removeEventListener("change", closeOnDesktop);
+    };
+  }, [open, onClose]);
+
+  return (
+    <div className="lg:hidden" inert={!open} data-lenis-prevent>
+      <div
+        aria-hidden
+        onClick={onClose}
+        className={`fixed inset-0 z-[60] bg-ink/35 transition-opacity duration-300 motion-reduce:transition-none ${open ? "opacity-100" : "pointer-events-none opacity-0"}`}
+      />
+      <div
+        id="catalog-filters"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="catalog-filters-title"
+        className={`fixed inset-x-0 bottom-0 z-[61] flex max-h-[80dvh] flex-col rounded-t-panel bg-surface-raised transition-transform duration-300 ease-out motion-reduce:transition-none ${
+          open ? "translate-y-0" : "translate-y-full"
+        }`}
+      >
+        <div className="flex justify-center pb-1 pt-2.5" aria-hidden>
+          <span className="h-1 w-10 rounded-full bg-line-strong" />
+        </div>
+        <div className="flex items-center justify-between px-6 pb-1 pt-2">
+          <h2 id="catalog-filters-title" ref={titleRef} tabIndex={-1} className="text-subtitle-xs font-bold focus:outline-none">
+            Filtros
+          </h2>
+          <button type="button" onClick={onClear} className="min-h-11 text-body-sm font-semibold text-brand-secondary-dark">
+            Limpiar
+          </button>
+        </div>
+        <div className="overflow-y-auto px-6">
+          {groups.map((group) =>
+            group.options.length ? (
+              <fieldset key={group.title} className="border-b border-line-soft py-4">
+                <legend className="mb-3.5 text-body-md font-semibold">{group.title}</legend>
+                <div className="flex flex-wrap gap-2">
+                  {group.options.map((option) => (
+                    <Chip
+                      key={option.label}
+                      label={`${option.label} (${option.count})`}
+                      pressed={group.selected.includes(option.label)}
+                      onClick={() => group.onToggle(option.label)}
+                    />
+                  ))}
+                </div>
+              </fieldset>
+            ) : null
+          )}
+        </div>
+        <div className="px-6 pb-7 pt-4">
+          <button type="button" onClick={onClose} className="btn-primary btn-xl w-full">
+            {resultLabel}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function countBy(items: CatalogItem[], key: "category" | "brand") {
   const counts = new Map<string, number>();
   for (const item of items) {
@@ -126,6 +215,10 @@ export default function ProductCatalogReact({ items, segments, productsPath, lab
   const [term, setTerm] = useState("");
   const [sort, setSort] = useState<SortKey>("popular");
   const [filtersOpen, setFiltersOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const filterButtonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => setMounted(true), []);
 
   useEffect(() => {
     const initial = readInitialFilters(items, segments);
@@ -160,6 +253,19 @@ export default function ProductCatalogReact({ items, segments, productsPath, lab
     setBrands([]);
     setTerm("");
   };
+  const clearFacets = () => {
+    setCategories([]);
+    setBrands([]);
+  };
+  const closeFilters = useCallback(() => {
+    setFiltersOpen(false);
+    filterButtonRef.current?.focus();
+  }, []);
+  const facetGroups: FacetGroupProps[] = [
+    { title: labels.categoryTitle, options: countBy(inSegment, "category"), selected: categories, onToggle: (v) => setCategories((list) => toggleValue(list, v)) },
+    { title: labels.brandTitle, options: countBy(inSegment, "brand"), selected: brands, onToggle: (v) => setBrands((list) => toggleValue(list, v)) },
+  ];
+  const resultCount = `${visible.length} ${visible.length === 1 ? "producto" : "productos"}`;
   const pickSegment = (slug: string) => {
     setSegment(slug);
     setCategories([]);
@@ -201,9 +307,10 @@ export default function ProductCatalogReact({ items, segments, productsPath, lab
 
       <div className="sheet bg-surface-raised">
         <div className="container-xl grid gap-10 py-14 lg:grid-cols-[240px_1fr] lg:gap-14">
-          <aside className="space-y-6 lg:sticky lg:top-24 lg:max-h-[calc(100vh-7rem)] lg:self-start lg:overflow-y-auto">
-            <FacetGroup title={labels.categoryTitle} options={countBy(inSegment, "category")} selected={categories} onToggle={(v) => setCategories((list) => toggleValue(list, v))} />
-            <FacetGroup title={labels.brandTitle} options={countBy(inSegment, "brand")} selected={brands} onToggle={(v) => setBrands((list) => toggleValue(list, v))} />
+          <aside className="hidden space-y-6 lg:sticky lg:block lg:top-24 lg:max-h-[calc(100vh-7rem)] lg:self-start lg:overflow-y-auto">
+            {facetGroups.map((group) => (
+              <FacetGroup key={group.title} {...group} />
+            ))}
             {hasFilters && (
               <button type="button" onClick={clearFilters} className="text-body-sm font-semibold underline underline-offset-4">
                 Limpiar filtros
@@ -226,6 +333,7 @@ export default function ProductCatalogReact({ items, segments, productsPath, lab
               </label>
               <div className="flex gap-3 lg:contents">
                 <button
+                  ref={filterButtonRef}
                   type="button"
                   onClick={() => setFiltersOpen(true)}
                   aria-haspopup="dialog"
@@ -256,7 +364,7 @@ export default function ProductCatalogReact({ items, segments, productsPath, lab
                 </label>
               </div>
               <p className="shrink-0 text-body-base font-semibold lg:order-2" aria-live="polite">
-                {visible.length} {visible.length === 1 ? "producto" : "productos"}
+                {resultCount}
               </p>
             </div>
 
@@ -274,6 +382,12 @@ export default function ProductCatalogReact({ items, segments, productsPath, lab
           </div>
         </div>
       </div>
+
+      {mounted &&
+        createPortal(
+          <FilterSheet open={filtersOpen} onClose={closeFilters} onClear={clearFacets} groups={facetGroups} resultLabel={`Ver ${resultCount}`} />,
+          document.body
+        )}
     </>
   );
 }
