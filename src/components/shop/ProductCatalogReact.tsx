@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { FaMagnifyingGlass, FaChevronUp, FaCheck } from "react-icons/fa6";
+import { FaMagnifyingGlass, FaChevronUp, FaCheck, FaSliders } from "react-icons/fa6";
 import ProductTile from "../ui/ProductTile";
 import { slugify, type CatalogItem } from "../../lib/woo/catalog";
 import type { FacetOption } from "../../lib/content/shopSettings";
@@ -125,6 +125,7 @@ export default function ProductCatalogReact({ items, segments, productsPath, lab
   const [brands, setBrands] = useState<string[]>([]);
   const [term, setTerm] = useState("");
   const [sort, setSort] = useState<SortKey>("popular");
+  const [filtersOpen, setFiltersOpen] = useState(false);
 
   useEffect(() => {
     const initial = readInitialFilters(items, segments);
@@ -152,6 +153,7 @@ export default function ProductCatalogReact({ items, segments, productsPath, lab
     return filtered;
   }, [inSegment, categories, brands, sort]);
 
+  const activeFilterCount = categories.length + brands.length;
   const hasFilters = categories.length > 0 || brands.length > 0 || term.trim() !== "";
   const clearFilters = () => {
     setCategories([]);
@@ -210,8 +212,8 @@ export default function ProductCatalogReact({ items, segments, productsPath, lab
           </aside>
 
           <div>
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-              <label className="flex flex-1 items-center gap-3 rounded-md bg-surface px-4">
+            <div className="flex flex-col gap-3 lg:flex-row lg:items-center">
+              <label className="flex flex-1 items-center gap-3 rounded-md bg-surface px-4 lg:order-1">
                 <FaMagnifyingGlass className="h-3.5 w-3.5 text-content-subtle" aria-hidden />
                 <span className="sr-only">{labels.searchPlaceholder}</span>
                 <input
@@ -222,21 +224,40 @@ export default function ProductCatalogReact({ items, segments, productsPath, lab
                   className="h-12 w-full bg-transparent text-body-sm placeholder:text-content-subtle focus:outline-none"
                 />
               </label>
-              <p className="shrink-0 text-body-base font-semibold" aria-live="polite">
+              <div className="flex gap-3 lg:contents">
+                <button
+                  type="button"
+                  onClick={() => setFiltersOpen(true)}
+                  aria-haspopup="dialog"
+                  aria-expanded={filtersOpen}
+                  aria-controls="catalog-filters"
+                  className="flex h-12 flex-1 items-center justify-center gap-2 rounded-md border border-line-strong bg-surface-raised text-body-sm font-semibold lg:hidden"
+                >
+                  <FaSliders className="h-3.5 w-3.5" aria-hidden />
+                  Filtrar
+                  {activeFilterCount > 0 && (
+                    <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-brand-secondary-darkest px-1.5 text-caption-sm font-semibold text-white">
+                      <span className="sr-only">filtros activos: </span>
+                      {activeFilterCount}
+                    </span>
+                  )}
+                </button>
+                <label className="flex-1 lg:order-3 lg:flex-none lg:shrink-0">
+                  <span className="sr-only">Ordenar</span>
+                  <select
+                    value={sort}
+                    onChange={(event) => setSort(event.target.value as SortKey)}
+                    className="h-12 w-full rounded-md border border-line-strong bg-surface-raised px-4 text-body-sm focus:outline-none focus:ring-2 focus:ring-brand-primary lg:w-auto"
+                  >
+                    <option value="popular">Ordenar: Populares</option>
+                    <option value="az">Ordenar: Nombre A–Z</option>
+                    <option value="za">Ordenar: Nombre Z–A</option>
+                  </select>
+                </label>
+              </div>
+              <p className="shrink-0 text-body-base font-semibold lg:order-2" aria-live="polite">
                 {visible.length} {visible.length === 1 ? "producto" : "productos"}
               </p>
-              <label className="shrink-0">
-                <span className="sr-only">Ordenar</span>
-                <select
-                  value={sort}
-                  onChange={(event) => setSort(event.target.value as SortKey)}
-                  className="h-12 rounded-md border border-line-strong bg-surface-raised px-4 text-body-sm focus:outline-none focus:ring-2 focus:ring-brand-primary"
-                >
-                  <option value="popular">Ordenar: Populares</option>
-                  <option value="az">Ordenar: Nombre A–Z</option>
-                  <option value="za">Ordenar: Nombre Z–A</option>
-                </select>
-              </label>
             </div>
 
             {visible.length > 0 ? (
