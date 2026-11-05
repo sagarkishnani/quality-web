@@ -1,12 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 import { useTina, tinaField } from "tinacms/dist/react";
-import { FaBars, FaXmark, FaMagnifyingGlass, FaArrowRight, FaChevronDown } from "react-icons/fa6";
+import { FaXmark, FaMagnifyingGlass, FaArrowRight, FaChevronDown, FaWhatsapp } from "react-icons/fa6";
 import { tField, localizeHref } from "../../utils/i18n";
 import { mediaUrl } from "../../utils/mediaUrl";
 import type { Locale } from "../../i18n/config";
 import type { CatalogNav, NavLink } from "../../lib/content/catalogNav";
 
 type MenuKey = "services" | "products" | "search";
+type MobilePanel = "menu" | "search" | null;
+type MobileSection = "services" | "products" | null;
+
+const mobileSubLink = "py-2.5 text-body-md text-content-strong";
 
 interface Props {
   query: string;
@@ -46,19 +50,29 @@ function MenuColumn({ title, links, onNavigate }: { title?: string | null; links
   );
 }
 
-function SearchPanel({ products, placeholder, popularTitle, onNavigate }: {
+function whatsappHref(contact: any): string | null {
+  const number = (contact?.whatsappNumber || "").replace(/\D/g, "");
+  if (!number) return null;
+  const message = contact?.whatsappMessage ? `?text=${encodeURIComponent(contact.whatsappMessage)}` : "";
+  return `https://wa.me/${number}${message}`;
+}
+
+function SearchPanel({ products, placeholder, popularTitle, onNavigate, onClose, active = true }: {
   products: NavLink[];
   placeholder: string;
   popularTitle: string;
   onNavigate: () => void;
+  onClose?: () => void;
+  active?: boolean;
 }) {
   const [term, setTerm] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
+    if (!active) return;
     const id = window.setTimeout(() => inputRef.current?.focus(), 150);
     return () => window.clearTimeout(id);
-  }, []);
+  }, [active]);
 
   const normalized = term.trim().toLowerCase();
   const results = normalized ? products.filter((p) => p.label.toLowerCase().includes(normalized)) : products.slice(0, 6);
@@ -66,18 +80,25 @@ function SearchPanel({ products, placeholder, popularTitle, onNavigate }: {
 
   return (
     <div className="mx-auto max-w-3xl">
-      <label className="flex items-center gap-4 border-b border-line-strong pb-4">
-        <FaMagnifyingGlass className="h-5 w-5 text-content-subtle" aria-hidden />
-        <span className="sr-only">{placeholder}</span>
-        <input
-          ref={inputRef}
-          type="search"
-          value={term}
-          onChange={(event) => setTerm(event.target.value)}
-          placeholder={placeholder}
-          className="w-full bg-transparent text-subtitle-sm font-medium placeholder:text-content-subtle focus:outline-none"
-        />
-      </label>
+      <div className="flex items-center gap-4 border-b border-line-strong pb-4">
+        <label className="flex flex-1 items-center gap-4">
+          <FaMagnifyingGlass className="h-5 w-5 text-content-subtle" aria-hidden />
+          <span className="sr-only">{placeholder}</span>
+          <input
+            ref={inputRef}
+            type="search"
+            value={term}
+            onChange={(event) => setTerm(event.target.value)}
+            placeholder={placeholder}
+            className="w-full bg-transparent text-subtitle-sm font-medium placeholder:text-content-subtle focus:outline-none"
+          />
+        </label>
+        {onClose && (
+          <button type="button" onClick={onClose} aria-label="Cerrar búsqueda" className="-mr-2.5 flex h-11 w-11 shrink-0 items-center justify-center text-content-muted">
+            <FaXmark className="h-5 w-5" aria-hidden />
+          </button>
+        )}
+      </div>
       <p className="mt-6 text-caption-sm font-semibold uppercase tracking-[0.14em] text-content-subtle">{heading}</p>
       <ul className="mt-3 grid gap-1 sm:grid-cols-2">
         {results.slice(0, 10).map((product) => (
@@ -98,9 +119,12 @@ export default function HeaderReact({ query, variables, data: initialData, local
   const nav = data?.global?.nav;
   const servicesMenu = nav?.servicesMenu;
   const productsMenu = nav?.productsMenu;
+  const contact = data?.global?.contact;
+  const advisorHref = whatsappHref(contact);
 
   const [menu, setMenu] = useState<MenuKey | null>(null);
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobilePanel, setMobilePanel] = useState<MobilePanel>(null);
+  const [mobileSection, setMobileSection] = useState<MobileSection>(null);
   const [scrolled, setScrolled] = useState(false);
   const closeTimer = useRef<number | undefined>(undefined);
 
@@ -115,7 +139,7 @@ export default function HeaderReact({ query, variables, data: initialData, local
     const onKey = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setMenu(null);
-        setMobileOpen(false);
+        setMobilePanel(null);
       }
     };
     window.addEventListener("keydown", onKey);
@@ -123,11 +147,24 @@ export default function HeaderReact({ query, variables, data: initialData, local
   }, []);
 
   useEffect(() => {
-    document.body.style.overflow = mobileOpen ? "hidden" : "";
+    if (mobilePanel !== "menu") setMobileSection(null);
+  }, [mobilePanel]);
+
+  useEffect(() => {
+    const desktop = window.matchMedia("(min-width: 1024px)");
+    const closeOnDesktop = (event: MediaQueryListEvent) => {
+      if (event.matches) setMobilePanel(null);
+    };
+    desktop.addEventListener("change", closeOnDesktop);
+    return () => desktop.removeEventListener("change", closeOnDesktop);
+  }, []);
+
+  useEffect(() => {
+    document.body.style.overflow = mobilePanel ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
-  }, [mobileOpen]);
+  }, [mobilePanel]);
 
   const openMenu = (key: MenuKey) => {
     window.clearTimeout(closeTimer.current);
@@ -139,12 +176,12 @@ export default function HeaderReact({ query, variables, data: initialData, local
   };
   const close = () => {
     setMenu(null);
-    setMobileOpen(false);
+    setMobilePanel(null);
   };
 
   const links = (nav?.links || []).filter(Boolean);
   const panelOpen = menu !== null;
-  const solid = scrolled && !panelOpen;
+  const solid = scrolled && !panelOpen && !mobilePanel;
   const promoImage = mediaUrl(servicesMenu?.promoImage);
 
   return (
@@ -242,15 +279,35 @@ export default function HeaderReact({ query, variables, data: initialData, local
             )}
           </div>
 
-          <button
-            type="button"
-            onClick={() => setMobileOpen((open) => !open)}
-            className="ml-auto p-2 text-content lg:hidden"
-            aria-label={mobileOpen ? "Cerrar menú" : "Abrir menú"}
-            aria-expanded={mobileOpen}
-          >
-            {mobileOpen ? <FaXmark size={22} /> : <FaBars size={22} />}
-          </button>
+          <div className="ml-auto flex items-center lg:hidden">
+            <button
+              type="button"
+              onClick={() => setMobilePanel((panel) => (panel === "search" ? null : "search"))}
+              className="flex h-11 w-11 items-center justify-center text-content"
+              aria-label="Buscar productos"
+              aria-expanded={mobilePanel === "search"}
+              aria-controls="mobile-search"
+            >
+              <FaMagnifyingGlass className="h-5 w-5" aria-hidden />
+            </button>
+            <button
+              type="button"
+              onClick={() => setMobilePanel((panel) => (panel === "menu" ? null : "menu"))}
+              className="-mr-2.5 flex h-11 w-11 flex-col items-center justify-center gap-1.5"
+              aria-label={mobilePanel === "menu" ? "Cerrar menú" : "Abrir menú"}
+              aria-expanded={mobilePanel === "menu"}
+              aria-controls="mobile-menu"
+            >
+              <span
+                aria-hidden
+                className={`h-0.5 w-5 rounded-full bg-ink transition-transform duration-300 motion-reduce:transition-none ${mobilePanel === "menu" ? "translate-y-1 rotate-45" : ""}`}
+              />
+              <span
+                aria-hidden
+                className={`h-0.5 w-5 rounded-full bg-ink transition-transform duration-300 motion-reduce:transition-none ${mobilePanel === "menu" ? "-translate-y-1 -rotate-45" : ""}`}
+              />
+            </button>
+          </div>
         </div>
 
         <div
@@ -308,46 +365,109 @@ export default function HeaderReact({ query, variables, data: initialData, local
           </div>
         </div>
 
-        {mobileOpen && (
-          <div className="h-[calc(100dvh-4rem)] overflow-y-auto border-t border-line bg-surface lg:hidden">
-            <nav className="container-xl flex flex-col py-6" aria-label="Principal">
-              {links.map((link: any, index: number) => (
-                <div key={index} className="border-b border-line py-3">
+        <div
+          id="mobile-menu"
+          inert={mobilePanel !== "menu"}
+          data-lenis-prevent
+          className={`absolute inset-x-0 top-full h-[calc(100dvh-4rem)] overflow-y-auto border-t border-line bg-surface transition-[transform,opacity] duration-300 motion-reduce:transition-none lg:hidden ${
+            mobilePanel === "menu" ? "translate-x-0 opacity-100" : "pointer-events-none translate-x-full opacity-0"
+          }`}
+        >
+          <nav className="container-xl flex flex-col py-3" aria-label="Principal">
+            {links.map((link: any, index: number) => {
+              const section: MobileSection = link.menu === "services" || link.menu === "products" ? link.menu : null;
+              if (!section) {
+                return (
                   <a
+                    key={index}
                     href={localizeHref(link.url, locale, link.external)}
                     onClick={close}
-                    className="block py-1 text-subtitle-sm font-medium"
+                    className="border-b border-line py-4 text-subtitle-md font-semibold"
                   >
                     {tField(link, "label", locale)}
                   </a>
-                  {link.menu === "services" && (
-                    <div className="mt-2 grid gap-1 pl-1">
-                      {services.map((s) => (
-                        <a key={s.href} href={s.href} onClick={close} className="py-1 text-body-sm text-content-muted">
-                          {s.label}
-                        </a>
-                      ))}
-                    </div>
-                  )}
-                  {link.menu === "products" && (
-                    <div className="mt-2 grid gap-1 pl-1">
-                      {[...catalog.segments, ...catalog.categories].map((s) => (
-                        <a key={s.href} href={s.href} onClick={close} className="py-1 text-body-sm text-content-muted">
-                          {s.label}
-                        </a>
-                      ))}
+                );
+              }
+              const expanded = mobileSection === section;
+              const listId = `mobile-menu-${section}`;
+              return (
+                <div key={index} className="border-b border-line">
+                  <button
+                    type="button"
+                    onClick={() => setMobileSection(expanded ? null : section)}
+                    aria-expanded={expanded}
+                    aria-controls={listId}
+                    className="flex w-full items-center justify-between py-4 text-left text-subtitle-md font-semibold"
+                  >
+                    {tField(link, "label", locale)}
+                    <FaChevronDown className={`h-4 w-4 transition-transform duration-300 motion-reduce:transition-none ${expanded ? "rotate-180" : ""}`} aria-hidden />
+                  </button>
+                  {expanded && (
+                    <div id={listId} className="flex flex-col pb-4">
+                      <a href={localizeHref(link.url, locale)} onClick={close} className={`${mobileSubLink} font-semibold text-brand-secondary-dark`}>
+                        {section === "services" ? "Ver todos los servicios" : "Ver todos los productos"}
+                      </a>
+                      {section === "services" &&
+                        services.map((item) => (
+                          <a key={item.href} href={item.href} onClick={close} className={mobileSubLink}>
+                            {item.label}
+                          </a>
+                        ))}
+                      {section === "products" && (
+                        <>
+                          {catalog.segments.map((item) => (
+                            <a key={item.href} href={item.href} onClick={close} className={mobileSubLink}>
+                              {item.label}
+                            </a>
+                          ))}
+                          {productsMenu?.categoriesTitle && (
+                            <p className="mb-1 mt-3 text-caption-md text-content-subtle">{productsMenu.categoriesTitle}</p>
+                          )}
+                          {catalog.categories.map((item) => (
+                            <a key={item.href} href={item.href} onClick={close} className={mobileSubLink}>
+                              {item.label}
+                            </a>
+                          ))}
+                        </>
+                      )}
                     </div>
                   )}
                 </div>
-              ))}
-              {nav?.cta?.label && (
-                <a href={localizeHref(nav.cta.url, locale)} onClick={close} className="btn-accent mt-6">
-                  {tField(nav.cta, "label", locale)}
-                </a>
-              )}
-            </nav>
+              );
+            })}
+            {nav?.cta?.label && (
+              <a href={localizeHref(nav.cta.url, locale)} onClick={close} className="btn-accent btn-xl mt-8">
+                {tField(nav.cta, "label", locale)}
+              </a>
+            )}
+            {advisorHref && (
+              <a href={advisorHref} target="_blank" rel="noopener noreferrer" onClick={close} className="btn-secondary btn-xl mt-3 gap-3">
+                <FaWhatsapp className="h-5 w-5 text-brand-secondary" aria-hidden />
+                {contact?.whatsappLabel || "Comunícate con un asesor"}
+              </a>
+            )}
+          </nav>
+        </div>
+
+        <div
+          id="mobile-search"
+          inert={mobilePanel !== "search"}
+          data-lenis-prevent
+          className={`absolute inset-x-0 top-full h-[calc(100dvh-4rem)] overflow-y-auto border-t border-line bg-surface transition-[transform,opacity] duration-300 motion-reduce:transition-none lg:hidden ${
+            mobilePanel === "search" ? "translate-y-0 opacity-100" : "pointer-events-none -translate-y-4 opacity-0"
+          }`}
+        >
+          <div className="container-xl py-6">
+            <SearchPanel
+              products={catalog.products}
+              placeholder={nav?.search?.placeholder || "Buscar productos"}
+              popularTitle={nav?.search?.popularTitle || "Productos populares"}
+              onNavigate={close}
+              onClose={() => setMobilePanel(null)}
+              active={mobilePanel === "search"}
+            />
           </div>
-        )}
+        </div>
       </header>
     </>
   );
