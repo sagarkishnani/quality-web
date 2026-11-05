@@ -54,11 +54,13 @@ export function HomeProducts(props: TinaProps & { products: CatalogItem[]; produ
 }
 
 const BENTO_LAYOUT = [
-  "md:row-span-2 min-h-[340px] md:min-h-0",
-  "md:col-span-2 min-h-[260px]",
-  "min-h-[260px]",
-  "min-h-[260px]",
+  "h-[380px] md:h-auto md:row-span-2",
+  "h-[380px] md:h-auto md:col-span-2 md:min-h-[260px]",
+  "h-[380px] md:h-auto md:min-h-[260px]",
+  "h-[380px] md:h-auto md:min-h-[260px]",
 ];
+
+const twoDigits = (value: number) => String(value).padStart(2, "0");
 
 export function HomeServices(props: TinaProps & { services: ServiceSummary[] }) {
   const section = useHome(props)?.services;
@@ -74,7 +76,7 @@ export function HomeServices(props: TinaProps & { services: ServiceSummary[] }) 
           description={section.description}
           tina={{ eyebrow: tinaField(section, "eyebrow"), title: tinaField(section, "title"), description: tinaField(section, "description") }}
         />
-        <div className="mt-12 grid gap-5 md:auto-rows-[300px] md:grid-cols-[1.2fr_1fr_1fr]">
+        <Carousel itemWidth="78" label={section.title || "Servicios"} gridClassName="md:auto-rows-[300px] md:grid-cols-[1.2fr_1fr_1fr] md:gap-5" className="mt-12">
           {featured.map((service, index) => (
             <ServiceCard
               key={service.href}
@@ -82,9 +84,10 @@ export function HomeServices(props: TinaProps & { services: ServiceSummary[] }) 
               className={BENTO_LAYOUT[index]}
               size={index === 0 ? "lg" : index === 1 ? "md" : "sm"}
               showSummary={index < 2}
+              counter={`${twoDigits(index + 1)} / ${twoDigits(featured.length)}`}
             />
           ))}
-        </div>
+        </Carousel>
         {section.linkLabel && section.linkUrl && (
           <div className="mt-10 text-center">
             <a href={section.linkUrl} className="link-arrow" data-tina-field={tinaField(section, "linkLabel")}>
