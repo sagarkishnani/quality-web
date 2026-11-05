@@ -158,8 +158,8 @@ function FilterSheet({ open, onClose, onClear, groups, resultLabel }: FilterShee
         <div className="overflow-y-auto px-6">
           {groups.map((group) =>
             group.options.length ? (
-              <fieldset key={group.title} className="border-b border-line-soft py-4">
-                <legend className="text-body-md font-semibold">{group.title}</legend>
+              <fieldset key={group.title} className="border-b border-line-soft pb-4">
+                <legend className="pt-4 text-body-md font-semibold">{group.title}</legend>
                 <div className="mt-3 flex flex-wrap gap-2">
                   {group.options.map((option) => (
                     <Chip
