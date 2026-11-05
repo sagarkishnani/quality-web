@@ -1,6 +1,6 @@
 # SPEC 10 — Catálogo mobile
 
-> **Estado:** Aprobado
+> **Estado:** Implementado
 > **Depende de:** SPEC 07 (y SPEC 09 por "Te puede interesar", en el PR #10)
 > **Fecha:** 2026-11-05
 > **Objetivo:** Adaptar el catálogo y la ficha de producto a la referencia mobile con chips de segmento, hoja de filtros, grilla de 2 columnas y galería con gesto, sin cambiar desktop.
@@ -102,44 +102,44 @@ Reglas:
 
 **Catálogo a 375 y 390 px**
 
-- [ ] Los segmentos se ven como chips desplazables; el seleccionado se distingue sin depender solo del color y tiene `aria-pressed="true"`.
-- [ ] La búsqueda va a todo el ancho. Debajo van "Filtrar" y el orden en una fila, y el conteo debajo de ambos.
-- [ ] "Filtrar" abre la hoja desde abajo en 300 ms, por encima del header, y bloquea el scroll de la página.
-- [ ] Con la hoja cerrada, ningún control de la hoja recibe foco con Tab.
-- [ ] La hoja muestra Categoría y Marca como chips con su conteo; tocar un chip filtra el listado al instante.
-- [ ] "Ver N productos" muestra el número de productos visibles y cierra la hoja.
-- [ ] "Limpiar" quita los filtros de categoría y marca.
-- [ ] Con filtros activos, "Filtrar" muestra cuántos hay.
-- [ ] Escape, tocar el fondo o pasar a 1024 px cierran la hoja.
-- [ ] El listado va en 2 columnas, con las tarjetas compactas, en `/productos` y `/productos/categoria/<slug>`.
-- [ ] Ninguna pantalla de catálogo tiene scroll horizontal a 375 px.
+- [x] Los segmentos se ven como chips desplazables; el seleccionado se distingue sin depender solo del color y tiene `aria-pressed="true"`.
+- [x] La búsqueda va a todo el ancho. Debajo van "Filtrar" y el orden en una fila, y el conteo debajo de ambos.
+- [x] "Filtrar" abre la hoja desde abajo en 300 ms, por encima del header, y bloquea el scroll de la página.
+- [x] Con la hoja cerrada, ningún control de la hoja recibe foco con Tab.
+- [x] La hoja muestra Categoría y Marca como chips con su conteo; tocar un chip filtra el listado al instante.
+- [x] "Ver N productos" muestra el número de productos visibles y cierra la hoja.
+- [x] "Limpiar" quita los filtros de categoría y marca.
+- [x] Con filtros activos, "Filtrar" muestra cuántos hay.
+- [x] Escape, tocar el fondo o pasar a 1024 px cierran la hoja.
+- [x] El listado va en 2 columnas, con las tarjetas compactas, en `/productos` y `/productos/categoria/<slug>`.
+- [x] Ninguna pantalla de catálogo tiene scroll horizontal a 375 px.
 
 **Ficha a 390 px**
 
-- [ ] Arriba se ve "‹ Productos", que lleva a `/productos`, y no la miga completa.
-- [ ] La galería muestra puntos y no las miniaturas ni "1 / N".
-- [ ] Un gesto horizontal de más de 40 px cambia de imagen, y el punto activo cambia con ella.
-- [ ] Cada especificación muestra la etiqueta arriba y el valor debajo.
+- [x] Arriba se ve "‹ Productos", que lleva a `/productos`, y no la miga completa.
+- [x] La galería muestra puntos y no las miniaturas ni "1 / N".
+- [x] Un gesto horizontal de más de 40 px cambia de imagen, y el punto activo cambia con ella.
+- [x] Cada especificación muestra la etiqueta arriba y el valor debajo.
 
 **Movimiento reducido**
 
-- [ ] Con `prefers-reduced-motion`, la hoja aparece sin transición.
+- [x] Con `prefers-reduced-motion`, la hoja aparece sin transición.
 
 **Desktop (1024 y 1440 px)**
 
-- [ ] El catálogo se ve como en `staging`: pestañas, barra lateral con casillas y grilla.
-- [ ] La ficha se ve como en `staging`: migas, miniaturas, contador y especificaciones en 2 columnas.
+- [x] El catálogo se ve como en `staging`: pestañas, barra lateral con casillas y grilla.
+- [x] La ficha se ve como en `staging`: migas, miniaturas, contador y especificaciones en 2 columnas.
 
 **General**
 
-- [ ] El schema de Tina no cambia.
-- [ ] La consola no muestra errores.
+- [x] El schema de Tina no cambia.
+- [x] La consola no muestra errores.
 
 **Cierre**
 
-- [ ] `npm run typecheck` termina sin errores.
-- [ ] `npm run build:local` termina sin errores.
-- [ ] `npm run check:standard` da 0 errores con un build sin catálogo de muestra.
+- [x] `npm run typecheck` termina sin errores.
+- [x] `npm run build:local` termina sin errores.
+- [x] `npm run check:standard` da 0 errores con un build sin catálogo de muestra.
 
 ## Decisiones
 
@@ -152,6 +152,7 @@ Reglas:
 - **Sí:** los filtros se aplican al tocar el chip, como en la referencia. "Ver N productos" solo cierra la hoja; así no hay dos estados de filtro que sincronizar.
 - **Sí:** la hoja dura 300 ms y no 700 ms, como en la spec 08. El estándar pide de 150 a 300 ms.
 - **Sí:** el gesto de la galería se hace con eventos táctiles, sin dependencias nuevas.
+- **Sí:** las opciones de orden pasan a "Populares", "Nombre A–Z" y "Nombre Z–A" en todos los anchos, como la referencia. Con el prefijo "Ordenar:", el texto se cortaba en el selector de 168 px; "Ordenar" sigue como etiqueta para lectores de pantalla. Es el único cambio visible en desktop. Decidido por Esteban durante la implementación, el 2026-11-05.
 - **No:** usar `scroll-snap` en la galería. Hoy cambia la imagen con un fundido; mantenerlo deja igual a desktop y solo suma el gesto.
 
 ## Riesgos
@@ -173,3 +174,37 @@ Reglas:
 - Cambios de contenido o de schema en Tina.
 
 Si alguno de estos entra, va en su propia spec.
+
+## Notas de implementación
+
+- `Chip` es un `button` con `aria-pressed`. El seleccionado cambia de fondo y de peso (600 frente a 500), así que no depende solo del color. Mide 44 px de alto.
+- La fila de búsqueda usa `lg:contents` en el contenedor de "Filtrar | orden" y `lg:order-*`, para que desde `lg` vuelva al orden de `staging` (búsqueda, conteo, orden) sin duplicar el conteo con `aria-live`.
+- `FilterSheet` es un `dialog` con `aria-modal`. Al abrirse, el foco va al título "Filtros"; al cerrarse, vuelve a "Filtrar". Guarda y restaura el `overflow` anterior del `body`.
+- El indicador de filtros usa `brand-secondary-darkest` con texto blanco, y no el verde claro de la referencia, que da 2,06:1.
+- La barra lateral de filtros pasa a `hidden lg:block`. Entre 768 y 1023 px también se usa la hoja.
+- `ProductTile` arma sus clases con dos mapas (`regular` y `compactBelowMd`), para que Tailwind genere todas las variantes.
+- La galería tiene `touch-pan-y`: el navegador sigue haciendo el scroll vertical y el gesto horizontal queda para el componente. El contador `aria-live` se oculta por debajo de `md`; los puntos marcan la imagen activa con `aria-current`.
+- La sección de estilos de `CLAUDE.md` suma el patrón de paneles mobile.
+
+## QA realizada
+
+- **Navegador:** Chromium con `npm run dev` y catálogo de muestra, a 375, 390, 700, 1024, 1100 y 1440 px.
+- **Chips:** 4 segmentos de 44 px; "Todos" con `aria-pressed="true"`, y el seleccionado cambia de fondo y de peso.
+- **Fila:** búsqueda de 350 px a 390 px; "Filtrar" y orden en la misma fila, y el conteo debajo. "Populares" y "Nombre A–Z" caben en el selector a 375 y 390 px.
+- **Hoja:**
+  - Cerrada con `inert`; 40 pulsaciones de Tab no entran en ella.
+  - Se abre desde abajo en 300 ms, por encima del header, con el scroll bloqueado y el foco dentro.
+  - "Escáner (1)" deja el listado en 1 producto al instante; "Ver 1 producto" y el indicador "1" coinciden.
+  - "Limpiar" vuelve a 7 productos.
+  - "Ver N", Escape, el fondo y pasar a 1100 px la cierran y liberan el scroll. El foco vuelve a "Filtrar".
+  - Abrir la hoja, cerrarla y abrir el menú mobile bloquea y libera el scroll bien.
+- **Movimiento reducido:** `transition-property: none` en la hoja.
+- **Listado:** 2 columnas con 14 px de padding en `/productos` y en `/productos/categoria/impresora-monocromatica`. A 700 px, la tarjeta mide 318 × 324 con 14 px de padding y se ve bien.
+- **Ficha:** "‹ Productos" lleva a `/productos` y la miga está oculta. La galería muestra 6 puntos, sin miniaturas ni contador. Con toques reales (CDP), −90 px pasa a la imagen siguiente, +90 px a la anterior y −20 px no cambia. Las especificaciones muestran la etiqueta arriba y el valor debajo.
+- **Scroll horizontal:** ninguno a 375 ni 390 px en catálogo, categoría y ficha.
+- **Desktop:** a 1024 y 1440 px, la posición y el tamaño de las pestañas, la barra lateral, la fila de búsqueda, las tarjetas, la miga, la galería, las miniaturas y las especificaciones coinciden con `staging`, antes del cambio de las opciones de orden.
+- **Consola:** sin errores con toques reales. Los eventos táctiles sintéticos (`dispatchEvent`) hacen fallar a Lenis, porque no traen `targetTouches`; no pasa con toques del navegador.
+- **`npm run typecheck`:** sin errores.
+- **`npm run build:local`:** sin errores, 14 páginas sin catálogo de muestra.
+- **`npm run check:standard`:** 0 errores y 1 aviso (14 páginas sin `og:image`). La página más pesada queda en 148 KB de JavaScript.
+- **Sin probar:** Safari iOS y Chrome Android reales, lector de pantalla y `npm run build` con TinaCloud.
