@@ -165,7 +165,7 @@ export function HomeTestimonials(props: TinaProps) {
           title={testimonials.title}
           tina={{ eyebrow: tinaField(testimonials, "eyebrow"), title: tinaField(testimonials, "title") }}
         />
-        <div className="mt-10 grid gap-6 md:grid-cols-3">
+        <Carousel itemWidth="84" label={testimonials.title || "Testimonios"} gridClassName="md:grid-cols-3 md:gap-6" className="mt-10" focusable>
           {items.map((item: any, index: number) => (
             <figure key={index} className="card flex flex-col">
               <div className="flex gap-1 text-[#F2B53B]" aria-label="5 de 5 estrellas">
@@ -191,7 +191,7 @@ export function HomeTestimonials(props: TinaProps) {
               </figcaption>
             </figure>
           ))}
-        </div>
+        </Carousel>
       </div>
     </section>
   );
