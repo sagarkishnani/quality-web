@@ -33,7 +33,7 @@ export default function PartnersReact({ query, variables, data: initialData }: P
               alt={index < logos.length ? logo.name || "" : ""}
               aria-hidden={index >= logos.length}
               loading="lazy"
-              className="h-10 w-auto shrink-0 object-contain mix-blend-multiply md:h-12"
+              className="h-10 w-28 shrink-0 object-contain mix-blend-multiply md:h-12 md:w-36"
             />
           ))}
         </div>
