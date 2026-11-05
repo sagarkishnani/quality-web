@@ -74,6 +74,27 @@ function FacetGroup({ title, options, selected, onToggle }: FacetGroupProps) {
   );
 }
 
+interface ChipProps {
+  label: string;
+  pressed: boolean;
+  onClick: () => void;
+}
+
+function Chip({ label, pressed, onClick }: ChipProps) {
+  return (
+    <button
+      type="button"
+      aria-pressed={pressed}
+      onClick={onClick}
+      className={`h-11 shrink-0 whitespace-nowrap rounded-full border px-4 text-body-sm transition-colors duration-300 motion-reduce:transition-none ${
+        pressed ? "border-ink bg-ink font-semibold text-white" : "border-line-strong bg-surface-raised font-medium text-content-strong"
+      }`}
+    >
+      {label}
+    </button>
+  );
+}
+
 function countBy(items: CatalogItem[], key: "category" | "brand") {
   const counts = new Map<string, number>();
   for (const item of items) {
@@ -149,7 +170,12 @@ export default function ProductCatalogReact({ items, segments, productsPath, lab
     <>
       {segments.length > 0 && (
         <div className="container-xl">
-          <div role="tablist" aria-label="Segmentos" className="-mb-px flex gap-8 overflow-x-auto pb-16 pt-8">
+          <div role="group" aria-label="Segmentos" className="-mx-5 flex gap-2 overflow-x-auto px-5 pb-16 pt-6 [scrollbar-width:none] md:-mx-8 md:px-8 lg:hidden [&::-webkit-scrollbar]:hidden">
+            {tabs.map((tab) => (
+              <Chip key={tab.slug} label={tab.label} pressed={segment === tab.slug} onClick={() => pickSegment(tab.slug)} />
+            ))}
+          </div>
+          <div role="tablist" aria-label="Segmentos" className="-mb-px hidden gap-8 overflow-x-auto pb-16 pt-8 lg:flex">
             {tabs.map((tab) => {
               const selected = segment === tab.slug;
               return (
