@@ -116,6 +116,7 @@ try {
       import { startScrollLine } from "../utils/scrollLine";
       import { startReducedMotionVideos } from "../utils/reducedMotionVideo";
       import { startLazyVideos } from "../utils/lazyVideo";
+      import { startCountUp } from "../utils/countUp";
 
       let lenis: any = null;
 
@@ -155,6 +156,7 @@ try {
       startScrollLine();
       startReducedMotionVideos();
       startLazyVideos();
+      startCountUp();
       document.addEventListener("astro:after-swap", () => {
         document.documentElement.classList.add("js");
         startLenis();
@@ -163,6 +165,7 @@ try {
         startScrollLine();
         startReducedMotionVideos();
         startLazyVideos();
+        startCountUp();
       });
     </script>
   </body>

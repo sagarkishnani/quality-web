@@ -18,6 +18,7 @@ export default function StatGrid({ stats }: { stats: (Stat | null)[] }) {
           </dt>
           <dd
             className="text-heading-lg text-accent"
+            data-count-up={stat.value ?? undefined}
             data-tina-field={tinaField(stat as any, "value")}
           >
             {stat.value}
