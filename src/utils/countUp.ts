@@ -4,7 +4,7 @@ const FIGURE = /^(\D*)(\d+)(.*)$/s;
 
 let observer: IntersectionObserver | null = null;
 
-const easeOutCubic = (progress: number) => 1 - Math.pow(1 - progress, 3);
+const easeOutQuad = (progress: number) => 1 - Math.pow(1 - progress, 2);
 
 function animate(element: HTMLElement) {
   const original = element.dataset.countUp ?? "";
@@ -16,7 +16,7 @@ function animate(element: HTMLElement) {
 
   const step = (now: number) => {
     const progress = Math.min(1, (now - startedAt) / DURATION_MS);
-    element.textContent = progress < 1 ? `${prefix}${Math.round(target * easeOutCubic(progress))}${suffix}` : original;
+    element.textContent = progress < 1 ? `${prefix}${Math.round(target * easeOutQuad(progress))}${suffix}` : original;
     if (progress < 1) requestAnimationFrame(step);
   };
 
