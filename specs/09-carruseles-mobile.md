@@ -1,6 +1,6 @@
 # SPEC 09 — Carruseles mobile, cifras y aliados
 
-> **Estado:** Aprobado
+> **Estado:** Implementado
 > **Depende de:** SPEC 07
 > **Fecha:** 2026-11-04
 > **Objetivo:** Convertir en carruseles las listas mobile de productos, servicios, testimonios, "Te puede interesar" y "Otros servicios", y ajustar las cifras y los aliados de Inicio y Nosotros.
@@ -84,38 +84,38 @@ Reglas:
 
 **Carruseles (375 y 390 px)**
 
-- [ ] Productos del inicio, servicios del inicio, testimonios, "Te puede interesar" y "Otros servicios" se desplazan en horizontal y cada tarjeta se detiene alineada a 20 px del borde.
-- [ ] Las tarjetas miden 68 % (productos), 78 % (servicios), 84 % (testimonios), 62 % ("Te puede interesar") y 72 % ("Otros servicios") del ancho del carrusel.
-- [ ] Los servicios del inicio son los 4 de `showOnHome`, miden 380 px de alto y muestran "01 / 04" a "04 / 04" y el nombre, sin resumen.
-- [ ] Las tarjetas de producto mantienen "Ver cotización".
-- [ ] Ningún carrusel muestra barra de scroll, y la página no tiene scroll horizontal.
-- [ ] El carrusel de testimonios recibe foco con Tab y se desplaza con las flechas del teclado.
+- [x] Productos del inicio, servicios del inicio, testimonios, "Te puede interesar" y "Otros servicios" se desplazan en horizontal y cada tarjeta se detiene alineada a 20 px del borde.
+- [x] Las tarjetas miden 68 % (productos), 78 % (servicios), 84 % (testimonios), 62 % ("Te puede interesar") y 72 % ("Otros servicios") del ancho del carrusel.
+- [x] Los servicios del inicio son los 4 de `showOnHome`, miden 380 px de alto y muestran "01 / 04" a "04 / 04" y el nombre, sin resumen.
+- [x] Las tarjetas de producto mantienen "Ver cotización".
+- [x] Ningún carrusel muestra barra de scroll, y la página no tiene scroll horizontal.
+- [x] El carrusel de testimonios recibe foco con Tab y se desplaza con las flechas del teclado.
 
 **Desde `md` (768 y 1440 px)**
 
-- [ ] Las cinco listas se ven como en `staging`: las mismas grillas y el mismo bento.
+- [x] Las cinco listas se ven como en `staging`: las mismas grillas y el mismo bento.
 
 **Contador**
 
-- [ ] En Inicio y Nosotros, las cifras cuentan de 0 a su valor en 1,2 s al entrar en pantalla, conservan el "+" y no se repiten al volver a pasar.
-- [ ] Con `prefers-reduced-motion`, las cifras aparecen con su valor final.
-- [ ] El HTML del build lleva la cifra final en cada `<dd>`.
+- [x] En Inicio y Nosotros, las cifras cuentan de 0 a su valor en 1,2 s al entrar en pantalla, conservan el "+" y no se repiten al volver a pasar.
+- [x] Con `prefers-reduced-motion`, las cifras aparecen con su valor final.
+- [x] El HTML del build lleva la cifra final en cada `<dd>`.
 
 **Aliados**
 
-- [ ] A 390 y 1440 px, los 4 logos ocupan la misma caja y se ven del mismo tamaño a simple vista.
-- [ ] "Nuestros proveedores y aliados" es un `<h2>` centrado del mismo tamaño que "Algunos de los servicios que ofrecemos", en Inicio y Nosotros.
+- [x] A 390 y 1440 px, los 4 logos ocupan la misma caja y se ven del mismo tamaño a simple vista.
+- [x] "Nuestros proveedores y aliados" es un `<h2>` centrado del mismo tamaño que "Algunos de los servicios que ofrecemos", en Inicio y Nosotros.
 
 **General**
 
-- [ ] El schema de Tina no cambia.
-- [ ] La consola no muestra errores.
+- [x] El schema de Tina no cambia.
+- [x] La consola no muestra errores.
 
 **Cierre**
 
-- [ ] `npm run typecheck` termina sin errores.
-- [ ] `npm run build:local` termina sin errores.
-- [ ] `npm run check:standard` da 0 errores con un build sin catálogo de muestra.
+- [x] `npm run typecheck` termina sin errores.
+- [x] `npm run build:local` termina sin errores.
+- [x] `npm run check:standard` da 0 errores con un build sin catálogo de muestra.
 
 ## Decisiones
 
@@ -149,3 +149,29 @@ Reglas:
 - Cambios de contenido o de schema en Tina.
 
 Si alguno de estos entra, va en su propia spec.
+
+## Notas de implementación
+
+- `Carousel` no envuelve las tarjetas: aplica el ancho y el `snap` a sus hijos directos (`[&>*]:`). Así, desde `md`, cada tarjeta sigue siendo un elemento de la grilla y el bento conserva `row-span` y `col-span`.
+- El bento y el carrusel de servicios son la misma lista; no hay tarjetas duplicadas en el DOM.
+- `ServiceCard` suma la prop `counter`. Con ella, por debajo de `md` muestra el número, oculta el resumen y usa un título y un padding uniformes. Desde `md` tiene los tamaños de antes.
+- `startCountUp` usa un `IntersectionObserver` con umbral de 0,6 y deja de observar cada cifra al animarla. Termina escribiendo el texto original, no el número calculado.
+- Logos recortados con `sharp` (`trim`): Xerox de 254 × 121 a 254 × 52, Epson de 292 × 268 a 266 × 60 y Lenovo de 291 × 250 a 261 × 75. HP no tenía margen. Caja: 112 × 40 px y 144 × 48 desde `md`.
+- El título de aliados lleva `container-xl` para que no toque los bordes en mobile.
+- En pantallas táctiles, "Ver cotización" de `ProductTile` aparece con hover o foco, como desde la spec 02. Esta spec no lo cambia.
+
+## QA realizada
+
+- **Navegador:** Chromium con `npm run dev` y catálogo de muestra.
+- **Carruseles a 390 px:** productos 68 %, servicios 78 %, testimonios 84 %, "Te puede interesar" 62 % y "Otros servicios" 72 %, con la primera tarjeta a 20 px del borde, `scroll-snap` en x y sin barra. Tras desplazar, una tarjeta se detiene a 20 px.
+- **Servicios:** 4 tarjetas de 380 px, de "01 / 04" a "04 / 04" y sin resumen.
+- **Testimonios:** `tabindex="0"`; con la flecha derecha avanzan 306 px.
+- **Scroll horizontal:** ninguno a 375 ni 390 px en Inicio, Nosotros, ficha y detalle de servicio.
+- **Desde `md`:** a 768 y 1440 px, el ancho y el alto de cada tarjeta, la separación y los tamaños de título de las cinco listas coinciden con `staging`.
+- **Contador:** a los 250 ms marca "+449" y a los 1,2 s, "+1000"; no se repite al volver. Con `prefers-reduced-motion` muestra la cifra final. En Nosotros también anima. El HTML del build trae "+1000", "+2500", "+14" y "+3000".
+- **Aliados:** los 4 logos miden 144 × 48 px a 768 y 1440 px. El título es un `<h2>` centrado del mismo tamaño que "Algunos de los servicios que ofrecemos" (26, 31 y 36 px a 390, 768 y 1440 px), en Inicio y Nosotros.
+- **Consola:** sin errores.
+- **`npm run typecheck`:** sin errores.
+- **`npm run build:local`:** sin errores, 14 páginas sin catálogo de muestra.
+- **`npm run check:standard`:** 0 errores y 2 avisos (14 páginas sin `og:image`; 150 KB de JavaScript en `/contacto`, que no se toca en esta spec).
+- **Sin probar:** Safari iOS y Chrome Android reales, lector de pantalla y `npm run build` con TinaCloud.
