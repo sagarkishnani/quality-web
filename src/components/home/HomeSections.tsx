@@ -6,6 +6,7 @@ import StatGrid from "../ui/StatGrid";
 import ProductTile from "../ui/ProductTile";
 import ServiceCard, { type ServiceSummary } from "../ui/ServiceCard";
 import ImageBanner from "../ui/ImageBanner";
+import Carousel from "../ui/Carousel";
 import { mediaUrl } from "../../utils/mediaUrl";
 import type { CatalogItem } from "../../lib/woo/catalog";
 
@@ -42,11 +43,11 @@ export function HomeProducts(props: TinaProps & { products: CatalogItem[]; produ
           linkUrl={section.linkUrl}
           tina={{ eyebrow: tinaField(section, "eyebrow"), title: tinaField(section, "title"), link: tinaField(section, "linkLabel") }}
         />
-        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <Carousel itemWidth="68" label={section.title || "Productos"} gridClassName="md:grid-cols-2 md:gap-6 lg:grid-cols-4" className="mt-10">
           {props.products.map((item) => (
             <ProductTile key={item.id} item={item} href={`${props.productsPath}/${item.slug}`} buttonLabel={props.buttonLabel} quoteMessage={props.quoteMessage} />
           ))}
-        </div>
+        </Carousel>
       </div>
     </section>
   );
