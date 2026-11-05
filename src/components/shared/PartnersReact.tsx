@@ -20,9 +20,9 @@ export default function PartnersReact({ query, variables, data: initialData }: P
   return (
     <section className="py-16 md:py-20" aria-label={partners?.title || "Aliados"}>
       {partners?.title && (
-        <p className="text-center text-body-sm font-semibold text-content-muted" data-tina-field={tinaField(partners, "title")}>
+        <h2 className="container-xl text-center text-heading-sm" data-tina-field={tinaField(partners, "title")}>
           {partners.title}
-        </p>
+        </h2>
       )}
       <div className="relative mt-10 overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_12%,#000_88%,transparent)]">
         <div className="flex w-max animate-marquee items-center gap-20 hover:[animation-play-state:paused] md:gap-28">
