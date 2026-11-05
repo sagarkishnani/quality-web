@@ -369,9 +369,9 @@ export default function ProductCatalogReact({ items, segments, productsPath, lab
             </div>
 
             {visible.length > 0 ? (
-              <div className="mt-8 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+              <div className="mt-4 grid grid-cols-2 gap-3 sm:gap-6 lg:mt-8 xl:grid-cols-3">
                 {visible.map((item) => (
-                  <ProductTile key={item.id} item={item} href={`${productsPath}/${item.slug}`} buttonLabel={labels.cardButton} quoteMessage={quoteMessage} tone="sunken" />
+                  <ProductTile key={item.id} item={item} href={`${productsPath}/${item.slug}`} buttonLabel={labels.cardButton} quoteMessage={quoteMessage} tone="sunken" compact />
                 ))}
               </div>
             ) : (
