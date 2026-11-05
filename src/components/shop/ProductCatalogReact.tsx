@@ -159,8 +159,8 @@ function FilterSheet({ open, onClose, onClear, groups, resultLabel }: FilterShee
           {groups.map((group) =>
             group.options.length ? (
               <fieldset key={group.title} className="border-b border-line-soft py-4">
-                <legend className="mb-3.5 text-body-md font-semibold">{group.title}</legend>
-                <div className="flex flex-wrap gap-2">
+                <legend className="text-body-md font-semibold">{group.title}</legend>
+                <div className="mt-3 flex flex-wrap gap-2">
                   {group.options.map((option) => (
                     <Chip
                       key={option.label}
@@ -357,9 +357,9 @@ export default function ProductCatalogReact({ items, segments, productsPath, lab
                     onChange={(event) => setSort(event.target.value as SortKey)}
                     className="h-12 w-full rounded-md border border-line-strong bg-surface-raised px-4 text-body-sm focus:outline-none focus:ring-2 focus:ring-brand-primary lg:w-auto"
                   >
-                    <option value="popular">Ordenar: Populares</option>
-                    <option value="az">Ordenar: Nombre A–Z</option>
-                    <option value="za">Ordenar: Nombre Z–A</option>
+                    <option value="popular">Populares</option>
+                    <option value="az">Nombre A–Z</option>
+                    <option value="za">Nombre Z–A</option>
                   </select>
                 </label>
               </div>
