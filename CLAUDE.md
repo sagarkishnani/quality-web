@@ -273,6 +273,12 @@ cifra en 1,2 s al entrar en pantalla, una vez. El HTML trae la cifra final; con
 **Logos de aliados**: van en una caja fija con `object-contain`. Un logo nuevo se sube recortado, sin
 margen vacío alrededor, o se verá más chico que los demás.
 
+**Paneles mobile**: el menú, la búsqueda y la hoja de filtros del catálogo quedan siempre montados,
+con `inert` mientras están cerrados, `data-lenis-prevent`, bloqueo de scroll del `body` y 300 ms de
+transición (sin ella con `prefers-reduced-motion`). Se cierran con Escape y al pasar a `lg`. Un panel
+que vive dentro de `.sheet` se monta con `createPortal` en `body` después de hidratar: `.sheet` crea
+su propio contexto de apilamiento y lo dejaría debajo del header.
+
 **Islas**: las secciones sin interacción usan `client:tina` (sin JavaScript en
 producción). Solo hidratan de verdad el header, el slider del inicio, el
 catálogo con filtros, la ficha de producto y el explorador de servicios.
