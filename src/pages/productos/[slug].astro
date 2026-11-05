@@ -77,9 +77,12 @@ const productJsonLd = {
 
   <section class="bg-surface-raised pb-16 pt-8 md:pb-20">
     <div class="container-xl">
-      <Breadcrumbs items={[{ label: "Inicio", href: home }, { label: "Productos", href: root }, { label: product.name }]} />
+      <a href={root} class="inline-flex min-h-11 items-center text-body-sm text-content-strong hover:text-accent md:hidden">‹ Productos</a>
+      <div class="hidden md:block">
+        <Breadcrumbs items={[{ label: "Inicio", href: home }, { label: "Productos", href: root }, { label: product.name }]} />
+      </div>
 
-      <div class="mt-8 grid grid-cols-[minmax(0,1fr)] gap-10 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] lg:gap-16">
+      <div class="mt-3 grid grid-cols-[minmax(0,1fr)] gap-10 md:mt-8 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] lg:gap-16">
         <div class="lg:sticky lg:top-24 lg:self-start">
           <ProductGalleryReact images={product.images} name={product.name} client:load />
         </div>
