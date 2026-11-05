@@ -261,6 +261,18 @@ de `lg`, el `svg` no se muestra.
 `src/utils/reducedMotionVideo.ts` los detiene con `prefers-reduced-motion`. Con `lazy`, el video no
 se carga hasta acercarse a la pantalla (`src/utils/lazyVideo.ts`); debajo del fold, siempre con `lazy`.
 
+**Carruseles**: `ui/Carousel.tsx` convierte una lista en carrusel con `scroll-snap` por debajo de `md`
+y en la grilla de `gridClassName` desde `md`. Es solo CSS: sin flechas, puntos ni estado. Los anchos de
+tarjeta salen de un mapa fijo (`itemWidth`); si las tarjetas no tienen enlaces, pasa `focusable` para
+desplazarlo con el teclado.
+
+**Cifras**: el `<dd>` de `StatGrid` lleva `data-count-up` y `src/utils/countUp.ts` cuenta de 0 a la
+cifra en 1,2 s al entrar en pantalla, una vez. El HTML trae la cifra final; con
+`prefers-reduced-motion` no anima. La duración supera los 300 ms del estándar (excepción de la spec 09).
+
+**Logos de aliados**: van en una caja fija con `object-contain`. Un logo nuevo se sube recortado, sin
+margen vacío alrededor, o se verá más chico que los demás.
+
 **Islas**: las secciones sin interacción usan `client:tina` (sin JavaScript en
 producción). Solo hidratan de verdad el header, el slider del inicio, el
 catálogo con filtros, la ficha de producto y el explorador de servicios.
