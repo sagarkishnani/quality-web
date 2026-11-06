@@ -117,7 +117,7 @@ export function EnvironmentPillars(props: TinaProps & { leafIcon: string }) {
         className="pointer-events-none absolute inset-0 h-full w-full lg:hidden"
       >
         <path
-          d="M 8 0 C 8 30, 92 40, 92 80 S 8 130, 8 170 S 92 220, 92 260 S 50 290, 50 306"
+          d="M 3 0 C 3 32, 97 40, 97 80 S 3 135, 3 180 S 97 225, 97 260 S 50 290, 50 306"
           fill="none"
           className="stroke-brand-secondary"
           strokeWidth={2}
