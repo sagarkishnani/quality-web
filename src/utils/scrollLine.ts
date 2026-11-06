@@ -1,8 +1,8 @@
-const DESKTOP_QUERY = "(min-width: 1024px)";
+const LAYOUT_BREAKPOINT_QUERY = "(min-width: 1024px)";
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
 const DRAW_START_VIEWPORT_RATIO = 0.75;
 
-const desktop = () => window.matchMedia(DESKTOP_QUERY);
+const layoutBreakpoint = () => window.matchMedia(LAYOUT_BREAKPOINT_QUERY);
 const reducedMotion = () => window.matchMedia(REDUCED_MOTION_QUERY);
 
 let lines: SVGSVGElement[] = [];
@@ -17,10 +17,11 @@ function drawProgress(line: SVGSVGElement) {
   return Math.min(1, Math.max(0, progress));
 }
 
+const isRendered = (line: SVGSVGElement) => line.getClientRects().length > 0;
+
 function drawLines() {
   pendingFrame = 0;
-  if (!desktop().matches) return;
-  for (const line of lines) {
+  for (const line of lines.filter(isRendered)) {
     const progress = reducedMotion().matches ? 1 : drawProgress(line);
     line.style.clipPath = `inset(0 0 ${((1 - progress) * 100).toFixed(2)}% 0)`;
   }
@@ -38,6 +39,6 @@ export function startScrollLine() {
   listening = true;
   window.addEventListener("scroll", scheduleDraw, { passive: true });
   window.addEventListener("resize", scheduleDraw, { passive: true });
-  desktop().addEventListener("change", scheduleDraw);
+  layoutBreakpoint().addEventListener("change", scheduleDraw);
   reducedMotion().addEventListener("change", scheduleDraw);
 }
