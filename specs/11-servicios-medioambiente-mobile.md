@@ -1,6 +1,6 @@
 # SPEC 11 — Servicios y Medioambiente mobile
 
-> **Estado:** Aprobado
+> **Estado:** Implementado
 > **Depende de:** SPEC 07 y SPEC 09 ("Otros servicios" en carrusel)
 > **Fecha:** 2026-11-06
 > **Objetivo:** Adaptar Servicios, el detalle de servicio y Medioambiente a la referencia mobile con el explorador en acordeón, "‹ Servicios" y la línea verde entre pilares, sin cambiar desktop.
@@ -61,7 +61,7 @@ Reglas:
 
 **`EnvironmentSections.tsx` (`EnvironmentPillars`)**
 
-- Se suma un segundo `svg` con `data-scroll-line` y `lg:hidden`, con el trazo mobile de la referencia: `M 8 0 C 8 30, 92 40, 92 80 S 8 130, 8 170 S 92 220, 92 260 S 50 290, 50 306`.
+- Se suma un segundo `svg` con `data-scroll-line` y `lg:hidden`, con el trazo mobile de la referencia llevado a los márgenes: `M 3 0 C 3 32, 97 40, 97 80 S 3 135, 3 180 S 97 225, 97 260 S 50 290, 50 306` (el original era `M 8 0 C 8 30, 92 40, 92 80 S 8 130, 8 170 S 92 220, 92 260 S 50 290, 50 306`).
 - El `svg` actual sigue con `hidden lg:block`.
 
 **`src/utils/scrollLine.ts`**
@@ -83,43 +83,43 @@ Reglas:
 
 **Servicios a 375 y 390 px**
 
-- [ ] El explorador se ve como acordeón: cada servicio es una fila con número, nombre y flecha.
-- [ ] Al cargar, el primer servicio está abierto, con su imagen, su resumen y "Ver servicio", y su fila tiene `aria-expanded="true"`.
-- [ ] Tocar otro servicio lo abre y cierra el anterior; tocar el abierto lo cierra.
-- [ ] El panel se abre en 300 ms y la flecha gira.
-- [ ] "Ver servicio" lleva al detalle de ese servicio.
-- [ ] Con un panel cerrado, sus enlaces no reciben foco con Tab.
-- [ ] Las filas tienen al menos 44 px de alto.
+- [x] El explorador se ve como acordeón: cada servicio es una fila con número, nombre y flecha.
+- [x] Al cargar, el primer servicio está abierto, con su imagen, su resumen y "Ver servicio", y su fila tiene `aria-expanded="true"`.
+- [x] Tocar otro servicio lo abre y cierra el anterior; tocar el abierto lo cierra.
+- [x] El panel se abre en 300 ms y la flecha gira.
+- [x] "Ver servicio" lleva al detalle de ese servicio.
+- [x] Con un panel cerrado, sus enlaces no reciben foco con Tab.
+- [x] Las filas tienen al menos 44 px de alto.
 
 **Detalle de servicio a 390 px**
 
-- [ ] El hero muestra "‹ Servicios", que lleva a `/servicios`, y no la miga.
-- [ ] El botón "Solicitar servicio" y el título de "¿En qué consiste?" siguen.
+- [x] El hero muestra "‹ Servicios", que lleva a `/servicios`, y no la miga.
+- [x] El botón "Solicitar servicio" y el título de "¿En qué consiste?" siguen.
 
 **Medioambiente a 390 px**
 
-- [ ] La línea verde se ve entre los pilares con el trazo mobile, y no la de desktop.
-- [ ] La línea se dibuja al bajar y está completa al final de la sección.
+- [x] La línea verde se ve entre los pilares con el trazo mobile, y no la de desktop.
+- [x] La línea se dibuja al bajar y está completa al final de la sección.
 
 **Movimiento reducido**
 
-- [ ] Con `prefers-reduced-motion`, el acordeón se abre sin transición y la línea mobile está completa desde el inicio.
+- [x] Con `prefers-reduced-motion`, el acordeón se abre sin transición y la línea mobile está completa desde el inicio.
 
 **Desktop (1024 y 1440 px)**
 
-- [ ] El explorador, el hero del detalle y los pilares se ven y funcionan igual que en `staging`, y la línea de desktop se sigue dibujando con el scroll.
+- [x] El explorador, el hero del detalle y los pilares se ven y funcionan igual que en `staging`, y la línea de desktop se sigue dibujando con el scroll.
 
 **General**
 
-- [ ] Ninguna de las tres pantallas tiene scroll horizontal a 375 px.
-- [ ] El schema de Tina no cambia.
-- [ ] La consola no muestra errores.
+- [x] Ninguna de las tres pantallas tiene scroll horizontal a 375 px.
+- [x] El schema de Tina no cambia.
+- [x] La consola no muestra errores.
 
 **Cierre**
 
-- [ ] `npm run typecheck` termina sin errores.
-- [ ] `npm run build:local` termina sin errores.
-- [ ] `npm run check:standard` da 0 errores con un build sin catálogo de muestra.
+- [x] `npm run typecheck` termina sin errores.
+- [x] `npm run build:local` termina sin errores.
+- [x] `npm run check:standard` da 0 errores con un build sin catálogo de muestra.
 
 ## Decisiones
 
@@ -129,6 +129,7 @@ Reglas:
 - **Sí:** el acordeón y la lista de desktop son dos bloques. Uno navega con hover y el otro abre con toque, y mezclarlos dejaría enlaces que también abren paneles.
 - **Sí:** el acordeón cambia por debajo de `lg` y el enlace "‹ Servicios" por debajo de `md`, como en el catálogo y la ficha de la spec 10.
 - **Sí:** el acordeón dura 300 ms y no 500 a 800 ms como la referencia. El estándar pide de 150 a 300 ms.
+- **Sí:** el trazo mobile va a los márgenes (3 % y 97 % del ancho) y su segunda curva baja de 170 a 180. Con el trazo original, la línea cruzaba 7 renglones de texto a 390 px; así cruza 2, el borde izquierdo de "Recolección de tóner vacíos". Ninguna variante probada llega a 0, porque la línea tiene que atravesar la columna de contenido para ir de un lado al otro. Decidido por Esteban durante la implementación, el 2026-11-06.
 - **No:** traer los textos cortos de la referencia. Los textos son iguales en todos los anchos (decisión del 2026-11-02).
 
 ## Riesgos
@@ -150,3 +151,38 @@ Reglas:
 - Cambios de contenido o de schema en Tina.
 
 Si alguno de estos entra, va en su propia spec.
+
+## Notas de implementación
+
+- El acordeón (`ol` con `lg:hidden`) y la lista con tarjeta (`div` con `hidden lg:grid`) son dos bloques. El estado de desktop (`active`) y el de mobile (`openIndex`) no se cruzan.
+- Cada panel se abre con `grid-rows-[0fr]` → `grid-rows-[1fr]` y un `div` interno con `overflow-hidden`. La flecha es `FaChevronDown`, que gira 180°. La línea verde de la fila se llena en 300 ms, como la de desktop.
+- Las imágenes del acordeón llevan `width`, `height` y `loading="lazy"`.
+- "‹ Servicios" usa la misma etiqueta que la miga (`servicesLabel`) y mide 44 px de alto.
+- `scrollLine.ts` filtra las líneas con `getClientRects().length > 0`. El `matchMedia` de 1024 px ya no bloquea el dibujo: solo pide volver a calcular al cruzar ese ancho.
+- La sección de estilos de `CLAUDE.md` describe los dos trazos y deja de decir que por debajo de `lg` la línea no se muestra.
+
+## QA realizada
+
+- **Navegador:** Chromium con `npm run dev` y catálogo de muestra, a 375, 390, 430, 600, 768, 1024 y 1440 px.
+- **Acordeón a 390 px:**
+  - 7 filas de 62 a 88 px de alto.
+  - "01" abierto al cargar, con `aria-expanded="true"`, imagen de 180 px, resumen y "Ver servicio" a `/servicios/instalacion`.
+  - El panel tarda 300 ms y la flecha gira 180°.
+  - Abrir el tercero cierra el primero, cuyo panel queda en 0 px de alto; tocar el abierto lo cierra.
+  - Con los paneles cerrados, Tab no entra en ellos.
+  - "Ver servicio" del segundo lleva a `/servicios/mantenimiento-preventivo`.
+- **Detalle a 390 px:** "‹ Servicios" lleva a `/servicios` y la miga está oculta; "Solicitar servicio" y el título de "¿En qué consiste?" siguen.
+- **Línea a 390 px:**
+  - Se ve el trazo mobile y no el de desktop.
+  - Al bajar, el recorte pasa de 90 % a 60 %, 30 % y 0 %: queda completa al final de la sección.
+  - Va detrás del contenido.
+  - Cruza 2 renglones de texto a 375 y 390 px, 1 a 430 y 768 px, y 3 a 600 px.
+- **Cruce de `lg`:** al pasar de 390 a 1440 px se dibuja la línea de desktop.
+- **Movimiento reducido:** la línea mobile queda completa (`inset(0 0 0%)`) y el panel del acordeón tiene `transition-property: none`.
+- **Desktop:** a 1024 y 1440 px, la posición y el tamaño del título, la miga, la lista del explorador, los pilares y la línea de desktop coinciden con `staging` en Servicios, el detalle y Medioambiente.
+- **Scroll horizontal:** ninguno a 375 ni 390 px en las tres pantallas.
+- **Consola:** sin errores.
+- **`npm run typecheck`:** sin errores.
+- **`npm run build:local`:** sin errores, 14 páginas sin catálogo de muestra.
+- **`npm run check:standard`:** 0 errores y 2 avisos (14 páginas sin `og:image`; 151 KB de JavaScript en `/contacto`). El segundo ya está en `staging` con el mismo valor: no viene de esta spec.
+- **Sin probar:** Safari iOS y Chrome Android reales, lector de pantalla y `npm run build` con TinaCloud.
