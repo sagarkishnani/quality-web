@@ -108,6 +108,22 @@ export function EnvironmentPillars(props: TinaProps & { leafIcon: string }) {
           vectorEffect="non-scaling-stroke"
         />
       </svg>
+      <svg
+        aria-hidden
+        data-scroll-line
+        viewBox="0 0 100 300"
+        preserveAspectRatio="none"
+        style={{ clipPath: "inset(0 0 100% 0)" }}
+        className="pointer-events-none absolute inset-0 h-full w-full lg:hidden"
+      >
+        <path
+          d="M 8 0 C 8 30, 92 40, 92 80 S 8 130, 8 170 S 92 220, 92 260 S 50 290, 50 306"
+          fill="none"
+          className="stroke-brand-secondary"
+          strokeWidth={2}
+          vectorEffect="non-scaling-stroke"
+        />
+      </svg>
       <div className="relative mx-auto w-full max-w-[1180px] space-y-16 px-5 md:px-8 lg:space-y-[120px] xl:px-0">
         {pillars.map((pillar: any, index: number) => {
           const mediaFirst = index % 2 === 0;
