@@ -3,6 +3,7 @@ import { FaCheck, FaArrowRight } from "react-icons/fa6";
 import Breadcrumbs from "../ui/Breadcrumbs";
 import HeroPhoto from "../ui/HeroPhoto";
 import ServiceCard, { type ServiceSummary } from "../ui/ServiceCard";
+import Carousel from "../ui/Carousel";
 import { mediaUrl } from "../../utils/mediaUrl";
 import { fillTemplate, quoteUrl } from "../shop/quote";
 
@@ -128,11 +129,11 @@ export function OtherServices({ labels, others, servicesHref }: { labels: Detail
             <FaArrowRight className="h-3 w-3" aria-hidden />
           </a>
         </div>
-        <div className="mt-10 grid gap-6 md:grid-cols-3">
+        <Carousel itemWidth="72" label={labels.othersTitle} gridClassName="md:grid-cols-3 md:gap-6" className="mt-10">
           {others.map((service) => (
             <ServiceCard key={service.href} service={service} className="min-h-[300px]" showSummary={false} />
           ))}
-        </div>
+        </Carousel>
       </div>
     </section>
   );

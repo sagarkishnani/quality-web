@@ -6,6 +6,7 @@ import StatGrid from "../ui/StatGrid";
 import ProductTile from "../ui/ProductTile";
 import ServiceCard, { type ServiceSummary } from "../ui/ServiceCard";
 import ImageBanner from "../ui/ImageBanner";
+import Carousel from "../ui/Carousel";
 import { mediaUrl } from "../../utils/mediaUrl";
 import type { CatalogItem } from "../../lib/woo/catalog";
 
@@ -42,22 +43,24 @@ export function HomeProducts(props: TinaProps & { products: CatalogItem[]; produ
           linkUrl={section.linkUrl}
           tina={{ eyebrow: tinaField(section, "eyebrow"), title: tinaField(section, "title"), link: tinaField(section, "linkLabel") }}
         />
-        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <Carousel itemWidth="68" label={section.title || "Productos"} gridClassName="md:grid-cols-2 md:gap-6 lg:grid-cols-4" className="mt-10">
           {props.products.map((item) => (
             <ProductTile key={item.id} item={item} href={`${props.productsPath}/${item.slug}`} buttonLabel={props.buttonLabel} quoteMessage={props.quoteMessage} />
           ))}
-        </div>
+        </Carousel>
       </div>
     </section>
   );
 }
 
 const BENTO_LAYOUT = [
-  "md:row-span-2 min-h-[340px] md:min-h-0",
-  "md:col-span-2 min-h-[260px]",
-  "min-h-[260px]",
-  "min-h-[260px]",
+  "h-[380px] md:h-auto md:row-span-2",
+  "h-[380px] md:h-auto md:col-span-2 md:min-h-[260px]",
+  "h-[380px] md:h-auto md:min-h-[260px]",
+  "h-[380px] md:h-auto md:min-h-[260px]",
 ];
+
+const twoDigits = (value: number) => String(value).padStart(2, "0");
 
 export function HomeServices(props: TinaProps & { services: ServiceSummary[] }) {
   const section = useHome(props)?.services;
@@ -73,7 +76,7 @@ export function HomeServices(props: TinaProps & { services: ServiceSummary[] }) 
           description={section.description}
           tina={{ eyebrow: tinaField(section, "eyebrow"), title: tinaField(section, "title"), description: tinaField(section, "description") }}
         />
-        <div className="mt-12 grid gap-5 md:auto-rows-[300px] md:grid-cols-[1.2fr_1fr_1fr]">
+        <Carousel itemWidth="78" label={section.title || "Servicios"} gridClassName="md:auto-rows-[300px] md:grid-cols-[1.2fr_1fr_1fr] md:gap-5" className="mt-12">
           {featured.map((service, index) => (
             <ServiceCard
               key={service.href}
@@ -81,9 +84,10 @@ export function HomeServices(props: TinaProps & { services: ServiceSummary[] }) 
               className={BENTO_LAYOUT[index]}
               size={index === 0 ? "lg" : index === 1 ? "md" : "sm"}
               showSummary={index < 2}
+              counter={`${twoDigits(index + 1)} / ${twoDigits(featured.length)}`}
             />
           ))}
-        </div>
+        </Carousel>
         {section.linkLabel && section.linkUrl && (
           <div className="mt-10 text-center">
             <a href={section.linkUrl} className="link-arrow" data-tina-field={tinaField(section, "linkLabel")}>
@@ -161,7 +165,7 @@ export function HomeTestimonials(props: TinaProps) {
           title={testimonials.title}
           tina={{ eyebrow: tinaField(testimonials, "eyebrow"), title: tinaField(testimonials, "title") }}
         />
-        <div className="mt-10 grid gap-6 md:grid-cols-3">
+        <Carousel itemWidth="84" label={testimonials.title || "Testimonios"} gridClassName="md:grid-cols-3 md:gap-6" className="mt-10" focusable>
           {items.map((item: any, index: number) => (
             <figure key={index} className="card flex flex-col">
               <div className="flex gap-1 text-[#F2B53B]" aria-label="5 de 5 estrellas">
@@ -187,7 +191,7 @@ export function HomeTestimonials(props: TinaProps) {
               </figcaption>
             </figure>
           ))}
-        </div>
+        </Carousel>
       </div>
     </section>
   );

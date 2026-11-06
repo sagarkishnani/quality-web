@@ -2,6 +2,7 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Breadcrumbs from "../../components/ui/Breadcrumbs";
 import ProductTile from "../../components/ui/ProductTile";
+import Carousel from "../../components/ui/Carousel";
 import ProductGalleryReact from "../../components/shop/ProductGalleryReact";
 import QuoteBoxReact from "../../components/shop/QuoteBoxReact";
 import ProductTabsReact from "../../components/shop/ProductTabsReact";
@@ -158,11 +159,11 @@ const productJsonLd = {
           <h2 class="text-heading-xs">{texts?.relatedTitle || "Te puede interesar"}</h2>
           <a href={root} class="link-arrow">Ver todos</a>
         </div>
-        <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <Carousel itemWidth="62" label={texts?.relatedTitle || "Te puede interesar"} gridClassName="md:grid-cols-2 md:gap-6 lg:grid-cols-4" className="mt-10">
           {related.map((relatedItem) => (
             <ProductTile item={relatedItem} href={`${root}/${relatedItem.slug}`} buttonLabel={cardButtonLabel} quoteMessage={quoteMessage} />
           ))}
-        </div>
+        </Carousel>
       </div>
     </section>
   )}
