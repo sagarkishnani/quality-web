@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FaArrowRight } from "react-icons/fa6";
+import { FaArrowRight, FaChevronDown } from "react-icons/fa6";
 import type { ServiceSummary } from "../ui/ServiceCard";
 
 interface Props {
@@ -13,6 +13,7 @@ const pad = (value: number) => String(value).padStart(2, "0");
 
 export default function ServicesExplorerReact({ title, description, linkLabel, services }: Props) {
   const [active, setActive] = useState(0);
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
   if (!services.length) return <div hidden />;
   const current = services[active];
 
@@ -24,7 +25,65 @@ export default function ServicesExplorerReact({ title, description, linkLabel, s
           {description && <p className="max-w-xl text-body-md text-content-muted md:justify-self-end">{description}</p>}
         </div>
 
-        <div className="mt-12 grid gap-4 rounded-3xl bg-surface-raised p-4 md:p-6 lg:grid-cols-2 lg:gap-10">
+        <ol className="mt-10 rounded-3xl bg-surface-raised px-5 py-1 md:px-6 lg:hidden">
+          {services.map((service, index) => {
+            const open = index === openIndex;
+            const panelId = `services-explorer-panel-${index}`;
+            return (
+              <li key={service.href} className="border-b border-line-soft last:border-b-0">
+                <button
+                  type="button"
+                  aria-expanded={open}
+                  aria-controls={panelId}
+                  onClick={() => setOpenIndex(open ? null : index)}
+                  className="relative grid min-h-11 w-full grid-cols-[2rem_minmax(0,1fr)_1.25rem] items-center gap-2.5 py-[18px] text-left"
+                >
+                  <span className={`text-caption-sm font-semibold transition-colors duration-300 ${open ? "text-brand-secondary-dark" : "text-content-faint"}`}>
+                    {pad(index + 1)}
+                  </span>
+                  <span className={`text-body-md transition-colors duration-300 ${open ? "font-semibold text-content" : "font-medium text-content-muted"}`}>
+                    {service.name}
+                  </span>
+                  <FaChevronDown
+                    aria-hidden
+                    className={`h-3.5 w-3.5 text-content-muted transition-transform duration-300 motion-reduce:transition-none ${open ? "rotate-180" : ""}`}
+                  />
+                  <span
+                    aria-hidden
+                    className={`absolute -bottom-px left-0 h-0.5 bg-brand-secondary transition-[width] duration-300 motion-reduce:transition-none ${open ? "w-full" : "w-0"}`}
+                  />
+                </button>
+                <div
+                  id={panelId}
+                  inert={!open}
+                  className={`grid transition-[grid-template-rows] duration-300 ease-out motion-reduce:transition-none ${open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}
+                >
+                  <div className="overflow-hidden">
+                    <div className="flex flex-col items-start gap-3.5 pb-5 pt-0.5">
+                      {service.image && (
+                        <img
+                          src={service.image}
+                          alt=""
+                          loading="lazy"
+                          decoding="async"
+                          width="640"
+                          height="360"
+                          className="h-[180px] w-full rounded-2xl bg-surface object-cover"
+                        />
+                      )}
+                      {service.summary && <p className="text-body-sm text-content-muted">{service.summary}</p>}
+                      <a href={service.href} className="btn-primary btn-sm px-5">
+                        {linkLabel}
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </li>
+            );
+          })}
+        </ol>
+
+        <div className="mt-12 hidden gap-4 rounded-3xl bg-surface-raised p-4 md:p-6 lg:grid lg:grid-cols-2 lg:gap-10">
           <ol className="self-center px-2 py-4 md:px-6">
             {services.map((service, index) => {
               const selected = index === active;
