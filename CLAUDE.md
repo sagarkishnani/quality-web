@@ -253,9 +253,10 @@ sin `prefers-reduced-motion`. La capa va dentro de un bloque con `overflow-hidde
 `scrollY`: sobre una sección fija, la distancia al centro no cambia.
 
 **Línea de Medioambiente**: `src/utils/scrollLine.ts` revela el `svg` con `data-scroll-line` según el
-avance de su `section`, desde `lg`, con un `clip-path` vertical. `stroke-dasharray` no sirve aquí:
-con `non-scaling-stroke`, el guion se mide en píxeles de pantalla e ignora `pathLength`. Con `prefers-reduced-motion` queda completa y quieta. Por debajo
-de `lg`, el `svg` no se muestra.
+avance de su `section`, con un `clip-path` vertical. `stroke-dasharray` no sirve aquí:
+con `non-scaling-stroke`, el guion se mide en píxeles de pantalla e ignora `pathLength`. Con `prefers-reduced-motion` queda completa y quieta. Hay un
+`svg` por ancho: el trazo de desktop (`hidden lg:block`) y el de mobile (`lg:hidden`); el script dibuja
+solo el que está visible.
 
 **Videos**: `BackgroundVideo` marca sus videos con `data-motion-video`, y
 `src/utils/reducedMotionVideo.ts` los detiene con `prefers-reduced-motion`. Con `lazy`, el video no
