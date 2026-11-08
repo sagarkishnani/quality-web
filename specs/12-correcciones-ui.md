@@ -118,6 +118,7 @@ Esta spec no agrega datos ni cambia el schema de Tina. Solo cambia clases y marc
 - **Banners en dos columnas desde `xl` (no desde `md`):** a 1024 px, con dos banners por fila, "Consultar por esta promoción" (261 px) no entraba en la columna de texto (233 px) y se metía en la foto. Entre `md` y `xl` cada banner ocupa todo el ancho, con texto y foto lado a lado. Decidido durante la implementación, el 2026-11-07.
 - **El botón de la tarjeta compacta queda como está:** solo aparece con hover o teclado, así que en mobile no se toca; la cotización se pide desde la ficha. La revisión lo había medido aunque estaba invisible. Decidido por Esteban durante la implementación, el 2026-11-07.
 - **El botón y el ojo de la tarjeta aparecen solo con mouse (`[@media(hover:hover)]`) o teclado:** antes, el toque activaba el hover y el botón se veía un instante en mobile (y en iPhone el primer toque podía quedarse solo en hover). Ahora, en pantallas táctiles no aparecen y un toque abre la ficha. Decidido por Esteban durante la implementación, el 2026-11-07.
+- **Botón y ojo de la tarjeta dentro de la imagen, como la referencia desktop:** el botón ocupaba todo el ancho al pie de la tarjeta y tapaba la marca y el nombre. Ahora es una píldora de 44 px centrada al pie de la imagen y el ojo, un círculo blanco con borde de 44 px arriba a la derecha. Decidido por Esteban durante la implementación, el 2026-11-07.
 - **El enlace extendido de la tarjeta ya existía** (`after:absolute after:inset-0` en el nombre): la revisión midió solo el texto. No hubo que cambiarlo.
 
 **Descartadas:**
@@ -151,6 +152,7 @@ Chromium a 375, 390, 768, 1024, 1280 y 1440 px, con el catálogo de muestra.
 - H2 de sección: 26 px a 390 y 36 px a 1440 en las 14 secciones; CTA en 40 px. "LaserJet Enterprise M608" sobre la descripción queda en 28 px: quitarlo está fuera de alcance.
 - H1 de categoría y de `/productos`: 52 px a 1440. Antetítulo de la 404 igual al de Nosotros.
 - Orden: `appearance: none`, la flecha no intercepta el toque (el punto bajo la flecha es el `select`).
+- Tarjeta a 1440 con hover: el botón (142 × 44 px) termina 40 px por encima del texto; ojo arriba a la derecha.
 - Tarjeta: en pantalla táctil (`hover: none`), botón y ojo con opacidad 0 al pasar por encima y un toque abre la ficha; con mouse aparecen como antes, y con Tab el botón se muestra.
 - Footer: enlaces de 44 a 48 px a 390. Puntos del hero (28 y 24 × 44) y de la galería (24 × 44) cambian de diapositiva e imagen. Tocar la tarjeta abre la ficha.
 - Sin scroll horizontal a 375 y 390 px en las 10 páginas; consola sin errores.
