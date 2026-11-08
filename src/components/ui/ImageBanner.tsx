@@ -35,7 +35,7 @@ export default function ImageBanner({ parallax, eyebrow, title, image, buttonLab
           </p>
         )}
         {title && (
-          <h2 className="mt-4 text-heading-xl" data-tina-field={tina.title}>
+          <h2 className="mt-4 text-heading-sm" data-tina-field={tina.title}>
             {title}
           </h2>
         )}

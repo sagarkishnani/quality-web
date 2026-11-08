@@ -176,7 +176,7 @@ export function AboutSolution(props: TinaProps) {
               {solution.eyebrow}
             </p>
           )}
-          <h2 className="mt-3 text-heading-xs" data-tina-field={tinaField(solution, "title")}>
+          <h2 className="mt-3 text-heading-sm" data-tina-field={tinaField(solution, "title")}>
             {solution.title}
           </h2>
           <div className="mt-8 grid gap-x-8 sm:grid-cols-2">

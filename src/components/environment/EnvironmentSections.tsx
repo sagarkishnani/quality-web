@@ -60,7 +60,7 @@ export function EnvironmentCommitment(props: TinaProps & { leafIcon: string }) {
           {commitment.eyebrow}
         </p>
       )}
-      <h2 className="-mt-2 text-heading-md" data-tina-field={tinaField(commitment, "title")}>
+      <h2 className="-mt-2 text-heading-sm" data-tina-field={tinaField(commitment, "title")}>
         {commitment.title}
       </h2>
       {commitment.text && (
@@ -153,7 +153,7 @@ export function EnvironmentPillars(props: TinaProps & { leafIcon: string }) {
                   </span>
                   <p className="text-body-sm font-semibold text-brand-secondary-light">{String(index + 1).padStart(2, "0")}</p>
                 </div>
-                <h2 className="text-heading-md" data-tina-field={tinaField(pillar, "title")}>
+                <h2 className="text-heading-sm" data-tina-field={tinaField(pillar, "title")}>
                   {pillar.title}
                 </h2>
                 {pillar.text && (
@@ -201,7 +201,7 @@ export function EnvironmentBanner(props: TinaProps) {
             {banner.eyebrow}
           </p>
         )}
-        <h2 className="mt-4 text-heading-xl [text-shadow:0_4px_30px_rgba(0,0,0,0.35)]" data-tina-field={tinaField(banner, "title")}>
+        <h2 className="mt-4 text-heading-sm [text-shadow:0_4px_30px_rgba(0,0,0,0.35)]" data-tina-field={tinaField(banner, "title")}>
           {banner.title}
         </h2>
         {banner.buttonLabel && banner.buttonUrl && (
