@@ -53,7 +53,6 @@ export default function QuoteBoxReact(props: Props) {
     };
   }, [showBar]);
 
-  const label = quantity > 1 ? `${props.quoteLabel} (${quantity} equipos)` : props.quoteLabel;
   const href = quoteUrl(fillTemplate(props.quoteMessage, { cantidad: quantity, producto: props.productName }));
 
   return (
@@ -63,7 +62,7 @@ export default function QuoteBoxReact(props: Props) {
         <div className="mt-3 flex gap-3">
           <Stepper quantity={quantity} onChange={setQuantity} />
           <a href={href} className="btn-primary btn-xl flex-1">
-            {label}
+            {props.quoteLabel}
           </a>
         </div>
         {props.datasheetUrl && (
@@ -106,7 +105,7 @@ export default function QuoteBoxReact(props: Props) {
           <p className="hidden flex-1 truncate text-body-md font-semibold sm:block">{props.productName}</p>
           <Stepper quantity={quantity} onChange={setQuantity} compact />
           <a href={href} tabIndex={showBar ? 0 : -1} className="btn-primary h-11 flex-1 sm:flex-none">
-            {label}
+            {props.quoteLabel}
           </a>
         </div>
       </div>

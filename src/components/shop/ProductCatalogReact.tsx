@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { FaMagnifyingGlass, FaChevronUp, FaCheck, FaSliders } from "react-icons/fa6";
+import { FaMagnifyingGlass, FaChevronDown, FaChevronUp, FaCheck, FaSliders } from "react-icons/fa6";
 import ProductTile from "../ui/ProductTile";
 import { slugify, type CatalogItem } from "../../lib/woo/catalog";
 import type { FacetOption } from "../../lib/content/shopSettings";
@@ -350,17 +350,18 @@ export default function ProductCatalogReact({ items, segments, productsPath, lab
                     </span>
                   )}
                 </button>
-                <label className="flex-1 lg:order-3 lg:flex-none lg:shrink-0">
+                <label className="relative flex-1 lg:order-3 lg:flex-none lg:shrink-0">
                   <span className="sr-only">Ordenar</span>
                   <select
                     value={sort}
                     onChange={(event) => setSort(event.target.value as SortKey)}
-                    className="h-12 w-full rounded-md border border-line-strong bg-surface-raised px-4 text-body-sm focus:outline-none focus:ring-2 focus:ring-brand-primary lg:w-auto"
+                    className="h-12 w-full appearance-none rounded-md border border-line-strong bg-surface-raised pl-4 pr-10 text-body-sm focus:outline-none focus:ring-2 focus:ring-brand-primary lg:w-auto"
                   >
                     <option value="popular">Populares</option>
                     <option value="az">Nombre A–Z</option>
                     <option value="za">Nombre Z–A</option>
                   </select>
+                  <FaChevronDown aria-hidden className="pointer-events-none absolute right-4 top-1/2 h-3 w-3 -translate-y-1/2 text-content-muted" />
                 </label>
               </div>
               <p className="shrink-0 text-body-base font-semibold lg:order-2" aria-live="polite">

@@ -110,7 +110,7 @@ export default function HeroSliderReact({ query, variables, data: initialData }:
           >
             <FaChevronRight className="h-4 w-4" />
           </button>
-          <div className="absolute bottom-20 left-1/2 flex -translate-x-1/2 gap-2">
+          <div className="absolute bottom-16 left-1/2 flex -translate-x-1/2">
             {slides.map((_: any, index: number) => (
               <button
                 key={index}
@@ -118,8 +118,13 @@ export default function HeroSliderReact({ query, variables, data: initialData }:
                 onClick={() => setCurrent(index)}
                 aria-label={`Ir a la diapositiva ${index + 1}`}
                 aria-current={index === current}
-                className={`h-2 rounded-full transition-all duration-500 ${index === current ? "w-7 bg-white" : "w-2 bg-white/45"}`}
-              />
+                className="flex h-11 min-w-6 items-center justify-center"
+              >
+                <span
+                  aria-hidden
+                  className={`block h-2 rounded-full transition-all duration-500 ${index === current ? "w-7 bg-white" : "w-2 bg-white/45"}`}
+                />
+              </button>
             ))}
           </div>
         </>

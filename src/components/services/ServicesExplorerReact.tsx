@@ -21,7 +21,7 @@ export default function ServicesExplorerReact({ title, description, linkLabel, s
     <section className="section">
       <div className="container-xl">
         <div className="grid items-end gap-6 md:grid-cols-2">
-          <h2 className="text-heading-md">{title}</h2>
+          <h2 className="text-heading-sm">{title}</h2>
           {description && <p className="max-w-xl text-body-md text-content-muted md:justify-self-end">{description}</p>}
         </div>
 

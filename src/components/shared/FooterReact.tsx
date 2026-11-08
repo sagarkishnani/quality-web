@@ -25,7 +25,7 @@ interface Props {
 }
 
 const columnTitle = "text-caption-md font-semibold uppercase tracking-[0.12em] text-content";
-const footerLink = "text-body-base text-content-muted transition-colors hover:text-content";
+const footerLink = "flex min-h-11 items-center text-body-base text-content-muted transition-colors hover:text-content md:inline md:min-h-0";
 
 export default function FooterReact({ query, variables, data: initialData, locale }: Props) {
   const { data } = useTina({ query, variables, data: initialData });
@@ -56,7 +56,7 @@ export default function FooterReact({ query, variables, data: initialData, local
               <p className={columnTitle} data-tina-field={tinaField(column, "title")}>
                 {tField(column, "title", locale)}
               </p>
-              <ul className="mt-5 space-y-3">
+              <ul className="mt-2 md:mt-5 md:space-y-3">
                 {(column.links || []).filter(Boolean).map((link: any, linkIndex: number) => (
                   <li key={linkIndex}>
                     <a href={localizeHref(link.url, locale)} className={footerLink}>
@@ -71,7 +71,7 @@ export default function FooterReact({ query, variables, data: initialData, local
           {contact && (
             <div className="col-span-2 md:col-span-1">
               <p className={columnTitle}>Contacto</p>
-              <ul className="mt-5 space-y-3">
+              <ul className="mt-2 md:mt-5 md:space-y-3">
                 <li>
                   <a href={localizeHref("/contacto", locale)} className={footerLink}>Contáctanos</a>
                 </li>

@@ -78,7 +78,7 @@ export function ServiceBody(props: TinaProps & { labels: DetailLabels }) {
         <div className="container-xl grid gap-10 lg:grid-cols-[1.2fr_1fr] lg:gap-16">
           <div>
             <p className="eyebrow">{props.labels.consistsEyebrow}</p>
-            <h2 className="mt-3 text-heading-xs">{service.name}</h2>
+            <h2 className="mt-3 text-heading-sm">{service.name}</h2>
             {service.description && (
               <p className="mt-5 text-body-md leading-7 text-content-muted" data-tina-field={tinaField(service, "description")}>
                 {service.description}
@@ -128,7 +128,7 @@ export function OtherServices({ labels, others, servicesHref }: { labels: Detail
     <section className="pb-8">
       <div className="container-xl">
         <div className="flex items-end justify-between gap-6">
-          <h2 className="text-heading-xs">{labels.othersTitle}</h2>
+          <h2 className="text-heading-sm">{labels.othersTitle}</h2>
           <a href={servicesHref} className="link-arrow">
             {labels.othersLinkLabel}
             <FaArrowRight className="h-3 w-3" aria-hidden />

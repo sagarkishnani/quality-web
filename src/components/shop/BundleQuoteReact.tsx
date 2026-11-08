@@ -58,7 +58,7 @@ export default function BundleQuoteReact({ main, extras, eyebrow, title, note, q
     <section className="section bg-surface-raised">
       <div className="container-xl">
         <p className="eyebrow">{eyebrow}</p>
-        <h2 className="mt-3 text-heading-xs">{title}</h2>
+        <h2 className="mt-3 text-heading-sm">{title}</h2>
         <div className="mt-10 grid gap-6 rounded-panel bg-surface-sunken p-4 sm:p-6 xl:grid-cols-[minmax(0,1fr)_280px]">
           <div className={`grid gap-4 ${hasSingleExtra ? "md:grid-cols-[minmax(0,1fr)_32px_minmax(0,1fr)]" : "md:grid-cols-2"}`}>
             <BundleCard item={main} kind="Este producto" selected locked onToggle={() => undefined} />
