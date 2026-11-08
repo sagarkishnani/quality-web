@@ -38,7 +38,7 @@ const home = import.meta.env.BASE_URL || "/";
   <div class="container-xl pb-16 pt-8">
     <Breadcrumbs items={[{ label: "Inicio", href: home }, { label: "Productos", href: root }, { label: category.name }]} />
     <div class="mt-10 flex flex-wrap items-end justify-between gap-4">
-      <h1 class="text-heading-lg">{category.name}</h1>
+      <h1 class="text-heading-xl">{category.name}</h1>
       <p class="text-body-md text-content-muted">
         {items.length} {items.length === 1 ? "producto" : "productos"}
       </p>
