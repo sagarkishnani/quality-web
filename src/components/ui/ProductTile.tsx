@@ -64,7 +64,7 @@ export default function ProductTile({ item, href, buttonLabel, quoteMessage, ton
         )}
         <span
           aria-hidden
-          className="absolute inset-0 m-auto flex h-12 w-12 scale-75 items-center justify-center rounded-full bg-white/90 text-ink opacity-0 shadow-md transition-all duration-300 group-hover:scale-100 group-hover:opacity-100"
+          className="absolute inset-0 m-auto flex h-12 w-12 scale-75 items-center justify-center rounded-full bg-white/90 text-ink opacity-0 shadow-md transition-all duration-300 [@media(hover:hover)]:group-hover:scale-100 [@media(hover:hover)]:group-hover:opacity-100"
         >
           <FaEye className="h-4 w-4" />
         </span>
@@ -86,7 +86,7 @@ export default function ProductTile({ item, href, buttonLabel, quoteMessage, ton
         <a
           href={quoteUrl(fillTemplate(quoteMessage, { cantidad: 1, producto: product }))}
           aria-label={`${buttonLabel}: ${product}`}
-          className={`pointer-events-none absolute z-10 translate-y-4 rounded-full bg-ink text-center font-medium ${size.quote} text-white opacity-0 transition-all duration-300 focus-visible:pointer-events-auto focus-visible:translate-y-0 focus-visible:opacity-100 group-hover:translate-y-0 group-hover:opacity-100 [@media(hover:hover)]:group-hover:pointer-events-auto`}
+          className={`pointer-events-none absolute z-10 translate-y-4 rounded-full bg-ink text-center font-medium ${size.quote} text-white opacity-0 transition-all duration-300 focus-visible:pointer-events-auto focus-visible:translate-y-0 focus-visible:opacity-100 [@media(hover:hover)]:group-hover:pointer-events-auto [@media(hover:hover)]:group-hover:translate-y-0 [@media(hover:hover)]:group-hover:opacity-100`}
         >
           {buttonLabel}
         </a>
