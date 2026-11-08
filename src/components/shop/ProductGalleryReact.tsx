@@ -70,7 +70,7 @@ export default function ProductGalleryReact({ images, name }: { images: WooImage
       </div>
 
       {count > 1 && (
-        <div className="mt-3 flex justify-center md:hidden">
+        <div className="flex justify-center md:hidden">
           {images.map((image, imageIndex) => (
             <button
               key={image.src}
@@ -78,7 +78,7 @@ export default function ProductGalleryReact({ images, name }: { images: WooImage
               onClick={() => setIndex(imageIndex)}
               aria-label={`Ver imagen ${imageIndex + 1} de ${count}`}
               aria-current={imageIndex === index}
-              className="flex h-6 items-center px-1"
+              className="flex h-11 min-w-6 items-center justify-center"
             >
               <span
                 aria-hidden
