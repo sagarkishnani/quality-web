@@ -1,6 +1,6 @@
 # SPEC 12 — Correcciones de UI
 
-> **Estado:** Aprobado
+> **Estado:** Implementado
 > **Depende de:** SPEC 06 (QA desktop), SPEC 09 (carruseles) y SPEC 10 (catálogo mobile)
 > **Fecha:** 2026-11-07
 > **Objetivo:** Corregir las incongruencias de UI de la revisión del 2026-11-07 (botón de cotización, banners de `/productos`, escala de títulos, áreas táctiles, selector de orden, antetítulo de la 404 e imágenes sin medidas).
@@ -65,44 +65,44 @@ Esta spec no agrega datos ni cambia el schema de Tina. Solo cambia clases y marc
 
 **Ficha**
 
-- [ ] El botón dice "Ver cotización" con 1 y con 5 equipos, en la caja y en la barra fija, y su ancho no cambia.
-- [ ] El enlace a `/contacto` lleva la cantidad elegida en el mensaje.
+- [x] El botón dice "Ver cotización" con 1 y con 5 equipos, en la caja y en la barra fija, y su ancho no cambia.
+- [x] El enlace a `/contacto` lleva la cantidad elegida en el mensaje.
 
 **Banners de `/productos`**
 
-- [ ] A 375 y 390 px, la foto no se cruza con el título, la descripción ni el botón de ningún banner.
-- [ ] "Consultar por esta promoción" queda en una línea, de 46 px de alto, a 390, 768, 1024 y 1440 px.
-- [ ] Desde `md`, los banners siguen lado a lado.
+- [x] A 375 y 390 px, la foto no se cruza con el título, la descripción ni el botón de ningún banner.
+- [x] "Consultar por esta promoción" queda en una línea, de 46 px de alto, a 390, 768, 1024 y 1440 px.
+- [x] Desde `md`, los banners siguen lado a lado.
 
 **Títulos**
 
-- [ ] Todos los H2 de sección, salvo CTA y títulos de dos pesos, miden lo mismo en cada ancho: 26 px a 390 y 36 px a 1440.
-- [ ] Los CTA miden 40 px a 1440.
-- [ ] El H1 de `/productos/categoria/<slug>` mide igual que el de `/productos` (52 px a 1440).
-- [ ] El antetítulo de la 404 tiene el mismo tamaño, color y estilo de letra que los otros `eyebrow`.
+- [x] Todos los H2 de sección, salvo CTA y títulos de dos pesos, miden lo mismo en cada ancho: 26 px a 390 y 36 px a 1440.
+- [x] Los CTA miden 40 px a 1440.
+- [x] El H1 de `/productos/categoria/<slug>` mide igual que el de `/productos` (52 px a 1440).
+- [x] El antetítulo de la 404 tiene el mismo tamaño, color y estilo de letra que los otros `eyebrow`.
 
 **Selector de orden**
 
-- [ ] Muestra el `FaChevronDown` del sitio y no la flecha nativa.
-- [ ] Tocar la flecha abre el selector.
+- [x] Muestra el `FaChevronDown` del sitio y no la flecha nativa.
+- [x] Tocar la flecha abre el selector.
 
 **Áreas táctiles a 390 px**
 
-- [ ] "Ver cotización" de la tarjeta compacta mide 44 px de alto.
-- [ ] Tocar la tarjeta fuera del botón abre la ficha, y tocar el botón abre la cotización.
-- [ ] Los enlaces del footer miden 44 px de alto; desde `md`, el footer mide igual que en `staging`.
-- [ ] Los puntos del hero y de la galería miden 24 × 44 px y cada uno cambia a su diapositiva o imagen.
+- [x] ~~"Ver cotización" de la tarjeta compacta mide 44 px de alto.~~ No aplica: el botón solo aparece con hover o teclado, nunca en pantallas táctiles (ver Decisiones).
+- [x] Tocar la tarjeta fuera del botón abre la ficha, y tocar el botón abre la cotización.
+- [x] Los enlaces del footer miden 44 px de alto; desde `md`, el footer mide igual que en `staging`.
+- [x] Los puntos del hero y de la galería miden 24 × 44 px y cada uno cambia a su diapositiva o imagen.
 
 **Imágenes**
 
-- [ ] Los logos de aliados y las imágenes de la galería tienen `width` y `height`.
+- [x] Los logos de aliados y las imágenes de la galería tienen `width` y `height`.
 
 **General**
 
-- [ ] Ninguna página tiene scroll horizontal a 375 y 390 px.
-- [ ] Desktop (1024 y 1440 px) mide igual que `staging` fuera de lo listado.
-- [ ] `typecheck`, `build:local` y `check:standard` pasan (0 errores).
-- [ ] La consola no muestra errores.
+- [x] Ninguna página tiene scroll horizontal a 375 y 390 px.
+- [x] Desktop (1024 y 1440 px) mide igual que `staging` fuera de lo listado.
+- [x] `typecheck`, `build:local` y `check:standard` pasan (0 errores).
+- [x] La consola no muestra errores.
 
 ## Decisiones tomadas y descartadas
 
@@ -114,6 +114,10 @@ Esta spec no agrega datos ni cambia el schema de Tina. Solo cambia clases y marc
 - **Áreas táctiles sin cambio visual cuando cabe, y con ajuste mínimo cuando no:** el footer está a 37 px entre enlaces y necesita 7 px más para 44. Los puntos, a 16 y 14 px, suben a 24 px, el mínimo de WCAG 2.5.8.
 - **Enlace extendido en la tarjeta:** hace tocable toda la tarjeta sin cambiar cómo se ve; el botón de cotización queda encima.
 - **Flecha propia en el orden:** se ve igual que "Filtrar" en todos los navegadores.
+
+- **Banners en dos columnas desde `xl` (no desde `md`):** a 1024 px, con dos banners por fila, "Consultar por esta promoción" (261 px) no entraba en la columna de texto (233 px) y se metía en la foto. Entre `md` y `xl` cada banner ocupa todo el ancho, con texto y foto lado a lado. Decidido durante la implementación, el 2026-11-07.
+- **El botón de la tarjeta compacta queda como está:** solo aparece con hover o teclado, así que en mobile no se toca; la cotización se pide desde la ficha. La revisión lo había medido aunque estaba invisible. Decidido por Esteban durante la implementación, el 2026-11-07.
+- **El enlace extendido de la tarjeta ya existía** (`after:absolute after:inset-0` en el nombre): la revisión midió solo el texto. No hubo que cambiarlo.
 
 **Descartadas:**
 
@@ -127,3 +131,27 @@ Esta spec no agrega datos ni cambia el schema de Tina. Solo cambia clases y marc
 - **El enlace extendido de la tarjeta puede tapar otros elementos:** si la etiqueta ("Oferta", "Nuevo") u otro elemento necesita recibir clics, quedaría debajo. El botón de cotización necesita `relative z-10`.
 - **El cambio de títulos se ve en desktop,** y es lo que más notarán Sagar y el cliente, sobre todo en Medioambiente (52 → 36 px). El PR lleva capturas de antes y después.
 - **El banner apilado depende de la foto:** si el cliente sube una foto muy vertical, la parte de abajo se recorta. Se usa `object-contain` en el banner claro y `object-cover` en el oscuro, como hoy.
+
+## Notas de implementación
+
+- `QuoteBoxReact.tsx`: la caja y la barra fija muestran `quoteLabel`; la cantidad sigue en el mensaje.
+- `ShopSections.tsx` (`ShopPromos`): la tarjeta es `flex-col` por debajo de `md`, con la foto al final (`order-last`, 200 px de alto) y sin máscara; desde `md`, el diseño anterior. El botón lleva `whitespace-nowrap` y la grilla pasa a `xl:grid-cols-2`.
+- Títulos: diez H2 pasan a `text-heading-sm` en siete archivos; `ImageBanner` solo se usa en el inicio.
+- Footer: los enlaces son `flex min-h-11 items-center` en mobile e `inline` desde `md`; la lista pasa de `space-y-3` a `md:space-y-3` y de `mt-5` a `mt-2 md:mt-5`.
+- Puntos: el botón mide `h-11 min-w-6` con el punto visible en un `span` adentro; los del hero suben de `bottom-20` a `bottom-16` para que el punto quede a la misma altura.
+- Imágenes: logos con `144 × 48`, galería con `880 × 720` (proporción 11/9 de la caja) y miniaturas con `80 × 80`.
+
+## QA (2026-11-07)
+
+Chromium a 375, 390, 768, 1024, 1280 y 1440 px, con el catálogo de muestra.
+
+- Ficha: con 5 equipos el botón dice "Ver cotización" en la caja y en la barra, con el mismo ancho (218 px); el mensaje dice "5 × HP LaserJet Enterprise M608".
+- Banners: sin cruce de la foto con el texto a 375 y 390 px; el botón mide 46 px en todos los anchos. A 1280 px, la caja del texto y la de la foto del banner oscuro se tocan por 6 px, igual que en `staging`.
+- H2 de sección: 26 px a 390 y 36 px a 1440 en las 14 secciones; CTA en 40 px. "LaserJet Enterprise M608" sobre la descripción queda en 28 px: quitarlo está fuera de alcance.
+- H1 de categoría y de `/productos`: 52 px a 1440. Antetítulo de la 404 igual al de Nosotros.
+- Orden: `appearance: none`, la flecha no intercepta el toque (el punto bajo la flecha es el `select`).
+- Footer: enlaces de 44 a 48 px a 390. Puntos del hero (28 y 24 × 44) y de la galería (24 × 44) cambian de diapositiva e imagen. Tocar la tarjeta abre la ficha.
+- Sin scroll horizontal a 375 y 390 px en las 10 páginas; consola sin errores.
+- Desktop contra `staging` a 1024 y 1440: cambian solo los títulos, los banners (a 1024 px van uno debajo del otro, +326 px) y el ancho del selector (+4 px). Footer, `/contacto` y la 404, iguales.
+- Las imágenes de la descripción del producto vienen del HTML de WooCommerce y no llevan medidas: quedan fuera de esta spec.
+- `typecheck` y `build:local` pasan; `check:standard`, 0 errores y 1 aviso (`og:image`).
