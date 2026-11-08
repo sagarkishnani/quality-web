@@ -18,7 +18,7 @@ const regular = {
   brand: "text-caption-sm",
   name: "text-subtitle-xs",
   category: "text-body-base",
-  quote: "inset-x-6 bottom-6 py-3 text-body-sm",
+  quote: "bottom-4 h-11 px-6 text-body-sm",
 };
 
 const compactBelowMd = {
@@ -28,7 +28,7 @@ const compactBelowMd = {
   brand: "text-caption-xs md:text-caption-sm",
   name: "text-body-md font-semibold md:text-subtitle-xs",
   category: "text-caption-md md:text-body-base",
-  quote: "inset-x-3.5 bottom-3.5 py-2.5 text-caption-md md:inset-x-6 md:bottom-6 md:py-3 md:text-body-sm",
+  quote: "bottom-3 h-10 px-4 text-caption-md md:bottom-4 md:h-11 md:px-6 md:text-body-sm",
 };
 
 export default function ProductTile({ item, href, buttonLabel, quoteMessage, tone = "raised", compact = false }: Props) {
@@ -64,10 +64,19 @@ export default function ProductTile({ item, href, buttonLabel, quoteMessage, ton
         )}
         <span
           aria-hidden
-          className="absolute inset-0 m-auto flex h-12 w-12 scale-75 items-center justify-center rounded-full bg-white/90 text-ink opacity-0 shadow-md transition-all duration-300 [@media(hover:hover)]:group-hover:scale-100 [@media(hover:hover)]:group-hover:opacity-100"
+          className="absolute right-0 top-0 flex h-11 w-11 scale-75 items-center justify-center rounded-full border border-line bg-surface-raised text-ink opacity-0 transition-all duration-300 [@media(hover:hover)]:group-hover:scale-100 [@media(hover:hover)]:group-hover:opacity-100"
         >
           <FaEye className="h-4 w-4" />
         </span>
+        {buttonLabel && quoteMessage && (
+          <a
+            href={quoteUrl(fillTemplate(quoteMessage, { cantidad: 1, producto: product }))}
+            aria-label={`${buttonLabel}: ${product}`}
+            className={`pointer-events-none absolute left-1/2 z-10 flex -translate-x-1/2 translate-y-4 items-center whitespace-nowrap rounded-full bg-ink font-medium ${size.quote} text-white opacity-0 transition-all duration-300 focus-visible:pointer-events-auto focus-visible:translate-y-0 focus-visible:opacity-100 [@media(hover:hover)]:group-hover:pointer-events-auto [@media(hover:hover)]:group-hover:translate-y-0 [@media(hover:hover)]:group-hover:opacity-100`}
+          >
+            {buttonLabel}
+          </a>
+        )}
       </div>
 
       <div className={size.body}>
@@ -82,15 +91,6 @@ export default function ProductTile({ item, href, buttonLabel, quoteMessage, ton
         {item.category && <p className={`mt-1 text-content-muted ${size.category}`}>{item.category}</p>}
       </div>
 
-      {buttonLabel && quoteMessage && (
-        <a
-          href={quoteUrl(fillTemplate(quoteMessage, { cantidad: 1, producto: product }))}
-          aria-label={`${buttonLabel}: ${product}`}
-          className={`pointer-events-none absolute z-10 translate-y-4 rounded-full bg-ink text-center font-medium ${size.quote} text-white opacity-0 transition-all duration-300 focus-visible:pointer-events-auto focus-visible:translate-y-0 focus-visible:opacity-100 [@media(hover:hover)]:group-hover:pointer-events-auto [@media(hover:hover)]:group-hover:translate-y-0 [@media(hover:hover)]:group-hover:opacity-100`}
-        >
-          {buttonLabel}
-        </a>
-      )}
     </article>
   );
 }
