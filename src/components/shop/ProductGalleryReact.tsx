@@ -39,6 +39,8 @@ export default function ProductGalleryReact({ images, name }: { images: WooImage
             src={image.src}
             alt={image.alt || name}
             loading={imageIndex === 0 ? "eager" : "lazy"}
+            width="880"
+            height="720"
             className={`absolute inset-0 m-auto h-[82%] w-[82%] object-contain mix-blend-multiply transition-[opacity,transform] duration-700 ease-out ${
               imageIndex === index ? "scale-100 opacity-100" : "pointer-events-none scale-[1.04] opacity-0"
             }`}
@@ -104,7 +106,7 @@ export default function ProductGalleryReact({ images, name }: { images: WooImage
                 imageIndex === index ? "border-ink" : "border-transparent hover:border-line-strong"
               }`}
             >
-              <img src={image.src} alt="" loading="lazy" className="h-full w-full object-contain mix-blend-multiply" />
+              <img src={image.src} alt="" loading="lazy" width="80" height="80" className="h-full w-full object-contain mix-blend-multiply" />
             </button>
           ))}
         </div>
