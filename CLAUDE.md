@@ -286,7 +286,12 @@ catálogo con filtros, la ficha de producto y el explorador de servicios.
 
 **Tipografía**: Inter en todo el sitio. La escala está como utilidades de
 Tailwind (`heading-xl` → `caption-xs`); los títulos son bold con tracking
-negativo. Nada de tamaños sueltos como `text-[52px]`: si falta uno, va como token.
+negativo. Nada de tamaños sueltos como `text-[52px]`: si falta uno, va como token. Los H2 de sección
+usan `heading-sm` (el de `SectionHeading`) y los CTA, `heading-md`; los títulos de tarjeta van aparte.
+
+**Áreas táctiles**: en mobile, todo lo que se toca mide al menos 44 px de alto. Si lo visible es más
+chico (puntos, enlaces de texto), el botón o enlace crece y lo visible va centrado adentro; cuando no
+hay espacio para 44 px de ancho, el mínimo es 24 px (WCAG 2.5.8).
 
 **Radios y sombras**: `rounded-xs` (etiquetas), `rounded-sm` (botones), `rounded-md`
 (campos), `rounded-panel` (tarjetas e imágenes grandes); `shadow-soft`,
