@@ -44,13 +44,13 @@ export function ShopPromos(props: TinaProps) {
 
   return (
     <section className="bg-surface-raised pb-20 md:pb-28">
-      <div className="container-xl grid gap-6 md:grid-cols-2">
+      <div className="container-xl grid gap-6 xl:grid-cols-2">
         {promos.map((promo: any, index: number) => {
           const dark = promo.tone !== "light";
           return (
             <article
               key={index}
-              className={`relative flex min-h-[320px] overflow-hidden rounded-3xl p-8 md:p-10 ${dark ? "bg-ink text-white" : "bg-surface text-content"}`}
+              className={`relative flex flex-col overflow-hidden rounded-3xl p-8 md:min-h-[320px] md:flex-row md:p-10 ${dark ? "bg-ink text-white" : "bg-surface text-content"}`}
             >
               {promo.image && (
                 <img
@@ -59,13 +59,13 @@ export function ShopPromos(props: TinaProps) {
                   loading="lazy"
                   className={
                     dark
-                      ? "absolute bottom-0 right-6 h-[70%] w-auto object-contain md:right-10"
-                      : "absolute inset-y-0 right-0 h-full w-1/2 object-cover opacity-90 [mask-image:linear-gradient(90deg,transparent,#000_40%)]"
+                      ? "order-last mt-6 h-[200px] w-full object-contain md:absolute md:bottom-0 md:right-10 md:mt-0 md:h-[70%] md:w-auto"
+                      : "order-last mt-6 h-[200px] w-full rounded-2xl object-cover md:absolute md:inset-y-0 md:right-0 md:mt-0 md:h-full md:w-1/2 md:rounded-none md:opacity-90 md:[mask-image:linear-gradient(90deg,transparent,#000_40%)]"
                   }
                   data-tina-field={tinaField(promo, "image")}
                 />
               )}
-              <div className="relative flex max-w-[60%] flex-col">
+              <div className="relative flex flex-col md:max-w-[60%]">
                 {promo.eyebrow && (
                   <p
                     className={`eyebrow-caps ${dark ? "text-brand-secondary-light" : "text-brand-secondary-dark"}`}
@@ -83,7 +83,7 @@ export function ShopPromos(props: TinaProps) {
                   </p>
                 )}
                 {promo.buttonLabel && promo.buttonUrl && (
-                  <a href={promo.buttonUrl} className={`${dark ? "btn-light" : "btn-primary"} mt-auto self-start`}>
+                  <a href={promo.buttonUrl} className={`${dark ? "btn-light" : "btn-primary"} mt-6 self-start whitespace-nowrap md:mt-auto`}>
                     {promo.buttonLabel}
                   </a>
                 )}
