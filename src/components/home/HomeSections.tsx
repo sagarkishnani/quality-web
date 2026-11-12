@@ -1,5 +1,5 @@
 import { useTina, tinaField } from "tinacms/dist/react";
-import { FaArrowRight, FaStar } from "react-icons/fa6";
+import { FaStar } from "react-icons/fa6";
 import SectionHeading from "../ui/SectionHeading";
 import SplitTitle from "../ui/SplitTitle";
 import StatGrid from "../ui/StatGrid";
@@ -74,7 +74,14 @@ export function HomeServices(props: TinaProps & { services: ServiceSummary[] }) 
           eyebrow={section.eyebrow}
           title={section.title}
           description={section.description}
-          tina={{ eyebrow: tinaField(section, "eyebrow"), title: tinaField(section, "title"), description: tinaField(section, "description") }}
+          linkLabel={section.linkLabel}
+          linkUrl={section.linkUrl}
+          tina={{
+            eyebrow: tinaField(section, "eyebrow"),
+            title: tinaField(section, "title"),
+            description: tinaField(section, "description"),
+            link: tinaField(section, "linkLabel"),
+          }}
         />
         <Carousel itemWidth="78" label={section.title || "Servicios"} gridClassName="md:auto-rows-[300px] md:grid-cols-[1.2fr_1fr_1fr] md:gap-5" className="mt-12">
           {featured.map((service, index) => (
@@ -88,14 +95,6 @@ export function HomeServices(props: TinaProps & { services: ServiceSummary[] }) 
             />
           ))}
         </Carousel>
-        {section.linkLabel && section.linkUrl && (
-          <div className="mt-10 text-center">
-            <a href={section.linkUrl} className="link-arrow" data-tina-field={tinaField(section, "linkLabel")}>
-              {section.linkLabel}
-              <FaArrowRight className="h-3 w-3" aria-hidden />
-            </a>
-          </div>
-        )}
       </div>
     </section>
   );
