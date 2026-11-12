@@ -276,6 +276,7 @@ export default function ProductCatalogReact({ items, segments, productsPath, lab
 
   return (
     <>
+      {segments.length === 0 && <div aria-hidden className="h-20" />}
       {segments.length > 0 && (
         <div className="container-xl">
           <div role="group" aria-label="Segmentos" className="-mx-5 flex gap-2 overflow-x-auto px-5 pb-16 pt-6 [scrollbar-width:none] md:-mx-8 md:px-8 lg:hidden [&::-webkit-scrollbar]:hidden">
