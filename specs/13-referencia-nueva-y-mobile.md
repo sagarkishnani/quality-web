@@ -27,6 +27,7 @@ Llegó una versión nueva de la referencia desktop junto con videos en WebM, íc
 12. **Contacto:** las tarjetas de correo, teléfono y dirección van sin flecha.
 13. **Checkbox:** los filtros del catálogo y el bundle de la ficha usan `checkbox.svg` y `checkbox-empty.svg`.
 14. **Imágenes nuevas:** `nosotros-building` en el hero de `/nosotros` y `banner-tintas-hp` en el banner claro "Accesorios de impresora" de `/productos`.
+15. **Botón "Ver cotización" de la tarjeta de producto:** pasa de estar sobre la imagen a quedar entre la imagen y el texto. Sigue apareciendo solo con mouse o teclado.
 
 **Fuera de alcance:**
 
@@ -123,7 +124,8 @@ Cada paso deja el sitio compilando y funcionando.
     - `ProductCatalogReact.tsx` y `BundleQuoteReact.tsx` reemplazan la caja dibujada con `FaCheck` por `checkbox.svg` (marcado) y `checkbox-vacio.svg` (sin marcar).
     - El `input` sigue siendo el control real (`sr-only`) y el foco sigue visible.
 12. **Banner de `/productos`:** el banner "Accesorios de impresora" del JSON de `shop` usa `banners/tintas-hp.webp`.
-13. **Documentación:** `CLAUDE.md` registra:
+13. **Botón de la tarjeta:** en `ProductTile.tsx`, el botón sale del bloque de la imagen a un espacio propio entre la imagen y el texto. Ese espacio solo existe con `[@media(hover:hover)]` y el botón aparece con hover o foco, con `z-10` sobre el enlace extendido.
+14. **Documentación:** `CLAUDE.md` registra:
     - `BackgroundVideo` compartido con WebM + MP4 y el campo `videoWebm`.
     - El video del banner del inicio y del banner final de Medioambiente.
     - La colección `about` sin `solution`.
@@ -172,6 +174,9 @@ Cada paso deja el sitio compilando y funcionando.
 - [ ] Las tarjetas de correo, teléfono y dirección van sin flecha.
 - [ ] Los filtros de Categoría y Marca y el bundle usan los SVG de checkbox, marcado y sin marcar.
 - [ ] Los checkbox funcionan con teclado (Tab y Espacio) y muestran el foco.
+- [ ] Con mouse, "Ver cotización" aparece entre la imagen y la marca sin tapar la imagen ni el texto, y lleva a la cotización.
+- [ ] Con teclado, el botón aparece al recibir el foco.
+- [ ] En pantallas táctiles el botón no aparece, no queda hueco y tocar la tarjeta abre la ficha.
 - [ ] El banner "Accesorios de impresora" de `/productos` muestra `tintas-hp.webp`.
 
 **General**
@@ -194,6 +199,7 @@ Cada paso deja el sitio compilando y funcionando.
 - **Sin números en el explorador, mobile incluido:** el HTML nuevo los quita en desktop, y así el explorador queda igual en los dos anchos. Decidido por Esteban el 2026-11-11.
 - **Se suman `nosotros-building` y `banner-tintas-hp`:** el hero de Nosotros deja de repetir la foto del slider, y el banner de `/productos` deja de repetir la de Medioambiente. Decidido por Esteban el 2026-11-11.
 - **`tintas-hp` en el banner claro, no en el oscuro:** la spec decía "banner oscuro", pero ese es la oferta de la M2727 con la foto del producto. El que repetía la foto de Medioambiente es "Accesorios de impresora" (claro), y sigue claro. Decidido por Esteban durante la implementación, el 2026-11-12.
+- **"Ver cotización" entre la imagen y el texto:** revierte la decisión de la spec 12 de ponerlo sobre la imagen, aunque la referencia nueva también lo deja ahí. Sigue apareciendo solo con hover o teclado, en un espacio reservado que solo existe en pantallas con mouse, así que en mobile la tarjeta no cambia. Decidido por Esteban durante la implementación, el 2026-11-12.
 - **Se quedan las imágenes del repo:** las de la carpeta nueva tienen las mismas medidas y pesan entre 25 % y 90 % más.
 - **`BackgroundVideo` compartido en `ui/`:** ahora lo usan Medioambiente y el inicio, y la regla de `lazy` y `prefers-reduced-motion` queda en un solo lugar.
 - **Ícono de Misión y Visión como campo del CMS:** sigue el patrón de que el contenido sale de Tina. La hoja queda de respaldo.
