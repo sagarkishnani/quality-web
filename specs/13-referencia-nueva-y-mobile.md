@@ -26,7 +26,7 @@ Llegó una versión nueva de la referencia desktop junto con videos en WebM, íc
 11. **Videos en WebM + MP4:** el hero de Medioambiente y los dos videos nuevos se sirven en WebM, con MP4 de respaldo.
 12. **Contacto:** las tarjetas de correo, teléfono y dirección van sin flecha.
 13. **Checkbox:** los filtros del catálogo y el bundle de la ficha usan `checkbox.svg` y `checkbox-empty.svg`.
-14. **Imágenes nuevas:** `nosotros-building` en el hero de `/nosotros` y `banner-tintas-hp` en el banner oscuro de `/productos`.
+14. **Imágenes nuevas:** `nosotros-building` en el hero de `/nosotros` y `banner-tintas-hp` en el banner claro "Accesorios de impresora" de `/productos`.
 
 **Fuera de alcance:**
 
@@ -84,7 +84,7 @@ Con un solo formato cargado, se sirve ese. Sin ninguno, queda la imagen.
 
 **Se eliminan**, si nada más los usa: `videos/impresion-responsable.mp4`, `images/medioambiente/impresion-poster.webp` e `images/medioambiente/impresora-2.webp`.
 
-**Contenido (JSON):** `about` (títulos de Antes y Después, hero, íconos y sin `solution`), `environment` (imágenes de los pilares 01 y 03, pilar 03 sin video, videos del hero y del banner), `home` (videos de `ecoBanner`) y `shop` (imagen del banner oscuro).
+**Contenido (JSON):** `about` (títulos de Antes y Después, hero, íconos y sin `solution`), `environment` (imágenes de los pilares 01 y 03, pilar 03 sin video, videos del hero y del banner), `home` (videos de `ecoBanner`) y `shop` (imagen del banner "Accesorios de impresora").
 
 ## Plan de implementación
 
@@ -122,7 +122,7 @@ Cada paso deja el sitio compilando y funcionando.
 11. **Checkbox:**
     - `ProductCatalogReact.tsx` y `BundleQuoteReact.tsx` reemplazan la caja dibujada con `FaCheck` por `checkbox.svg` (marcado) y `checkbox-vacio.svg` (sin marcar).
     - El `input` sigue siendo el control real (`sr-only`) y el foco sigue visible.
-12. **Banner de `/productos`:** el banner oscuro del JSON de `shop` usa `banners/tintas-hp.webp`.
+12. **Banner de `/productos`:** el banner "Accesorios de impresora" del JSON de `shop` usa `banners/tintas-hp.webp`.
 13. **Documentación:** `CLAUDE.md` registra:
     - `BackgroundVideo` compartido con WebM + MP4 y el campo `videoWebm`.
     - El video del banner del inicio y del banner final de Medioambiente.
@@ -172,7 +172,7 @@ Cada paso deja el sitio compilando y funcionando.
 - [ ] Las tarjetas de correo, teléfono y dirección van sin flecha.
 - [ ] Los filtros de Categoría y Marca y el bundle usan los SVG de checkbox, marcado y sin marcar.
 - [ ] Los checkbox funcionan con teclado (Tab y Espacio) y muestran el foco.
-- [ ] El banner oscuro de `/productos` muestra `tintas-hp.webp`.
+- [ ] El banner "Accesorios de impresora" de `/productos` muestra `tintas-hp.webp`.
 
 **General**
 
@@ -193,6 +193,7 @@ Cada paso deja el sitio compilando y funcionando.
 - **Correo cortado después de la `@`:** se lee entero y no cambia el tamaño de letra. Decidido por Esteban el 2026-11-11.
 - **Sin números en el explorador, mobile incluido:** el HTML nuevo los quita en desktop, y así el explorador queda igual en los dos anchos. Decidido por Esteban el 2026-11-11.
 - **Se suman `nosotros-building` y `banner-tintas-hp`:** el hero de Nosotros deja de repetir la foto del slider, y el banner de `/productos` deja de repetir la de Medioambiente. Decidido por Esteban el 2026-11-11.
+- **`tintas-hp` en el banner claro, no en el oscuro:** la spec decía "banner oscuro", pero ese es la oferta de la M2727 con la foto del producto. El que repetía la foto de Medioambiente es "Accesorios de impresora" (claro), y sigue claro. Decidido por Esteban durante la implementación, el 2026-11-12.
 - **Se quedan las imágenes del repo:** las de la carpeta nueva tienen las mismas medidas y pesan entre 25 % y 90 % más.
 - **`BackgroundVideo` compartido en `ui/`:** ahora lo usan Medioambiente y el inicio, y la regla de `lazy` y `prefers-reduced-motion` queda en un solo lugar.
 - **Ícono de Misión y Visión como campo del CMS:** sigue el patrón de que el contenido sale de Tina. La hoja queda de respaldo.
