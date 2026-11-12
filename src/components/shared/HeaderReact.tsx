@@ -90,7 +90,7 @@ function SearchPanel({ products, placeholder, popularTitle, onNavigate, onClose,
             value={term}
             onChange={(event) => setTerm(event.target.value)}
             placeholder={placeholder}
-            className="w-full min-w-0 bg-transparent text-search text-content placeholder:text-content-faint focus:outline-none focus-visible:ring-0"
+            className="w-full min-w-0 bg-transparent text-search text-content placeholder:text-content-faint focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
           />
         </label>
         {onClose && (

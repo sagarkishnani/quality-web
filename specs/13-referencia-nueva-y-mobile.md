@@ -126,7 +126,7 @@ Cada paso deja el sitio compilando y funcionando.
     - El `input` sigue siendo el control real (`sr-only`) y el foco sigue visible.
 12. **Banner de `/productos`:** el banner "Accesorios de impresora" del JSON de `shop` usa `banners/tintas-hp.webp`.
 13. **Botón de la tarjeta:** en `ProductTile.tsx`, el botón sale del bloque de la imagen a un espacio propio entre la imagen y el texto. Ese espacio solo existe con `[@media(hover:hover)]` y el botón aparece con hover o foco, con `z-10` sobre el enlace extendido.
-14. **Buscador:** en `HeaderReact.tsx` (`SearchPanel`), token `text-search` (22 px en mobile y 34 px en desktop, peso 400) y color `line-input` (`#B9BEC3`) en `tailwind.config.mjs`. El input lleva `focus-visible:ring-0`, sin otro indicador de foco.
+14. **Buscador:** en `HeaderReact.tsx` (`SearchPanel`), token `text-search` (22 px en mobile y 34 px en desktop, peso 400) y color `line-input` (`#B9BEC3`) en `tailwind.config.mjs`. El input lleva `focus-visible:ring-0 focus-visible:ring-offset-0` (con `ring-0` solo quedan los 2 px del offset global), sin otro indicador de foco.
 15. **Documentación:** `CLAUDE.md` registra:
     - `BackgroundVideo` compartido con WebM + MP4 y el campo `videoWebm`.
     - El video del banner del inicio y del banner final de Medioambiente.
