@@ -1,6 +1,6 @@
 {
   "hero": {
-    "image": "/images/banners/inicio.webp",
+    "image": "/images/nosotros/edificio.webp",
     "eyebrow": "Nosotros",
     "title": "Tu empresa se enfoca",
     "highlight": "en crecer",
@@ -37,10 +37,12 @@
   },
   "values": [
     {
+      "icon": "/images/brand/mision.svg",
       "title": "Misión",
       "text": "Brindar soluciones de impresión confiables que permitan a cada empresa concentrarse en su negocio, con equipos de última generación, suministros a tiempo y soporte técnico especializado."
     },
     {
+      "icon": "/images/brand/vision.svg",
       "title": "Visión",
       "text": "Ser la empresa elegida por nuestra innovación, soluciones, confiabilidad, servicios y productos, reconocida por la calidad profesional de nuestra gente y nuestra contribución al medio ambiente."
     }
@@ -49,45 +51,20 @@
     "eyebrow": "Comprar vs. alquilar",
     "title": "Olvídate de comprar y mantener impresoras",
     "description": "Asumimos toda tu infraestructura de impresión con una cuota fija mensual, insumos y soporte técnico incluido.",
-    "beforeLabel": "Antes · Comprar",
+    "beforeLabel": "Antes",
     "before": [
       "Alto gasto de capital inicial",
       "Gastos imprevistos en tóner",
       "Obsolescencia del equipo",
       "Mantenimiento por tu cuenta"
     ],
-    "afterLabel": "Después · Con Quality Sumprint",
+    "afterLabel": "Después",
     "after": [
       "Cero inversión inicial",
       "Suministros 100% incluidos",
       "Soporte técnico inmediato",
       "Renovación tecnológica constante"
     ]
-  },
-  "solution": {
-    "image": "/images/servicios/instalacion.webp",
-    "eyebrow": "Solución integral",
-    "title": "Concentra tu negocio, nosotros nos encargamos de tus impresiones",
-    "items": [
-      {
-        "title": "Outsourcing de impresión",
-        "text": "Equipos, consumibles y soporte en una cuota fija mensual."
-      },
-      {
-        "title": "Control de impresiones",
-        "text": "Monitoreo y gestión del uso por área y usuario."
-      },
-      {
-        "title": "Servicio técnico",
-        "text": "Soporte especializado en sitio y diagnóstico remoto."
-      },
-      {
-        "title": "Mantenimiento",
-        "text": "Preventivo y correctivo con repuestos originales."
-      }
-    ],
-    "linkLabel": "Ver todos los servicios",
-    "linkUrl": "/servicios"
   },
   "cta": {
     "title": "Da una buena impresión",

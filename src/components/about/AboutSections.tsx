@@ -1,5 +1,5 @@
 import { useTina, tinaField } from "tinacms/dist/react";
-import { FaArrowRight, FaCheck, FaXmark } from "react-icons/fa6";
+import { FaCheck, FaXmark } from "react-icons/fa6";
 import DarkHero from "../ui/DarkHero";
 import SectionHeading from "../ui/SectionHeading";
 import SplitTitle from "../ui/SplitTitle";
@@ -87,7 +87,11 @@ export function AboutValues(props: TinaProps & { leafIcon: string }) {
         {values.map((value: any, index: number) => (
           <article key={index} className="card md:p-11">
             <span className="flex h-12 w-12 items-center justify-center rounded-full bg-brand-secondary-lightest">
-              <img src={props.leafIcon} alt="" width="22" height="22" className="h-[22px] w-[22px]" />
+              {value.icon ? (
+                <img src={mediaUrl(value.icon)} alt="" width="24" height="24" className="h-6 w-6" data-tina-field={tinaField(value, "icon")} />
+              ) : (
+                <img src={props.leafIcon} alt="" width="22" height="22" className="h-[22px] w-[22px]" />
+              )}
             </span>
             <h2 className="mt-8 text-subtitle-md" data-tina-field={tinaField(value, "title")}>
               {value.title}
@@ -148,55 +152,6 @@ export function AboutCompare(props: TinaProps) {
               ))}
             </ul>
           </div>
-        </div>
-      </div>
-    </section>
-  );
-}
-
-export function AboutSolution(props: TinaProps) {
-  const solution = useAbout(props)?.solution;
-  if (!solution?.title) return <div hidden />;
-  const items = (solution.items || []).filter((item: any) => item?.title);
-  const image = mediaUrl(solution.image);
-
-  return (
-    <section className="pb-8">
-      <div className="container-xl grid gap-6 lg:grid-cols-[1fr_1.1fr]">
-        <div className="relative min-h-[320px] overflow-hidden rounded-2xl bg-ink-soft">
-          {image && (
-            <div aria-hidden data-parallax="0.1" className="absolute inset-x-0 -top-[12%] h-[124%]">
-              <img src={image} alt="" loading="lazy" className="h-full w-full object-cover" data-tina-field={tinaField(solution, "image")} />
-            </div>
-          )}
-        </div>
-        <div className="card md:p-12">
-          {solution.eyebrow && (
-            <p className="eyebrow" data-tina-field={tinaField(solution, "eyebrow")}>
-              {solution.eyebrow}
-            </p>
-          )}
-          <h2 className="mt-3 text-heading-sm" data-tina-field={tinaField(solution, "title")}>
-            {solution.title}
-          </h2>
-          <div className="mt-8 grid gap-x-8 sm:grid-cols-2">
-            {items.map((item: any, index: number) => (
-              <div key={index} className="border-t border-line py-6">
-                <h3 className="text-body-lg font-bold" data-tina-field={tinaField(item, "title")}>
-                  {item.title}
-                </h3>
-                <p className="mt-2 text-body-base text-content-muted" data-tina-field={tinaField(item, "text")}>
-                  {item.text}
-                </p>
-              </div>
-            ))}
-          </div>
-          {solution.linkLabel && solution.linkUrl && (
-            <a href={solution.linkUrl} className="link-arrow mt-2" data-tina-field={tinaField(solution, "linkLabel")}>
-              {solution.linkLabel}
-              <FaArrowRight className="h-3 w-3" aria-hidden />
-            </a>
-          )}
         </div>
       </div>
     </section>
