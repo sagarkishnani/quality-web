@@ -1,6 +1,6 @@
 import type { Collection } from "tinacms";
 import {
-  seoField, singleDocumentUi, textField, longTextField, buttonFields, statsField, titledItemsField, stringListField, ctaBlockField,
+  seoField, singleDocumentUi, textField, longTextField, buttonFields, statsField, stringListField, ctaBlockField,
 } from "./fields";
 
 export const aboutCollection: Collection = {
@@ -35,7 +35,18 @@ export const aboutCollection: Collection = {
         statsField,
       ],
     },
-    titledItemsField("values", "Misión y visión"),
+    {
+      type: "object",
+      name: "values",
+      label: "Misión y visión",
+      list: true,
+      ui: { itemProps: (item) => ({ label: item?.title || "Elemento" }) },
+      fields: [
+        { name: "icon", label: "Ícono (sin él, la hoja)", type: "image" },
+        textField("title", "Título"),
+        longTextField("text", "Texto"),
+      ],
+    },
     {
       type: "object",
       name: "compare",
@@ -48,18 +59,6 @@ export const aboutCollection: Collection = {
         stringListField("before", "Antes"),
         textField("afterLabel", "Título de “después”"),
         stringListField("after", "Después"),
-      ],
-    },
-    {
-      type: "object",
-      name: "solution",
-      label: "Solución integral",
-      fields: [
-        { name: "image", label: "Imagen", type: "image" },
-        textField("eyebrow", "Antetítulo"),
-        textField("title", "Título"),
-        titledItemsField("items", "Pilares"),
-        ...buttonFields("link"),
       ],
     },
     ctaBlockField(),

@@ -105,14 +105,17 @@ Colecciones:
 - `global` — navegación (con megamenús de servicios y productos), datos de
   contacto y WhatsApp, proveedores y aliados, footer, SEO por defecto, código inyectado.
 - `home` — portada: diapositivas del hero, productos destacados, servicios,
-  experiencia, banner de medioambiente y testimonios.
-- `about` — `/nosotros`; `hero.image` es la foto de fondo.
+  experiencia, banner de medioambiente y testimonios. El banner de medioambiente
+  reproduce `ecoBanner.video`/`videoWebm` y usa `image` como póster.
+- `about` — `/nosotros`; `hero.image` es la foto de fondo. Cada `values[]` (Misión,
+  Visión) lleva su `icon`; sin él, la hoja.
 - `service` — un JSON por servicio en `src/content/services/`; el nombre del
   archivo es el slug de `/servicios/<slug>`. `order` ordena, `showOnHome` elige
   los que van en el bento del inicio e `image` es la foto del hero del detalle.
 - `servicesPage` — `/servicios` y los textos comunes del detalle de servicio;
   `hero.image` es la foto de fondo.
 - `environment` — `/medioambiente`. La franja de video reutiliza `hero.video` y `hero.poster`.
+  El banner final reproduce `banner.video`/`videoWebm` con `banner.image` como póster.
 - `contactPage` — textos de `/contacto` (los datos salen de `global.contact`).
 - `shop` — textos de `/productos`, banners promocionales, textos de la ficha y
   qué atributos de WooCommerce son la marca y el segmento.
@@ -258,9 +261,12 @@ con `non-scaling-stroke`, el guion se mide en píxeles de pantalla e ignora `pat
 `svg` por ancho: el trazo de desktop (`hidden lg:block`) y el de mobile (`lg:hidden`); el script dibuja
 solo el que está visible.
 
-**Videos**: `BackgroundVideo` marca sus videos con `data-motion-video`, y
+**Videos**: `ui/BackgroundVideo.tsx` sirve un `<source>` WebM y otro MP4 de respaldo, en ese
+orden: en el CMS, `video` es la ruta del MP4 y `videoWebm` la del WebM; con uno solo, se sirve ese, y
+sin ninguno queda la imagen. Marca sus videos con `data-motion-video`, y
 `src/utils/reducedMotionVideo.ts` los detiene con `prefers-reduced-motion`. Con `lazy`, el video no
-se carga hasta acercarse a la pantalla (`src/utils/lazyVideo.ts`); debajo del fold, siempre con `lazy`.
+se carga hasta acercarse a la pantalla (`src/utils/lazyVideo.ts` pasa el `data-src` de cada `<source>`
+a `src`); debajo del fold, siempre con `lazy`.
 
 **Carruseles**: `ui/Carousel.tsx` convierte una lista en carrusel con `scroll-snap` por debajo de `md`
 y en la grilla de `gridClassName` desde `md`. Es solo CSS: sin flechas, puntos ni estado. Los anchos de
@@ -273,6 +279,10 @@ cifra en 1,2 s al entrar en pantalla, una vez. El HTML trae la cifra final; con
 
 **Logos de aliados**: van en una caja fija con `object-contain`. Un logo nuevo se sube recortado, sin
 margen vacío alrededor, o se verá más chico que los demás.
+
+**Buscador**: `SearchPanel` (en `HeaderReact.tsx`) usa el token `text-search` y la línea `line-input`. El
+input no lleva el anillo de foco global ni otro indicador, como la referencia (excepción a WCAG 2.4.7
+registrada en `specs/13-referencia-nueva-y-mobile.md`).
 
 **Paneles mobile**: el menú, la búsqueda y la hoja de filtros del catálogo quedan siempre montados,
 con `inert` mientras están cerrados, `data-lenis-prevent`, bloqueo de scroll del `body` y 300 ms de

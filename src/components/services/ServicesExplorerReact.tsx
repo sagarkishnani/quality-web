@@ -9,8 +9,6 @@ interface Props {
   services: ServiceSummary[];
 }
 
-const pad = (value: number) => String(value).padStart(2, "0");
-
 export default function ServicesExplorerReact({ title, description, linkLabel, services }: Props) {
   const [active, setActive] = useState(0);
   const [openIndex, setOpenIndex] = useState<number | null>(0);
@@ -36,11 +34,8 @@ export default function ServicesExplorerReact({ title, description, linkLabel, s
                   aria-expanded={open}
                   aria-controls={panelId}
                   onClick={() => setOpenIndex(open ? null : index)}
-                  className="relative grid min-h-11 w-full grid-cols-[2rem_minmax(0,1fr)_1.25rem] items-center gap-2.5 py-[18px] text-left"
+                  className="relative grid min-h-11 w-full grid-cols-[minmax(0,1fr)_1.25rem] items-center gap-2.5 py-[18px] text-left"
                 >
-                  <span className={`text-caption-sm font-semibold transition-colors duration-300 ${open ? "text-brand-secondary-dark" : "text-content-faint"}`}>
-                    {pad(index + 1)}
-                  </span>
                   <span className={`text-body-md transition-colors duration-300 ${open ? "font-semibold text-content" : "font-medium text-content-muted"}`}>
                     {service.name}
                   </span>
@@ -95,9 +90,6 @@ export default function ServicesExplorerReact({ title, description, linkLabel, s
                     onFocus={() => setActive(index)}
                     className="flex items-center gap-6 py-4"
                   >
-                    <span className={`w-6 text-caption-md font-semibold transition-colors ${selected ? "text-brand-secondary-dark" : "text-content-faint"}`}>
-                      {pad(index + 1)}
-                    </span>
                     <span
                       className={`flex-1 text-body-xl transition-all duration-300 ${
                         selected ? "translate-x-1.5 font-semibold text-content" : "font-medium text-content-muted"
@@ -133,10 +125,7 @@ export default function ServicesExplorerReact({ title, description, linkLabel, s
             ))}
             <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/30 to-transparent" aria-hidden />
             <div key={active} className="absolute inset-x-0 bottom-0 animate-fade-up p-8 text-white">
-              <p className="text-caption-sm font-semibold text-brand-secondary-light">
-                {pad(active + 1)} / {pad(services.length)}
-              </p>
-              <h3 className="mt-2 text-subtitle-md font-semibold">{current.name}</h3>
+              <h3 className="text-subtitle-md font-semibold">{current.name}</h3>
               {current.summary && <p className="mt-3 max-w-md text-body-base text-white/[0.88]">{current.summary}</p>}
               <a href={current.href} className="btn-light btn-sm mt-6">
                 {linkLabel}

@@ -12,7 +12,7 @@ export default function StatGrid({ stats }: { stats: (Stat | null)[] }) {
   return (
     <dl className="grid grid-cols-2 gap-y-10 gap-x-6 lg:grid-cols-4">
       {visible.map((stat, index) => (
-        <div key={index} className="flex flex-col-reverse gap-2">
+        <div key={index} className="flex flex-col-reverse justify-end gap-2">
           <dt className="text-body-base text-content-muted" data-tina-field={tinaField(stat as any, "label")}>
             {stat.label}
           </dt>

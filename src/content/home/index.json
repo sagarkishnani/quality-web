@@ -70,7 +70,9 @@
     "title": "Cuidamos el medio ambiente",
     "image": "/images/medioambiente/impresora-2.webp",
     "buttonLabel": "Ver más",
-    "buttonUrl": "/medioambiente"
+    "buttonUrl": "/medioambiente",
+    "video": "/videos/inicio-medioambiente.mp4",
+    "videoWebm": "/videos/inicio-medioambiente.webm"
   },
   "testimonials": {
     "eyebrow": "Testimonios",

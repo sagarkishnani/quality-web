@@ -19,6 +19,8 @@ export default {
       'subtitle-sm': ['clamp(1.25rem, 1.25vw + 0.4rem, 1.5rem)',   { lineHeight: '1.15', fontWeight: '700', letterSpacing: '-0.02em' }],
       'subtitle-xs': ['1.25rem',                                   { lineHeight: '1.2',  fontWeight: '600', letterSpacing: '-0.01em' }],
 
+      'search':    ['clamp(1.375rem, 1.14vw + 1.1rem, 2.125rem)', { lineHeight: '1.2', fontWeight: '400', letterSpacing: '-0.02em' }],
+
       'body-xl':   ['18px', { lineHeight: '28px', fontWeight: '400' }],
       'body-lg':   ['17px', { lineHeight: '27px', fontWeight: '400' }],
       'body-md':   ['16px', { lineHeight: '26px', fontWeight: '400' }],
@@ -86,6 +88,7 @@ export default {
           DEFAULT: '#E6E8EB',
           soft:    '#ECEEF0',
           strong:  '#DADDE1',
+          input:   '#B9BEC3',
         },
         /* Matches the visual reference even though it stays below 4.5:1 on the page background (spec 01). */
         accent: '#00A0DF',

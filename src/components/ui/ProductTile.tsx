@@ -18,7 +18,8 @@ const regular = {
   brand: "text-caption-sm",
   name: "text-subtitle-xs",
   category: "text-body-base",
-  quote: "bottom-4 h-11 px-6 text-body-sm",
+  quoteSlot: "mt-4",
+  quote: "h-11 px-6 text-body-sm",
 };
 
 const compactBelowMd = {
@@ -28,7 +29,8 @@ const compactBelowMd = {
   brand: "text-caption-xs md:text-caption-sm",
   name: "text-body-md font-semibold md:text-subtitle-xs",
   category: "text-caption-md md:text-body-base",
-  quote: "bottom-3 h-10 px-4 text-caption-md md:bottom-4 md:h-11 md:px-6 md:text-body-sm",
+  quoteSlot: "mt-3 md:mt-4",
+  quote: "h-10 px-4 text-caption-md md:h-11 md:px-6 md:text-body-sm",
 };
 
 export default function ProductTile({ item, href, buttonLabel, quoteMessage, tone = "raised", compact = false }: Props) {
@@ -68,16 +70,19 @@ export default function ProductTile({ item, href, buttonLabel, quoteMessage, ton
         >
           <FaEye className="h-4 w-4" />
         </span>
-        {buttonLabel && quoteMessage && (
+      </div>
+
+      {buttonLabel && quoteMessage && (
+        <div className={`relative z-10 hidden justify-center ${size.quoteSlot} [@media(hover:hover)]:flex`}>
           <a
             href={quoteUrl(fillTemplate(quoteMessage, { cantidad: 1, producto: product }))}
             aria-label={`${buttonLabel}: ${product}`}
-            className={`pointer-events-none absolute left-1/2 z-10 flex -translate-x-1/2 translate-y-4 items-center whitespace-nowrap rounded-full bg-ink font-medium ${size.quote} text-white opacity-0 transition-all duration-300 focus-visible:pointer-events-auto focus-visible:translate-y-0 focus-visible:opacity-100 [@media(hover:hover)]:group-hover:pointer-events-auto [@media(hover:hover)]:group-hover:translate-y-0 [@media(hover:hover)]:group-hover:opacity-100`}
+            className={`pointer-events-none flex translate-y-2 items-center whitespace-nowrap rounded-full bg-ink font-medium ${size.quote} text-white opacity-0 transition-all duration-300 focus-visible:pointer-events-auto focus-visible:translate-y-0 focus-visible:opacity-100 group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100`}
           >
             {buttonLabel}
           </a>
-        )}
-      </div>
+        </div>
+      )}
 
       <div className={size.body}>
         {item.brand && (

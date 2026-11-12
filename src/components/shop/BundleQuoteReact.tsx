@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { FaCheck, FaPlus } from "react-icons/fa6";
+import { FaPlus } from "react-icons/fa6";
+import { checkboxIcon } from "../ui/checkboxIcon";
 import { quoteUrl } from "./quote";
 import type { CatalogItem } from "../../lib/woo/catalog";
 
@@ -28,14 +29,13 @@ function BundleCard({ item, kind, selected, locked, onToggle }: {
       <input type="checkbox" className="sr-only" checked={selected} disabled={locked} onChange={onToggle} />
       <span className="relative flex h-28 w-28 shrink-0 items-center justify-center overflow-hidden rounded-lg bg-surface-sunken">
         {item.image && <img src={item.image} alt="" width={112} height={112} loading="lazy" className="h-full w-full object-contain p-2 mix-blend-multiply" />}
-        <span
-          aria-hidden
-          className={`absolute left-1.5 top-1.5 flex h-6 w-6 items-center justify-center rounded-md border ${
-            selected ? "border-ink bg-ink text-white" : "border-line-strong bg-surface-raised"
-          }`}
-        >
-          {selected && <FaCheck className="h-3 w-3" />}
-        </span>
+        <img
+          src={checkboxIcon(selected)}
+          alt=""
+          width="28"
+          height="28"
+          className="absolute left-1 top-1 h-7 w-7 rounded-md bg-surface-raised"
+        />
       </span>
       <span className="flex min-w-0 flex-1 flex-col gap-1.5">
         <span className="break-words text-caption-xs font-semibold uppercase tracking-[0.1em] text-brand-secondary-dark">{kind}</span>

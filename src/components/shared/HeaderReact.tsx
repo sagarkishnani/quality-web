@@ -79,10 +79,10 @@ function SearchPanel({ products, placeholder, popularTitle, onNavigate, onClose,
   const heading = normalized ? (results.length ? "Resultados" : `Sin resultados para “${term}”`) : popularTitle;
 
   return (
-    <div className="mx-auto max-w-3xl">
-      <div className="flex items-center gap-4 border-b border-line-strong pb-4">
-        <label className="flex flex-1 items-center gap-4">
-          <FaMagnifyingGlass className="h-5 w-5 text-content-subtle" aria-hidden />
+    <div className="mx-auto max-w-[1000px]">
+      <div className="flex items-center gap-3 border-b border-line-input pb-3 lg:gap-[18px] lg:pb-[18px]">
+        <label className="flex min-w-0 flex-1 items-center gap-3 lg:gap-[18px]">
+          <SearchIcon />
           <span className="sr-only">{placeholder}</span>
           <input
             ref={inputRef}
@@ -90,27 +90,47 @@ function SearchPanel({ products, placeholder, popularTitle, onNavigate, onClose,
             value={term}
             onChange={(event) => setTerm(event.target.value)}
             placeholder={placeholder}
-            className="w-full bg-transparent text-subtitle-sm font-medium placeholder:text-content-subtle focus:outline-none"
+            className="w-full min-w-0 bg-transparent text-search text-content placeholder:text-content-faint focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
           />
         </label>
         {onClose && (
-          <button type="button" onClick={onClose} aria-label="Cerrar búsqueda" className="-mr-2.5 flex h-11 w-11 shrink-0 items-center justify-center text-content-muted">
+          <button type="button" onClick={onClose} aria-label="Cerrar búsqueda" className="-mr-2.5 flex h-11 w-11 shrink-0 items-center justify-center rounded-md text-content-muted transition-colors hover:bg-surface-sunken">
             <FaXmark className="h-5 w-5" aria-hidden />
           </button>
         )}
       </div>
-      <p className="mt-6 text-caption-sm font-semibold uppercase tracking-[0.14em] text-content-subtle">{heading}</p>
-      <ul className="mt-3 grid gap-1 sm:grid-cols-2">
+      <p className="mb-2 mt-6 text-caption-md text-content-subtle lg:mb-[22px] lg:mt-10 lg:text-body-base">{heading}</p>
+      <ul className="lg:grid lg:grid-cols-4 lg:gap-x-8 lg:gap-y-[22px]">
         {results.slice(0, 10).map((product) => (
-          <li key={product.href}>
-            <a href={product.href} onClick={onNavigate} className="flex items-center justify-between rounded-md py-2 pr-2 text-body-md hover:text-accent">
+          <li key={product.href} className="lg:justify-self-start">
+            <a
+              href={product.href}
+              onClick={onNavigate}
+              className="block border-b border-line py-3 text-body-lg lg:border-0 lg:py-0 lg:text-body-md lg:underline-offset-4 lg:hover:underline"
+            >
               {product.label}
-              <FaArrowRight className="h-3 w-3 opacity-50" aria-hidden />
             </a>
           </li>
         ))}
       </ul>
     </div>
+  );
+}
+
+function SearchIcon() {
+  return (
+    <svg
+      aria-hidden
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.6"
+      strokeLinecap="round"
+      className="h-[22px] w-[22px] shrink-0 text-content-faint lg:h-[30px] lg:w-[30px]"
+    >
+      <circle cx="11" cy="11" r="7" />
+      <path d="M20 20l-3.5-3.5" />
+    </svg>
   );
 }
 
@@ -266,7 +286,7 @@ export default function HeaderReact({ query, variables, data: initialData, local
               aria-label="Buscar productos"
               className="p-2 text-content transition-colors hover:text-accent"
             >
-              {menu === "search" ? <FaXmark className="h-4 w-4" /> : <FaMagnifyingGlass className="h-4 w-4" />}
+              <FaMagnifyingGlass className="h-4 w-4" />
             </button>
             {nav?.cta?.label && (
               <a
@@ -360,6 +380,7 @@ export default function HeaderReact({ query, variables, data: initialData, local
                 placeholder={nav?.search?.placeholder || "Buscar productos"}
                 popularTitle={nav?.search?.popularTitle || "Productos populares"}
                 onNavigate={close}
+                onClose={() => setMenu(null)}
               />
             )}
           </div>

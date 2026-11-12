@@ -12,16 +12,22 @@ interface Props {
 }
 
 export default function SectionHeading({ eyebrow, title, description, linkLabel, linkUrl, tina = {}, as: Tag = "h2" }: Props) {
-  const aside = description ? (
-    <p className="max-w-xl text-body-md text-content-muted md:justify-self-end" data-tina-field={tina.description}>
-      {description}
-    </p>
-  ) : linkLabel && linkUrl ? (
+  const link = linkLabel && linkUrl ? (
     <a href={linkUrl} className="link-arrow md:justify-self-end" data-tina-field={tina.link}>
       {linkLabel}
       <FaArrowRight aria-hidden className="h-3 w-3" />
     </a>
   ) : null;
+  const descriptionUnderTitle = Boolean(description && link);
+  const aside = descriptionUnderTitle ? (
+    link
+  ) : description ? (
+    <p className="max-w-xl text-body-md text-content-muted md:justify-self-end" data-tina-field={tina.description}>
+      {description}
+    </p>
+  ) : (
+    link
+  );
 
   return (
     <div className="grid items-end gap-6 md:grid-cols-2">
@@ -35,6 +41,11 @@ export default function SectionHeading({ eyebrow, title, description, linkLabel,
           <Tag className="text-heading-sm" data-tina-field={tina.title}>
             {title}
           </Tag>
+        )}
+        {descriptionUnderTitle && (
+          <p className="mt-3.5 max-w-xl text-body-md text-content-muted" data-tina-field={tina.description}>
+            {description}
+          </p>
         )}
       </div>
       {aside}

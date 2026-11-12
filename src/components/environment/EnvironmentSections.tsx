@@ -1,5 +1,6 @@
 import { useTina, tinaField } from "tinacms/dist/react";
 import { mediaUrl } from "../../utils/mediaUrl";
+import BackgroundVideo from "../ui/BackgroundVideo";
 
 interface TinaProps {
   query: string;
@@ -11,12 +12,6 @@ function useEnvironment({ query, variables, data }: TinaProps) {
   return useTina({ query, variables, data }).data?.environment;
 }
 
-function BackgroundVideo({ src, poster, className, lazy }: { src?: string | null; poster?: string; className: string; lazy?: boolean }) {
-  if (!src) return poster ? <img src={poster} alt="" className={className} loading={lazy ? "lazy" : undefined} decoding={lazy ? "async" : undefined} /> : null;
-  const source = lazy ? { "data-lazy-src": mediaUrl(src), preload: "none" } : { src: mediaUrl(src), autoPlay: true, preload: "metadata" };
-  return <video data-motion-video className={className} poster={poster} muted loop playsInline aria-hidden {...source} />;
-}
-
 export function EnvironmentHero(props: TinaProps) {
   const hero = useEnvironment(props)?.hero;
   if (!hero) return <div hidden />;
@@ -24,7 +19,7 @@ export function EnvironmentHero(props: TinaProps) {
   return (
     <section className="relative h-[calc(100svh-4rem)] min-h-[640px] overflow-hidden bg-petrol text-white">
       <div aria-hidden data-parallax="0.3" className="absolute inset-x-0 -top-[14%] h-[128%]">
-        <BackgroundVideo src={hero.video} poster={mediaUrl(hero.poster)} className="h-full w-full object-cover" />
+        <BackgroundVideo webm={hero.videoWebm} mp4={hero.video} poster={mediaUrl(hero.poster)} className="h-full w-full object-cover" />
       </div>
       <div className="environment-hero-scrim absolute inset-0" aria-hidden />
       <div className="absolute inset-x-0 top-[28%] flex flex-col items-center gap-[18px] px-6 text-center">
@@ -79,7 +74,7 @@ export function EnvironmentVideoBand(props: TinaProps) {
   return (
     <section aria-hidden className="video-band-mask relative h-80 overflow-hidden lg:h-[420px]">
       <div data-parallax="0.18" className="absolute inset-x-0 -top-[35%] h-[170%]">
-        <BackgroundVideo src={hero.video} poster={mediaUrl(hero.poster)} className="h-full w-full object-cover" lazy />
+        <BackgroundVideo webm={hero.videoWebm} mp4={hero.video} poster={mediaUrl(hero.poster)} className="h-full w-full object-cover" lazy />
       </div>
       <div className="absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-b from-petrol/0 via-petrol/55 via-45% to-petrol" />
     </section>
@@ -138,7 +133,7 @@ export function EnvironmentPillars(props: TinaProps & { leafIcon: string }) {
                 >
                   <div aria-hidden data-parallax="-0.08" className="absolute inset-x-0 -top-[15%] h-[130%]">
                     <BackgroundVideo
-                      src={pillar.video}
+                      mp4={pillar.video}
                       poster={mediaUrl(pillar.image)}
                       className="h-full w-full object-cover"
                       lazy
@@ -182,16 +177,9 @@ export function EnvironmentBanner(props: TinaProps) {
 
   return (
     <section className="relative flex min-h-[420px] items-center justify-center overflow-hidden bg-petrol px-6 py-20 text-center text-white md:min-h-[560px] lg:min-h-[820px]">
-      {image && (
-        <div aria-hidden data-parallax="0.22" className="absolute inset-x-0 -top-[16%] h-[132%]">
-          <img
-            src={image}
-            alt=""
-            loading="lazy"
-            decoding="async"
-            className="h-full w-full object-cover"
-            data-tina-field={tinaField(banner, "image")}
-          />
+      {(image || banner.video || banner.videoWebm) && (
+        <div aria-hidden data-parallax="0.22" className="absolute inset-x-0 -top-[16%] h-[132%]" data-tina-field={tinaField(banner, "image")}>
+          <BackgroundVideo webm={banner.videoWebm} mp4={banner.video} poster={image} className="h-full w-full object-cover" lazy />
         </div>
       )}
       <div className="environment-banner-scrim absolute inset-0" aria-hidden />

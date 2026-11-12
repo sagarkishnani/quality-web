@@ -27,6 +27,17 @@ interface Props {
 const columnTitle = "text-caption-md font-semibold uppercase tracking-[0.12em] text-content";
 const footerLink = "flex min-h-11 items-center text-body-base text-content-muted transition-colors hover:text-content md:inline md:min-h-0";
 
+function EmailWithBreak({ email }: { email: string }) {
+  const [user, domain] = email.split("@");
+  if (!domain) return <span>{email}</span>;
+  return (
+    <span>
+      {user}@<wbr />
+      {domain}
+    </span>
+  );
+}
+
 export default function FooterReact({ query, variables, data: initialData, locale }: Props) {
   const { data } = useTina({ query, variables, data: initialData });
   const global = data?.global;
@@ -69,7 +80,7 @@ export default function FooterReact({ query, variables, data: initialData, local
           ))}
 
           {contact && (
-            <div className="col-span-2 md:col-span-1">
+            <div>
               <p className={columnTitle}>Contacto</p>
               <ul className="mt-2 md:mt-5 md:space-y-3">
                 <li>
@@ -77,8 +88,8 @@ export default function FooterReact({ query, variables, data: initialData, local
                 </li>
                 {contact.email && (
                   <li>
-                    <a href={`mailto:${contact.email}`} className={`${footerLink} break-all`} data-tina-field={tinaField(contact, "email")}>
-                      {contact.email}
+                    <a href={`mailto:${contact.email}`} className={footerLink} data-tina-field={tinaField(contact, "email")}>
+                      <EmailWithBreak email={contact.email} />
                     </a>
                   </li>
                 )}
