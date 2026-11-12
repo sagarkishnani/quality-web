@@ -1,3 +1,5 @@
+import BackgroundVideo from "./BackgroundVideo";
+
 const PARALLAX_LAYERS = {
   0.16: "inset-x-0 -top-[18%] h-[136%]",
 };
@@ -7,28 +9,28 @@ interface Props {
   eyebrow?: string | null;
   title?: string | null;
   image?: string;
+  video?: string | null;
+  videoWebm?: string | null;
   buttonLabel?: string | null;
   buttonUrl?: string | null;
   tina?: { eyebrow?: string; title?: string; image?: string; button?: string };
 }
 
-export default function ImageBanner({ parallax, eyebrow, title, image, buttonLabel, buttonUrl, tina = {} }: Props) {
+export default function ImageBanner({ parallax, eyebrow, title, image, video, videoWebm, buttonLabel, buttonUrl, tina = {} }: Props) {
   return (
     <div className="relative flex min-h-[420px] items-center justify-center overflow-hidden rounded-3xl bg-ink px-6 py-20 text-center md:min-h-[560px]">
-      {image && (
-        <div aria-hidden data-parallax={parallax} className={`absolute ${parallax ? PARALLAX_LAYERS[parallax] : "inset-0"}`}>
-          <img
-            src={image}
-            alt=""
-            loading="lazy"
-            decoding="async"
-            className="h-full w-full object-cover"
-            data-tina-field={tina.image}
-          />
+      {(image || video || videoWebm) && (
+        <div
+          aria-hidden
+          data-parallax={parallax}
+          className={`absolute ${parallax ? PARALLAX_LAYERS[parallax] : "inset-0"}`}
+          data-tina-field={tina.image}
+        >
+          <BackgroundVideo webm={videoWebm} mp4={video} poster={image} className="h-full w-full object-cover" lazy />
         </div>
       )}
-      <div className="absolute inset-0 bg-ink/55" aria-hidden />
-      <div className="relative max-w-3xl text-white">
+      <div className="absolute inset-0 bg-gradient-to-b from-ink/55 via-ink/60 to-ink/70" aria-hidden />
+      <div className="relative max-w-3xl text-white [text-shadow:0_2px_24px_rgba(0,0,0,0.35)]">
         {eyebrow && (
           <p className="text-body-sm font-semibold uppercase tracking-[0.12em] text-brand-secondary-light" data-tina-field={tina.eyebrow}>
             {eyebrow}

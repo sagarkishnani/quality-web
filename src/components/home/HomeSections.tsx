@@ -138,6 +138,8 @@ export function HomeEcoBanner(props: TinaProps) {
           eyebrow={banner.eyebrow}
           title={banner.title}
           image={mediaUrl(banner.image)}
+          video={banner.video}
+          videoWebm={banner.videoWebm}
           buttonLabel={banner.buttonLabel}
           buttonUrl={banner.buttonUrl}
           tina={{
