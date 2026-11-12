@@ -1,5 +1,4 @@
 import { useTina, tinaField } from "tinacms/dist/react";
-import { FaArrowRight } from "react-icons/fa6";
 
 interface TinaProps {
   query: string;
@@ -22,13 +21,12 @@ function ContactCard({ label, value, href, external }: { label?: string | null; 
       href={href}
       target={external ? "_blank" : undefined}
       rel={external ? "noopener noreferrer" : undefined}
-      className="group flex items-center justify-between gap-6 rounded-2xl bg-surface-raised/80 px-6 py-5 transition-colors hover:bg-surface-raised"
+      className="flex items-center rounded-2xl bg-surface-raised/80 px-6 py-5 transition-colors hover:bg-surface-raised"
     >
       <span>
         <span className="block text-caption-md font-semibold text-content-strong">{label}</span>
         <span className="mt-1 block text-body-lg">{value}</span>
       </span>
-      <FaArrowRight className="h-3.5 w-3.5 shrink-0 transition-transform group-hover:translate-x-1" aria-hidden />
     </a>
   );
 }
