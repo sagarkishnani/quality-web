@@ -3,6 +3,7 @@
     "eyebrow": "Medioambiente",
     "title": "¿Por qué reciclamos los deshechos?",
     "video": "/videos/medioambiente-hero.mp4",
+    "videoWebm": "/videos/medioambiente-hero.webm",
     "poster": "/images/medioambiente/hero-poster.webp",
     "buttonLabel": "Recicla con nosotros",
     "buttonUrl": "/contacto"
@@ -42,6 +43,8 @@
     "eyebrow": "Reciclamos los deshechos para cuidar el ecosistema",
     "title": "Ayuda a preservar el planeta en el que vivimos",
     "image": "/images/medioambiente/impresora-1.webp",
+    "video": "/videos/medioambiente-banner.mp4",
+    "videoWebm": "/videos/medioambiente-banner.webm",
     "buttonLabel": "Contáctanos",
     "buttonUrl": "/contacto"
   },

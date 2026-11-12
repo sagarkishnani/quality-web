@@ -15,7 +15,8 @@ export const environmentCollection: Collection = {
       fields: [
         textField("eyebrow", "Antetítulo"),
         textField("title", "Título"),
-        textField("video", "Video de fondo (ruta en /videos)"),
+        textField("video", "Video MP4 (ruta en /videos)"),
+        textField("videoWebm", "Video WebM (ruta en /videos)"),
         { name: "poster", label: "Imagen mientras carga el video", type: "image" },
         ...buttonFields(),
       ],
@@ -47,7 +48,9 @@ export const environmentCollection: Collection = {
       fields: [
         textField("eyebrow", "Antetítulo"),
         textField("title", "Título"),
-        { name: "image", label: "Imagen de fondo", type: "image" },
+        { name: "image", label: "Imagen de fondo (póster si hay video)", type: "image" },
+        textField("video", "Video MP4 (ruta en /videos)"),
+        textField("videoWebm", "Video WebM (ruta en /videos)"),
         ...buttonFields(),
       ],
     },
