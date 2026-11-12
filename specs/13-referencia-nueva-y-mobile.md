@@ -28,7 +28,7 @@ Llegó una versión nueva de la referencia desktop junto con videos en WebM, íc
 13. **Checkbox:** los filtros del catálogo y el bundle de la ficha usan `checkbox.svg` y `checkbox-empty.svg`.
 14. **Imágenes nuevas:** `nosotros-building` en el hero de `/nosotros` y `banner-tintas-hp` en el banner claro "Accesorios de impresora" de `/productos`.
 15. **Botón "Ver cotización" de la tarjeta de producto:** pasa de estar sobre la imagen a quedar entre la imagen y el texto. Sigue apareciendo solo con mouse o teclado.
-16. **Buscador del header:** como la referencia (desktop del HTML nuevo, mobile de `Quality Sumprint Mobile.html`): input más grande y de peso normal, lupa de trazo fino, línea inferior más oscura, panel de 1000 px, X dentro del panel en desktop (la lupa del header ya no cambia a X), "Productos populares" sin mayúsculas y resultados sin flecha (4 columnas en desktop, lista con separadores en mobile). Sin anillo de foco: la línea inferior se oscurece.
+16. **Buscador del header:** como la referencia (desktop del HTML nuevo, mobile de `Quality Sumprint Mobile.html`): input más grande y de peso normal, lupa de trazo fino, línea inferior más oscura, panel de 1000 px, X dentro del panel en desktop (la lupa del header ya no cambia a X), "Productos populares" sin mayúsculas y resultados sin flecha (4 columnas en desktop, lista con separadores en mobile). Sin indicador de foco en el input, como la referencia.
 
 **Fuera de alcance:**
 
@@ -126,7 +126,7 @@ Cada paso deja el sitio compilando y funcionando.
     - El `input` sigue siendo el control real (`sr-only`) y el foco sigue visible.
 12. **Banner de `/productos`:** el banner "Accesorios de impresora" del JSON de `shop` usa `banners/tintas-hp.webp`.
 13. **Botón de la tarjeta:** en `ProductTile.tsx`, el botón sale del bloque de la imagen a un espacio propio entre la imagen y el texto. Ese espacio solo existe con `[@media(hover:hover)]` y el botón aparece con hover o foco, con `z-10` sobre el enlace extendido.
-14. **Buscador:** en `HeaderReact.tsx` (`SearchPanel`), token `text-search` (22 px en mobile y 34 px en desktop, peso 400) y color `line-input` (`#B9BEC3`) en `tailwind.config.mjs`. El input lleva `focus-visible:ring-0`, y el contenedor, `focus-within:border-ink`.
+14. **Buscador:** en `HeaderReact.tsx` (`SearchPanel`), token `text-search` (22 px en mobile y 34 px en desktop, peso 400) y color `line-input` (`#B9BEC3`) en `tailwind.config.mjs`. El input lleva `focus-visible:ring-0`, sin otro indicador de foco.
 15. **Documentación:** `CLAUDE.md` registra:
     - `BackgroundVideo` compartido con WebM + MP4 y el campo `videoWebm`.
     - El video del banner del inicio y del banner final de Medioambiente.
@@ -180,7 +180,7 @@ Cada paso deja el sitio compilando y funcionando.
 - [ ] Con teclado, el botón aparece al recibir el foco.
 - [ ] En pantallas táctiles el botón no aparece, no queda hueco y tocar la tarjeta abre la ficha.
 - [ ] El buscador (desktop y mobile) se ve como la referencia: input de 34 px en desktop y 22 px a 390 px, lupa fina y resultados sin flecha.
-- [ ] Al abrir el buscador no aparece el anillo azul; la línea inferior pasa a `ink` mientras el input tiene el foco.
+- [ ] Al abrir el buscador, el input no muestra anillo ni cambio de borde.
 - [ ] En desktop, la X del panel lo cierra y la lupa del header no cambia de ícono.
 - [ ] El banner "Accesorios de impresora" de `/productos` muestra `tintas-hp.webp`.
 
@@ -205,7 +205,7 @@ Cada paso deja el sitio compilando y funcionando.
 - **Se suman `nosotros-building` y `banner-tintas-hp`:** el hero de Nosotros deja de repetir la foto del slider, y el banner de `/productos` deja de repetir la de Medioambiente. Decidido por Esteban el 2026-11-11.
 - **`tintas-hp` en el banner claro, no en el oscuro:** la spec decía "banner oscuro", pero ese es la oferta de la M2727 con la foto del producto. El que repetía la foto de Medioambiente es "Accesorios de impresora" (claro), y sigue claro. Decidido por Esteban durante la implementación, el 2026-11-12.
 - **"Ver cotización" entre la imagen y el texto:** revierte la decisión de la spec 12 de ponerlo sobre la imagen, aunque la referencia nueva también lo deja ahí. Sigue apareciendo solo con hover o teclado, en un espacio reservado que solo existe en pantallas con mouse, así que en mobile la tarjeta no cambia. Decidido por Esteban durante la implementación, el 2026-11-12.
-- **Buscador como la referencia, con la línea inferior como indicador de foco:** la referencia no muestra foco en el input. Se quita el anillo global, pero la línea se oscurece para seguir cumpliendo WCAG 2.4.7. Decidido por Esteban durante la implementación, el 2026-11-12.
+- **Buscador como la referencia, sin indicador de foco en el input:** se quita el anillo global y no se agrega otro indicador. Es una excepción a WCAG 2.4.7: el panel solo tiene ese campo, se enfoca al abrirse y el cursor de texto queda visible. Primero se probó oscurecer la línea inferior y se descartó. Decidido por Esteban durante la implementación, el 2026-11-12.
 - **Se quedan las imágenes del repo:** las de la carpeta nueva tienen las mismas medidas y pesan entre 25 % y 90 % más.
 - **`BackgroundVideo` compartido en `ui/`:** ahora lo usan Medioambiente y el inicio, y la regla de `lazy` y `prefers-reduced-motion` queda en un solo lugar.
 - **Ícono de Misión y Visión como campo del CMS:** sigue el patrón de que el contenido sale de Tina. La hoja queda de respaldo.

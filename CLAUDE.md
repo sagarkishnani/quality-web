@@ -281,8 +281,8 @@ cifra en 1,2 s al entrar en pantalla, una vez. El HTML trae la cifra final; con
 margen vacío alrededor, o se verá más chico que los demás.
 
 **Buscador**: `SearchPanel` (en `HeaderReact.tsx`) usa el token `text-search` y la línea `line-input`. El
-input no lleva el anillo de foco global: el indicador es la línea inferior, que pasa a `ink` con
-`focus-within`.
+input no lleva el anillo de foco global ni otro indicador, como la referencia (excepción a WCAG 2.4.7
+registrada en `specs/13-referencia-nueva-y-mobile.md`).
 
 **Paneles mobile**: el menú, la búsqueda y la hoja de filtros del catálogo quedan siempre montados,
 con `inert` mientras están cerrados, `data-lenis-prevent`, bloqueo de scroll del `body` y 300 ms de

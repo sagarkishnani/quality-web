@@ -80,7 +80,7 @@ function SearchPanel({ products, placeholder, popularTitle, onNavigate, onClose,
 
   return (
     <div className="mx-auto max-w-[1000px]">
-      <div className="flex items-center gap-3 border-b border-line-input pb-3 transition-colors focus-within:border-ink lg:gap-[18px] lg:pb-[18px]">
+      <div className="flex items-center gap-3 border-b border-line-input pb-3 lg:gap-[18px] lg:pb-[18px]">
         <label className="flex min-w-0 flex-1 items-center gap-3 lg:gap-[18px]">
           <SearchIcon />
           <span className="sr-only">{placeholder}</span>
