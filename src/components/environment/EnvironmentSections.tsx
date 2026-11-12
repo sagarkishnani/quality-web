@@ -177,16 +177,9 @@ export function EnvironmentBanner(props: TinaProps) {
 
   return (
     <section className="relative flex min-h-[420px] items-center justify-center overflow-hidden bg-petrol px-6 py-20 text-center text-white md:min-h-[560px] lg:min-h-[820px]">
-      {image && (
-        <div aria-hidden data-parallax="0.22" className="absolute inset-x-0 -top-[16%] h-[132%]">
-          <img
-            src={image}
-            alt=""
-            loading="lazy"
-            decoding="async"
-            className="h-full w-full object-cover"
-            data-tina-field={tinaField(banner, "image")}
-          />
+      {(image || banner.video || banner.videoWebm) && (
+        <div aria-hidden data-parallax="0.22" className="absolute inset-x-0 -top-[16%] h-[132%]" data-tina-field={tinaField(banner, "image")}>
+          <BackgroundVideo webm={banner.videoWebm} mp4={banner.video} poster={image} className="h-full w-full object-cover" lazy />
         </div>
       )}
       <div className="environment-banner-scrim absolute inset-0" aria-hidden />
