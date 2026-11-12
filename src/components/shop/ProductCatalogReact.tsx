@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { FaMagnifyingGlass, FaChevronDown, FaChevronUp, FaCheck, FaSliders } from "react-icons/fa6";
+import { FaMagnifyingGlass, FaChevronDown, FaChevronUp, FaSliders } from "react-icons/fa6";
 import ProductTile from "../ui/ProductTile";
+import { checkboxIcon } from "../ui/checkboxIcon";
 import { slugify, type CatalogItem } from "../../lib/woo/catalog";
 import type { FacetOption } from "../../lib/content/shopSettings";
 
@@ -56,14 +57,13 @@ function FacetGroup({ title, options, selected, onToggle }: FacetGroupProps) {
             return (
               <label key={option.label} className="flex cursor-pointer items-start gap-3 text-body-base text-content-strong">
                 <input type="checkbox" className="peer sr-only" checked={checked} onChange={() => onToggle(option.label)} />
-                <span
-                  aria-hidden
-                  className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-xs border transition-colors peer-focus-visible:ring-2 peer-focus-visible:ring-brand-primary ${
-                    checked ? "border-ink bg-ink text-white" : "border-line-strong bg-surface-raised"
-                  }`}
-                >
-                  {checked && <FaCheck className="h-2.5 w-2.5" />}
-                </span>
+                <img
+                  src={checkboxIcon(checked)}
+                  alt=""
+                  width="22"
+                  height="22"
+                  className="h-[22px] w-[22px] shrink-0 rounded-xs peer-focus-visible:ring-2 peer-focus-visible:ring-brand-primary"
+                />
                 <span className="flex-1">{option.label}</span>
                 <span className="text-content-subtle">({option.count})</span>
               </label>
