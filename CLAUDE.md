@@ -280,6 +280,10 @@ cifra en 1,2 s al entrar en pantalla, una vez. El HTML trae la cifra final; con
 **Logos de aliados**: van en una caja fija con `object-contain`. Un logo nuevo se sube recortado, sin
 margen vacío alrededor, o se verá más chico que los demás.
 
+**Buscador**: `SearchPanel` (en `HeaderReact.tsx`) usa el token `text-search` y la línea `line-input`. El
+input no lleva el anillo de foco global: el indicador es la línea inferior, que pasa a `ink` con
+`focus-within`.
+
 **Paneles mobile**: el menú, la búsqueda y la hoja de filtros del catálogo quedan siempre montados,
 con `inert` mientras están cerrados, `data-lenis-prevent`, bloqueo de scroll del `body` y 300 ms de
 transición (sin ella con `prefers-reduced-motion`). Se cierran con Escape y al pasar a `lg`. Un panel
