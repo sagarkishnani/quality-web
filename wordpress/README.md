@@ -118,3 +118,144 @@ El botón **Elegir PDF** abre Medios filtrado a PDF y guarda la URL completa del
    `meta_data` un objeto con `"key": "ficha_tecnica"` y la URL del PDF.
 
 El deploy no toca WordPress: cada versión nueva de un mu-plugin se sube a mano.
+
+## 7. Token de GitHub para el rebuild
+
+1. GitHub → Settings (de tu usuario) → Developer settings → Personal access tokens → **Fine-grained tokens** → Generate new token.
+2. Repository access: **Only select repositories** → `sagarkishnani/quality-web`.
+3. Permissions → Repository → **Contents: Read and write**. Nada más.
+4. Fecha de expiración: 1 año. Anótala en el calendario para renovarlo. Mientras esté vencido, solo publica el rebuild diario.
+5. Copia el token (`github_pat_…`) para el paso 8.
+
+## 8. `woo-config.php` en el servidor de Astro
+
+1. Copia `woo-config.example.php` (raíz del repo) como `public_html/woo-config.php` en el hosting.
+2. Completa:
+   - `store_url`: `https://tienda.qualitysumprintpe.com`, sin barra final.
+   - `consumer_key` / `consumer_secret`: el par de **producción** del paso 5.
+   - `webhook_secret`: una cadena aleatoria larga (`openssl rand -hex 32`). Es la misma que irá en los webhooks.
+   - `github_repo`: `sagarkishnani/quality-web`.
+   - `github_token`: el del paso 7.
+   - `allowed_origins`, `cache_ttl` y `rate_limit` son del proxy `woo-api.php`, que hoy no se publica: déjalos como están.
+3. Permisos `600` (cPanel → Administrador de archivos → Permisos).
+4. Este archivo no está en git y el deploy no lo sobrescribe ni lo borra.
+5. Comprobación: `curl -s -X POST https://qualitysumprintpe.com/rebuild-hook.php` responde `401` (firma inválida).
+   Si responde `503`, falta el archivo o alguna de las tres claves del rebuild.
+
+## 9. Webhooks de producto
+
+WooCommerce → Ajustes → Avanzado → Webhooks → **Añadir webhook**, cuatro veces:
+
+| Nombre | Estado | Tema | URL de entrega | Secreto | Versión de la API |
+|---|---|---|---|---|---|
+| Astro · producto creado | Activo | Producto creado | `https://qualitysumprintpe.com/rebuild-hook.php` | `webhook_secret` | WP REST API Integration v3 |
+| Astro · producto actualizado | Activo | Producto actualizado | ídem | ídem | ídem |
+| Astro · producto eliminado | Activo | Producto eliminado | ídem | ídem | ídem |
+| Astro · producto restaurado | Activo | Producto restaurado | ídem | ídem | ídem |
+
+Al guardar, Woo manda un ping. `rebuild-hook.php` lo responde con `200` sin disparar nada.
+Cualquier evento firmado de producto redespliega: el sitio no muestra precio ni stock en vivo, así que no hay cambios "solo de existencias" que ignorar.
+
+| Cambio en WooCommerce | Se ve en el sitio |
+|---|---|
+| Producto creado, editado, eliminado o restaurado (nombre, fotos, descripción, ficha técnica, atributos, oferta, destacado…) | Cuando termina el redeploy (unos minutos) |
+| Categoría, etiqueta o término de atributo creado, renombrado o eliminado | Cuando termina el redeploy, con el mu-plugin de abajo |
+
+Si un webhook aparece **Desactivado**, Woo tuvo varias entregas fallidas seguidas. Revisa los registros
+(WooCommerce → Estado → Registros, fuente `webhooks-delivery`), corrige y vuelve a activarlo. Mientras tanto,
+el rebuild diario mantiene el catálogo al día.
+
+### mu-plugin de rebuild al editar categorías, etiquetas y atributos
+
+WooCommerce no tiene webhooks de términos: renombrar una marca o borrar una categoría no toca los productos y
+no dispara nada. `quality-term-rebuild.php` escucha la creación, edición y borrado de términos de `product_cat`,
+`product_tag` y de cualquier atributo global (`pa_marca`, `pa_segmento`…). 60 segundos después manda a
+`rebuild-hook.php` un aviso con el tema `product_term.updated`. Los cambios seguidos dentro de esa ventana salen en un solo deploy.
+
+No se configura nada: el plugin toma la URL de entrega y el secreto del primer webhook **activo** de la tabla
+de arriba. Si los cuatro están desactivados o borrados, no avisa.
+
+1. Copia `wordpress/mu-plugins/quality-term-rebuild.php` a `wp-content/mu-plugins/`.
+2. Plugins → **Imprescindibles**: debe aparecer "Quality · Rebuild al editar categorías, etiquetas y atributos".
+3. Comprobación: renombra dos términos de `Marca` en menos de un minuto. En WooCommerce → Estado → Acciones
+   programadas, grupo `quality-term-rebuild`, hay **una sola** acción `quality_term_rebuild_deliver`, que queda
+   **Completada** al minuto. En GitHub → Actions aparece un solo "Deploy a producción" con evento
+   `repository_dispatch`. Si la acción queda **Fallida**, su registro trae la respuesta de `rebuild-hook.php`.
+
+## 10. GitHub Actions
+
+En el repo → Settings → Secrets and variables → Actions.
+
+**Secrets:**
+
+| Nombre | Valor |
+|---|---|
+| `TINA_CLIENT_ID`, `TINA_TOKEN` | Los de TinaCloud (ya existen) |
+| `WOO_STORE_URL` | `https://tienda.qualitysumprintpe.com` |
+| `WOO_CONSUMER_KEY`, `WOO_CONSUMER_SECRET` | El par de **producción** del paso 5 |
+| `CPANEL_SSH_HOST` | Host SSH del hosting (cPanel → **Acceso SSH**, o el dominio del servidor) |
+| `CPANEL_SSH_PORT` | Puerto SSH (por defecto `22`; algunos hostings usan otro) |
+| `CPANEL_SSH_USER` | Usuario de cPanel |
+| `CPANEL_SSH_KEY` | Clave privada cuya pública está autorizada en cPanel → Acceso SSH → Administrar claves SSH |
+| `CPANEL_DEPLOY_PATH` | Ruta absoluta de `public_html`, por ejemplo `/home/<usuario>/public_html` (sin barra final) |
+
+**Variables:**
+
+| Nombre | Valor |
+|---|---|
+| `PUBLIC_TURNSTILE_SITE_KEY` | Site key pública de Cloudflare Turnstile |
+
+Para generar la clave SSH: `ssh-keygen -t ed25519 -f quality-deploy -N ""`. Importa `quality-deploy.pub` en
+cPanel y **autorízala**. El contenido de `quality-deploy` (privada) va en `CPANEL_SSH_KEY`. Si el plan del hosting
+no trae SSH, el deploy no funciona: la alternativa registrada en la spec es FTPS con las mismas exclusiones.
+
+"Deploy a producción" (`.github/workflows/deploy.yml`) corre en cada push a `main`, con cada webhook y todos
+los días a las 04:00 de Lima. Antes de subir:
+
+- Falla si faltan los secrets de Woo, porque el sitio saldría sin catálogo.
+- Corre `typecheck` y `check:standard`. Este último falla si el build usó el catálogo de muestra.
+- Se detiene si `dist/` trae una carpeta `tienda.qualitysumprintpe.com`.
+
+El rsync usa `--delete`, pero **nunca toca**:
+
+- `tienda.qualitysumprintpe.com/`, `.well-known/` y `cgi-bin/`.
+- `site-config.php` y `woo-config.php`.
+- `data/` (solo sube su `.htaccess`).
+- `woo-api.php` y `*.example.php`, que no se publican.
+
+Cualquier otro archivo de `public_html` que no venga en `dist/` se borra. Al terminar corre una prueba de humo
+contra el sitio y contra `wp-login.php` de WordPress. Si falla, el job queda en rojo, pero lo subido no se revierte solo.
+
+`public/.htaccess` también rige en la carpeta de WordPress, porque está dentro de `public_html`. Sus reglas
+de `mod_rewrite` no la afectan (el `.htaccess` de WordPress activa su propio `RewriteEngine`), y la de HTTPS
+coincide con lo que se quiere en `tienda.` de todos modos.
+
+## 11. Staging en Amplify
+
+El staging compila la rama `staging` contra el mismo WooCommerce, con su propio par de claves.
+
+1. Amplify → la app → Hosting → **Environment variables**:
+   - `WOO_STORE_URL`: `https://tienda.qualitysumprintpe.com`.
+   - `WOO_CONSUMER_KEY` / `WOO_CONSUMER_SECRET`: el par de **staging** del paso 5.
+   - Borra `WOO_SAMPLE_CATALOG` si existe.
+2. Redeploy de la rama `staging`.
+3. Comprobación: el catálogo de staging muestra el producto de prueba y el HTML no trae `<meta name="x-sample-catalog">`.
+
+Amplify no ejecuta PHP: en staging el formulario y `rebuild-hook.php` no funcionan. Un cambio en Woo se ve en
+staging solo al volver a compilar la rama.
+
+## 12. Verificación de punta a punta
+
+1. `npm run build` en local con el par de staging en `.env` (sin `WOO_SAMPLE_CATALOG`). Se generan
+   `dist/productos/<slug>/` por cada producto publicado y `dist/productos/categoria/<slug>/` por cada categoría con productos.
+2. `grep -rE "(ck|cs)_[0-9a-f]{40}" dist/` no devuelve nada.
+3. `npm run check:standard` pasa sin errores.
+4. Push a `main` (o "Run workflow" en "Deploy a producción"). El job termina en verde.
+5. `https://tienda.qualitysumprintpe.com/wp-admin/` sigue funcionando. En el Administrador de archivos siguen
+   `woo-config.php`, `site-config.php` y `data/`.
+6. `https://qualitysumprintpe.com/no-existe` muestra la página 404 de Astro con código `404`.
+7. Edita el producto de prueba en WooCommerce (por ejemplo, su ficha técnica). En menos de 2 minutos aparece en
+   GitHub → Actions un "Deploy a producción" con evento `repository_dispatch`. Cuando termina, la ficha del sitio
+   muestra el cambio.
+8. `curl -X POST -H 'X-WC-Webhook-Topic: product.updated' -H 'X-WC-Webhook-Signature: falsa' -d '{}' https://qualitysumprintpe.com/rebuild-hook.php`
+   responde `401` y no crea ninguna ejecución en GitHub.
