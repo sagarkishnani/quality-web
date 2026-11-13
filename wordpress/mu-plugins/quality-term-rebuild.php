@@ -1,14 +1,14 @@
 <?php
 /**
- * Plugin Name: Quality · Rebuild al editar categorías, etiquetas y atributos
- * Description: Avisa a rebuild-hook.php del sitio Astro cuando se crea, edita o borra una categoría, una etiqueta o un término de atributo (Marca, Segmento…), porque WooCommerce no tiene webhooks para esos términos. Usa la URL y el secreto del primer webhook activo que apunte a rebuild-hook.php (sin ninguno = sin aviso).
- * Version: 1.0.0
+ * Plugin Name: Quality · Rebuild al editar marcas, categorías, etiquetas y atributos
+ * Description: Avisa a rebuild-hook.php del sitio Astro cuando se crea, edita o borra una marca, una categoría, una etiqueta o un término de atributo (Segmento…), porque WooCommerce no tiene webhooks para esos términos. Usa la URL y el secreto del primer webhook activo que apunte a rebuild-hook.php (sin ninguno = sin aviso).
+ * Version: 1.1.0
  * Requires PHP: 8.0
  */
 
 defined('ABSPATH') || exit;
 
-const QUALITY_TERM_REBUILD_TAXONOMIES = ['product_cat', 'product_tag'];
+const QUALITY_TERM_REBUILD_TAXONOMIES = ['product_cat', 'product_tag', 'product_brand'];
 const QUALITY_TERM_REBUILD_ATTRIBUTE_PREFIX = 'pa_';
 const QUALITY_TERM_REBUILD_TOPIC = 'product_term.updated';
 const QUALITY_TERM_REBUILD_HOOK_PATH = '/rebuild-hook.php';
