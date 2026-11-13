@@ -210,11 +210,14 @@ guía de configuración: `wordpress/README.md`.
   seguidos en un deploy. Usa la URL y el secreto del primer webhook activo hacia
   `rebuild-hook.php`. Los mu-plugins se suben a mano: el deploy no toca WordPress.
 - **Deploy** — `deploy.yml` falla sin los secrets de Woo, corre `typecheck` y
-  `check:standard` y sube por SSH (`CPANEL_SSH_*`, `CPANEL_DEPLOY_PATH`) con
-  `rsync --delete`. **Nunca toca** `tienda.qualitysumprintpe.com/`, `.well-known/`,
-  `cgi-bin/`, `site-config.php`, `woo-config.php` ni `data/` (solo sube su
-  `.htaccess`), y no publica `woo-api.php` ni `*.example.php`. Se detiene si
-  `dist/` trae una carpeta `tienda.qualitysumprintpe.com`. Una página de Astro no
+  `check:standard` y sube por FTPS (`SamKirkland/FTP-Deploy-Action`, servidor
+  `ftp.qualitysumprintpe.com`, usuario `deploy@qualitysumprintpe.com`, secret
+  `FTP_DEPLOY_PASSWORD`; el plan no trae SSH). La action solo borra lo que subió
+  antes (`.ftp-deploy-sync-state.json`, que `public/.htaccess` oculta), así que
+  **nunca toca** `tienda.qualitysumprintpe.com/`, `.well-known/`, `cgi-bin/`,
+  `site-config.php`, `woo-config.php` ni lo que escribe PHP en `data/`. No publica
+  `woo-api.php`, `*.example.php` ni `data/counter.json`. Se detiene si `dist/` trae
+  una carpeta `tienda.qualitysumprintpe.com`. Una página de Astro no
   puede llamarse así. Termina con una prueba de humo que no revierte nada.
 - **`.htaccess`** — `public/.htaccess` fuerza HTTPS y sirve `404.html`. También
   rige en la carpeta de WordPress, que está dentro de `public_html`.

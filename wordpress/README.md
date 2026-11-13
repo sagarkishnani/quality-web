@@ -200,11 +200,7 @@ En el repo → Settings → Secrets and variables → Actions.
 | `TINA_CLIENT_ID`, `TINA_TOKEN` | Los de TinaCloud (ya existen) |
 | `WOO_STORE_URL` | `https://tienda.qualitysumprintpe.com` |
 | `WOO_CONSUMER_KEY`, `WOO_CONSUMER_SECRET` | El par de **producción** del paso 5 |
-| `CPANEL_SSH_HOST` | Host SSH del hosting (cPanel → **Acceso SSH**, o el dominio del servidor) |
-| `CPANEL_SSH_PORT` | Puerto SSH (por defecto `22`; algunos hostings usan otro) |
-| `CPANEL_SSH_USER` | Usuario de cPanel |
-| `CPANEL_SSH_KEY` | Clave privada cuya pública está autorizada en cPanel → Acceso SSH → Administrar claves SSH |
-| `CPANEL_DEPLOY_PATH` | Ruta absoluta de `public_html`, por ejemplo `/home/<usuario>/public_html` (sin barra final) |
+| `FTP_DEPLOY_PASSWORD` | Contraseña de la cuenta FTP `deploy@qualitysumprintpe.com` (ver abajo) |
 
 **Variables:**
 
@@ -212,9 +208,17 @@ En el repo → Settings → Secrets and variables → Actions.
 |---|---|
 | `PUBLIC_TURNSTILE_SITE_KEY` | Site key pública de Cloudflare Turnstile |
 
-Para generar la clave SSH: `ssh-keygen -t ed25519 -f quality-deploy -N ""`. Importa `quality-deploy.pub` en
-cPanel y **autorízala**. El contenido de `quality-deploy` (privada) va en `CPANEL_SSH_KEY`. Si el plan del hosting
-no trae SSH, el deploy no funciona: la alternativa registrada en la spec es FTPS con las mismas exclusiones.
+**Cuenta FTP del deploy.** El plan del hosting no trae SSH, así que el deploy sube por FTPS a
+`ftp.qualitysumprintpe.com` (puerto 21), igual que el panel `quality`.
+
+1. cPanel → Archivos → **Cuentas de FTP** → Añadir cuenta de FTP.
+2. Inicio de sesión: `deploy`. Dominio: `qualitysumprintpe.com`. Queda `deploy@qualitysumprintpe.com`.
+3. Contraseña: usa el generador y cópiala.
+4. **Directorio: `public_html`**. cPanel propone `public_html/deploy`: borra el `/deploy`.
+5. Cuota: ilimitada → Crear.
+6. Guarda la contraseña en el secret `FTP_DEPLOY_PASSWORD`.
+
+El servidor y el usuario van fijos en `deploy.yml`: no son sensibles.
 
 "Deploy a producción" (`.github/workflows/deploy.yml`) corre en cada push a `main`, con cada webhook y todos
 los días a las 04:00 de Lima. Antes de subir:
@@ -223,14 +227,17 @@ los días a las 04:00 de Lima. Antes de subir:
 - Corre `typecheck` y `check:standard`. Este último falla si el build usó el catálogo de muestra.
 - Se detiene si `dist/` trae una carpeta `tienda.qualitysumprintpe.com`.
 
-El rsync usa `--delete`, pero **nunca toca**:
+`FTP-Deploy-Action` solo borra en el servidor lo que él mismo subió antes. Lo registra en
+`public_html/.ftp-deploy-sync-state.json` (no lo borres; `public/.htaccess` lo oculta de la web). Por eso **nunca toca**:
 
 - `tienda.qualitysumprintpe.com/`, `.well-known/` y `cgi-bin/`.
 - `site-config.php` y `woo-config.php`.
-- `data/` (solo sube su `.htaccess`).
+- `data/` (solo sube su `.htaccess`, nunca `counter.json`).
 - `woo-api.php` y `*.example.php`, que no se publican.
 
-Cualquier otro archivo de `public_html` que no venga en `dist/` se borra. Al terminar corre una prueba de humo
+Tampoco borra archivos que ya estaban en `public_html` antes del primer deploy, pero sí pisa uno con el mismo nombre
+que un archivo de `dist/` (`index.html`, por ejemplo). Si se pierde el archivo de estado, el siguiente deploy sube todo
+de nuevo y no borra nada: las páginas retiradas quedan hasta que las borres a mano. Al terminar corre una prueba de humo
 contra el sitio y contra `wp-login.php` de WordPress. Si falla, el job queda en rojo, pero lo subido no se revierte solo.
 
 `public/.htaccess` también rige en la carpeta de WordPress, porque está dentro de `public_html`. Sus reglas
