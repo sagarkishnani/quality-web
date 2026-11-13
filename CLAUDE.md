@@ -180,10 +180,51 @@ cotización. Las rutas son `/productos`, `/productos/<slug>` y
 - `src/lib/woo/catalog.ts` convierte un `WooProduct` en lo que pintan las
   tarjetas y no toca credenciales: puede importarse desde islas.
 
-**Catálogo de muestra.** Mientras WooCommerce no exista, `WOO_SAMPLE_CATALOG=true`
-en `.env` usa los productos del diseño (`src/lib/woo/sample.ts`). Las páginas
-compiladas así llevan `<meta name="x-sample-catalog">` y `check:standard` da
-**error**: un build con datos de muestra no puede publicarse.
+**Catálogo de muestra.** Sin claves de Woo, `WOO_SAMPLE_CATALOG=true` en `.env`
+usa los productos del diseño (`src/lib/woo/sample.ts`); sirve solo para desarrollo
+local. Las páginas compiladas así llevan `<meta name="x-sample-catalog">` y
+`check:standard` da **error**: un build con datos de muestra no puede publicarse.
+
+**WordPress y despliegue.** Spec: `specs/14-conexion-wordpress-woocommerce.md`;
+guía de configuración: `wordpress/README.md`.
+
+| Pieza | Dominio | Carpeta en cPanel |
+|---|---|---|
+| Astro (estático + PHP) | `qualitysumprintpe.com` | `public_html` |
+| WordPress + WooCommerce | `tienda.qualitysumprintpe.com` | `public_html/tienda.qualitysumprintpe.com` |
+| Staging | Amplify (rama `staging`) | — |
+
+- **Ficha técnica** — `wordpress/mu-plugins/quality-product-fields.php` agrega
+  "Ficha técnica (PDF)" al producto: elige el PDF de Medios y guarda la URL en
+  `ficha_tecnica` (solo `http`/`https`).
+- **Rebuild** — los webhooks de producto de Woo (`created`, `updated`, `deleted`,
+  `restored`) llaman a `public/rebuild-hook.php` (firma HMAC con `webhook_secret`),
+  que dispara `repository_dispatch` (`woo-catalog-changed`) →
+  `.github/workflows/deploy.yml`. Sin huella: cualquier evento firmado redespliega.
+  El mismo workflow corre en cada push a `main` y todos los días a las 04:00 de Lima.
+  Woo no tiene webhooks de términos: `wordpress/mu-plugins/quality-term-rebuild.php`
+  avisa con el tema `product_term.updated` un minuto después de cambiar un término
+  de `product_cat`, `product_tag` o de un atributo `pa_*`, y agrupa los cambios
+  seguidos en un deploy. Usa la URL y el secreto del primer webhook activo hacia
+  `rebuild-hook.php`. Los mu-plugins se suben a mano: el deploy no toca WordPress.
+- **Deploy** — `deploy.yml` falla sin los secrets de Woo, corre `typecheck` y
+  `check:standard` y sube por SSH (`CPANEL_SSH_*`, `CPANEL_DEPLOY_PATH`) con
+  `rsync --delete`. **Nunca toca** `tienda.qualitysumprintpe.com/`, `.well-known/`,
+  `cgi-bin/`, `site-config.php`, `woo-config.php` ni `data/` (solo sube su
+  `.htaccess`), y no publica `woo-api.php` ni `*.example.php`. Se detiene si
+  `dist/` trae una carpeta `tienda.qualitysumprintpe.com`. Una página de Astro no
+  puede llamarse así. Termina con una prueba de humo que no revierte nada.
+- **`.htaccess`** — `public/.htaccess` fuerza HTTPS y sirve `404.html`. También
+  rige en la carpeta de WordPress, que está dentro de `public_html`.
+- **Staging** — Amplify compila `staging` contra el mismo Woo con su propio par de
+  claves de solo lectura. No ejecuta PHP.
+- **Proxy sin uso** — `public/woo-api.php`, `src/utils/wooClient.ts` y
+  `StockRefresher.astro` vienen del starter y no se usan ni se publican; se
+  conservan por si el sitio llega a mostrar precio o stock.
+
+**Secretos**: `woo-config.php` en `public_html` (git-ignored, plantilla
+`woo-config.example.php` en la raíz del repo): claves de producción,
+`webhook_secret`, `github_repo` y `github_token`. Lo lee `rebuild-hook.php`.
 
 ### Modo mantenimiento
 

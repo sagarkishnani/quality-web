@@ -43,6 +43,26 @@ revisan. El aviso de `og:image` es esperado hasta que subas una imagen de
 Lo mismo corre solo en GitHub: en cada PR hacia `main` (¿se puede mergear?) y en
 cada push a `main` (¿se puede desplegar?). Ver `.github/workflows/estandar.yml`.
 
+## Despliegue
+
+| Rama | Dónde | Cómo |
+|------|-------|------|
+| `main` | `qualitysumprintpe.com` (cPanel, `public_html`) | `.github/workflows/deploy.yml`, por SSH + rsync |
+| `staging` | Amplify | `amplify.yml` |
+
+Producción se publica en cada push a `main`, cuando cambia un producto o término
+en WooCommerce (webhook → `public/rebuild-hook.php` → `repository_dispatch`) y
+todos los días a las 04:00 de Lima. El catálogo sale de
+`https://tienda.qualitysumprintpe.com`.
+
+Secrets de GitHub: `TINA_CLIENT_ID`, `TINA_TOKEN`, `WOO_STORE_URL`,
+`WOO_CONSUMER_KEY`, `WOO_CONSUMER_SECRET`, `CPANEL_SSH_HOST`, `CPANEL_SSH_PORT`,
+`CPANEL_SSH_USER`, `CPANEL_SSH_KEY` y `CPANEL_DEPLOY_PATH`. Variable:
+`PUBLIC_TURNSTILE_SITE_KEY`.
+
+La configuración completa de WordPress, WooCommerce, webhooks y secretos del
+servidor está en `wordpress/README.md`.
+
 ## Estructura
 
 ```
