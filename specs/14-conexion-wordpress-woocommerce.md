@@ -31,7 +31,7 @@ Flujo de rebuild:
 1. En Woo se crea, edita, borra o restaura un producto, o se cambia una categoría, una etiqueta o un término de atributo.
 2. Un webhook hace `POST` a `https://qualitysumprintpe.com/rebuild-hook.php`.
 3. `rebuild-hook.php` verifica la firma HMAC y dispara `repository_dispatch` (`woo-catalog-changed`) en `sagarkishnani/quality-web`.
-4. `.github/workflows/deploy.yml` compila y sube por SSH + rsync. Ese mismo workflow corre también en cada push a `main` y todos los días a las 04:00 de Lima.
+4. `.github/workflows/deploy.yml` compila y sube por FTPS. Ese mismo workflow corre también en cada push a `main` y todos los días a las 04:00 de Lima.
 
 ## Alcance
 
@@ -43,7 +43,7 @@ Flujo de rebuild:
 - La marca del catálogo sale de **Productos → Marcas** (taxonomía nativa `product_brand`, campo `brands` de la REST v3). Si un producto no tiene marca nativa, se usa el atributo de `shop.catalog.brandAttribute`.
 - Endpoint `public/rebuild-hook.php`, adaptado del de ERES, sin la huella de producto: cualquier evento válido redespliega.
 - Claves nuevas en `woo-config.example.php`: `webhook_secret`, `github_repo` y `github_token`.
-- Workflow `.github/workflows/deploy.yml`: push a `main`, `repository_dispatch` (`woo-catalog-changed`) y cron diario. Hace build contra el Woo real, `typecheck`, `check:standard`, rsync por SSH y una prueba de humo.
+- Workflow `.github/workflows/deploy.yml`: push a `main`, `repository_dispatch` (`woo-catalog-changed`) y cron diario. Hace build contra el Woo real, `typecheck`, `check:standard`, subida por FTPS y una prueba de humo.
 - `public/.htaccess` mínimo: HTTPS forzado y `ErrorDocument 404 /404.html`.
 - Staging de Amplify contra el Woo real, con un par de claves de solo lectura propias y sin `WOO_SAMPLE_CATALOG`.
 - Sección **Catálogo de WooCommerce** de `CLAUDE.md` y sección de despliegue del `README.md` actualizadas.
@@ -101,18 +101,21 @@ Secrets de GitHub (nivel repositorio):
 |---|---|
 | `TINA_CLIENT_ID`, `TINA_TOKEN` | Build (ya existen) |
 | `WOO_STORE_URL`, `WOO_CONSUMER_KEY`, `WOO_CONSUMER_SECRET` | Build contra el Woo real |
-| `CPANEL_SSH_KEY`, `CPANEL_SSH_HOST`, `CPANEL_SSH_PORT`, `CPANEL_SSH_USER` | rsync por SSH |
-| `CPANEL_DEPLOY_PATH` | Ruta absoluta de `public_html` |
+| `FTP_DEPLOY_PASSWORD` | Contraseña de la cuenta FTP `deploy@qualitysumprintpe.com` (directorio `public_html`) |
+
+El servidor (`ftp.qualitysumprintpe.com`, FTPS, puerto 21) y el usuario van fijos en el workflow, como en `quality` (spec 01): no son sensibles.
 
 Variables de entorno de Amplify (rama `staging`): `WOO_STORE_URL`, `WOO_CONSUMER_KEY` y `WOO_CONSUMER_SECRET` con un par de claves propio. `WOO_SAMPLE_CATALOG` se elimina.
 
-El rsync de producción **nunca** toca:
+El deploy de producción **nunca** toca:
 
 - `tienda.qualitysumprintpe.com/` (WordPress).
 - `.well-known/` y `cgi-bin/` (cPanel y SSL).
 - `site-config.php` y `woo-config.php` (secretos).
 - `data/` (contador y archivos de runtime).
-- `*.example.php`, que no se suben.
+- `*.example.php` y `woo-api.php`, que no se suben.
+
+`FTP-Deploy-Action` solo borra en el servidor lo que él mismo subió antes (lo registra en `.ftp-deploy-sync-state.json`). Lo que nunca estuvo en `dist/` queda intacto. `public/.htaccess` niega el acceso web a ese archivo de estado.
 
 ## Plan de implementación
 
@@ -123,7 +126,7 @@ El rsync de producción **nunca** toca:
 5. **Workflow de deploy.** Crear `.github/workflows/deploy.yml` con:
    - Disparadores: push a `main`, `repository_dispatch` (`woo-catalog-changed`), cron `0 9 * * *` y `workflow_dispatch`.
    - `concurrency` para no solapar deploys.
-   - Pasos: build con los secrets de Woo, `typecheck`, `check:standard`, rsync por SSH con las exclusiones del modelo de datos y prueba de humo (`/`, `/productos`, `/404.html`).
+   - Pasos: build con los secrets de Woo, `typecheck`, `check:standard`, subida por FTPS con las exclusiones del modelo de datos y prueba de humo (`/`, `/productos`, `/404.html`).
    - Se detiene si `dist/` trae una carpeta llamada `tienda.qualitysumprintpe.com`.
 6. **`.htaccess`.** Crear `public/.htaccess` con HTTPS forzado y `ErrorDocument 404 /404.html`.
 7. **Guía, segunda parte.** Agregar a `wordpress/README.md`:
@@ -131,7 +134,7 @@ El rsync de producción **nunca** toca:
    - Webhooks de producto (`created`, `updated`, `deleted`, `restored`, todos con el mismo secreto).
    - Secrets de GitHub y variables de Amplify.
    - Verificación de punta a punta: editar el producto de prueba → ver el run en Actions → ver el cambio en el sitio.
-8. **Documentación del repo.** Actualizar la sección **Catálogo de WooCommerce** de `CLAUDE.md` (topología, rebuild, mu-plugins, secretos, exclusiones del rsync) y agregar "Despliegue" al `README.md`.
+8. **Documentación del repo.** Actualizar la sección **Catálogo de WooCommerce** de `CLAUDE.md` (topología, rebuild, mu-plugins, secretos, exclusiones del deploy) y agregar "Despliegue" al `README.md`.
 9. **Marca nativa.** Agregar `brands` a `WooProduct` y hacer que `toCatalogItem` (`src/lib/woo/catalog.ts`) tome la marca de ahí, con el atributo de `brandAttribute` como respaldo. Sumar `product_brand` a `quality-term-rebuild.php` y ajustar la guía y `CLAUDE.md`.
 
 ## Criterios de aceptación
@@ -153,8 +156,8 @@ El rsync de producción **nunca** toca:
 
 - **Sí:** WordPress en el subdominio `tienda.`, con su propia carpeta. Sin checkout, compartir raíz con Astro solo agrega complejidad (`htaccess-astro.conf`, lista de rutas protegidas).
 - **No:** raíz compartida como en ERES.
-- **Sí:** SSH + rsync. Controla mejor qué no se pisa que FTPS.
-- **No:** `FTP-Deploy-Action` como en `quality` (spec 01). Queda como alternativa si el plan de cPanel no trae SSH.
+- **Sí:** FTPS con `SamKirkland/FTP-Deploy-Action`, como en `quality` (spec 01). El plan `CorporativoEspecial_2025_CP` no trae SSH: cPanel no muestra "Acceso SSH" ni "Terminal", y los puertos 22 y 2222 están cerrados (2026-11-13).
+- **No:** SSH + rsync. Era la primera opción; se retoma si el hosting habilita SSH.
 - **Sí:** rebuild completo: webhooks de producto + términos + cron diario, igual que ERES.
 - **No:** huella de producto. Su razón en ERES era no redesplegar por stock o ventas, y aquí eso no se muestra.
 - **Sí:** la marca sale de la taxonomía nativa **Marcas** (`product_brand`), no de un atributo. WooCommerce ya trae ese menú y duplicarlo como atributo confunde a quien carga productos. Cambio acordado durante la configuración (2026-11-13).
@@ -174,8 +177,9 @@ El rsync de producción **nunca** toca:
 
 | Riesgo | Mitigación |
 |---|---|
-| El `rsync --delete` borra WordPress, que vive dentro de `public_html` | Exclusión explícita de `tienda.qualitysumprintpe.com/`. El workflow se detiene si `dist/` trae ese nombre. El criterio de aceptación lo comprueba tras el primer deploy. |
-| El plan de cPanel no trae SSH | Cambiar a FTPS con las mismas exclusiones. Es la decisión alternativa registrada. |
+| El deploy borra WordPress, que vive dentro de `public_html` | `FTP-Deploy-Action` solo borra lo que subió antes, y WordPress nunca estuvo en `dist/`. El workflow se detiene si `dist/` trae ese nombre. El criterio de aceptación lo comprueba tras el primer deploy. |
+| Se pierde o se corrompe `.ftp-deploy-sync-state.json` | El siguiente deploy sube todo de nuevo y no borra nada. Los archivos que ya no existen quedan huérfanos hasta que se borran a mano. |
+| `public_html` tiene contenido previo | Se revisa en el Administrador de archivos antes del primer deploy. Ningún archivo previo se borra, pero uno con el mismo nombre que un archivo de `dist/` se pisa. |
 | Woo vacío o caído al compilar: el sitio se publica sin productos | El cron y el siguiente webhook lo reponen. La guía pide cargar el producto de prueba antes del primer deploy. |
 | El front de Woo en `tienda.` queda accesible y alguien intenta comprar | Sin métodos de pago y con `noindex`. Ocultarlo del todo va en otra spec. |
 | El token de GitHub vence | Fine-grained con vencimiento anotado en la guía. Mientras tanto, el cron diario sigue publicando. |
