@@ -1,0 +1,136 @@
+name: Deploy a producción
+
+on:
+  push:
+    branches: [main]
+  repository_dispatch:
+    types: [woo-catalog-changed]
+  schedule:
+    # 04:00 en Lima (UTC-5): red de seguridad por si se pierde algún webhook de WooCommerce.
+    - cron: "0 9 * * *"
+  workflow_dispatch:
+
+concurrency:
+  group: deploy
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Verificar conexión con WooCommerce
+        env:
+          WOO_STORE_URL: ${{ secrets.WOO_STORE_URL }}
+          WOO_CONSUMER_KEY: ${{ secrets.WOO_CONSUMER_KEY }}
+          WOO_CONSUMER_SECRET: ${{ secrets.WOO_CONSUMER_SECRET }}
+        run: |
+          if [ -z "$WOO_STORE_URL" ] || [ -z "$WOO_CONSUMER_KEY" ] || [ -z "$WOO_CONSUMER_SECRET" ]; then
+            echo "::error::Faltan WOO_STORE_URL, WOO_CONSUMER_KEY o WOO_CONSUMER_SECRET: el sitio saldría sin catálogo."
+            exit 1
+          fi
+
+      - name: Build
+        env:
+          TINA_CLIENT_ID: ${{ secrets.TINA_CLIENT_ID }}
+          TINA_TOKEN: ${{ secrets.TINA_TOKEN }}
+          TINA_BRANCH: main
+          WOO_STORE_URL: ${{ secrets.WOO_STORE_URL }}
+          WOO_CONSUMER_KEY: ${{ secrets.WOO_CONSUMER_KEY }}
+          WOO_CONSUMER_SECRET: ${{ secrets.WOO_CONSUMER_SECRET }}
+          PUBLIC_TURNSTILE_SITE_KEY: ${{ vars.PUBLIC_TURNSTILE_SITE_KEY }}
+        run: npm run build
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Verificar el estándar
+        run: npm run check:standard
+
+      # WordPress vive en public_html/tienda.qualitysumprintpe.com: un nombre igual en dist/ lo pisaría.
+      - name: Verificar nombres protegidos
+        working-directory: dist
+        run: |
+          if [ -e tienda.qualitysumprintpe.com ]; then
+            echo "::error::dist/ contiene tienda.qualitysumprintpe.com, la carpeta de WordPress."
+            exit 1
+          fi
+
+      - name: Configurar SSH
+        env:
+          SSH_KEY: ${{ secrets.CPANEL_SSH_KEY }}
+          SSH_HOST: ${{ secrets.CPANEL_SSH_HOST }}
+          SSH_PORT: ${{ secrets.CPANEL_SSH_PORT }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          for attempt in 1 2 3 4 5; do
+            if host_keys=$(ssh-keyscan -T 20 -p "$SSH_PORT" "$SSH_HOST") && [ -n "$host_keys" ]; then
+              printf '%s\n' "$host_keys" >> ~/.ssh/known_hosts
+              exit 0
+            fi
+            echo "ssh-keyscan sin respuesta (intento $attempt de 5)"
+            sleep 15
+          done
+          echo "::error::El servidor SSH del hosting no respondió."
+          exit 1
+
+      # rsync no borra lo excluido: WordPress, los certificados, los secretos y lo que escribe PHP en data/ quedan intactos.
+      # woo-api.php no se publica mientras el sitio no lo use (spec 14).
+      - name: Subir al hosting
+        env:
+          SSH_HOST: ${{ secrets.CPANEL_SSH_HOST }}
+          SSH_PORT: ${{ secrets.CPANEL_SSH_PORT }}
+          SSH_USER: ${{ secrets.CPANEL_SSH_USER }}
+          DEPLOY_PATH: ${{ secrets.CPANEL_DEPLOY_PATH }}
+        run: |
+          rsync -az --delete \
+            --exclude '/tienda.qualitysumprintpe.com/' \
+            --exclude '/.well-known/' \
+            --exclude '/cgi-bin/' \
+            --exclude '/error_log' \
+            --exclude '/.ftpquota' \
+            --exclude '/site-config.php' \
+            --exclude '/woo-config.php' \
+            --exclude '/*.example.php' \
+            --exclude '/woo-api.php' \
+            --include '/data/' \
+            --include '/data/.htaccess' \
+            --exclude '/data/*' \
+            -e "ssh -i ~/.ssh/deploy_key -p $SSH_PORT" \
+            dist/ "$SSH_USER@$SSH_HOST:$DEPLOY_PATH/"
+
+      - name: Prueba de humo
+        env:
+          SITE_URL: https://qualitysumprintpe.com
+          STORE_URL: https://tienda.qualitysumprintpe.com
+        working-directory: ${{ runner.temp }}
+        run: |
+          failed=0
+          probe() {
+            curl -sS --retry 2 --max-time 30 -o body.txt -w '%{http_code}' "$1" || true
+          }
+          expect() {
+            if [ "$2" = "$3" ]; then echo "ok    $1 ($3)"; else echo "::error::Prueba de humo: $1 respondió $3, se esperaba $2"; failed=1; fi
+          }
+
+          expect "/" 200 "$(probe "$SITE_URL/")"
+          expect "/productos/" 200 "$(probe "$SITE_URL/productos/")"
+          expect "/404.html" 200 "$(probe "$SITE_URL/404.html")"
+          expect "una ruta inexistente" 404 "$(probe "$SITE_URL/ruta-que-no-existe-quality/")"
+          expect "rebuild-hook.php" 405 "$(probe "$SITE_URL/rebuild-hook.php")"
+          expect "WordPress (wp-login.php)" 200 "$(probe "$STORE_URL/wp-login.php")"
+
+          exit "$failed"
