@@ -20,7 +20,7 @@ La carpeta de WordPress sí vive **dentro** de `public_html`, y el deploy la exc
 
 - **Catálogo:** se compila en el build con la API REST v3 de Woo, con claves de solo lectura.
 - **Rebuild:** los webhooks de producto llaman a `rebuild-hook.php`, que dispara
-  `.github/workflows/deploy.yml`. Las categorías, etiquetas y atributos no tienen webhook:
+  `.github/workflows/deploy.yml`. Las marcas, categorías, etiquetas y atributos no tienen webhook:
   los avisa el mu-plugin `quality-term-rebuild.php`. Además, hay un rebuild diario a las 04:00 de Lima.
 
 ## 1. SSL y HTTPS del subdominio
@@ -56,19 +56,26 @@ El front de WooCommerce en `tienda.` sigue existiendo. Estos ajustes evitan que 
 3. Ajustes → Lectura → marca **Disuadir a los motores de búsqueda de indexar este sitio**.
 4. WooCommerce → Ajustes → Productos → Inventario: desactiva **Gestionar inventario**. El sitio no muestra stock.
 
-## 4. Atributos, categorías y etiquetas
+## 4. Marcas, segmento, categorías y etiquetas
 
-El sitio lee la marca y el segmento de **atributos globales** de WooCommerce. Los nombres se configuran en
-el CMS (colección `shop`, campos `brandAttribute` y `segmentAttribute`). Por defecto son `Marca` y `Segmento`.
+- **Marca:** sale del menú nativo **Productos → Marcas** de WooCommerce (taxonomía `product_brand`).
+- **Segmento:** sale del **atributo global** `Segmento`. Su nombre se configura en el CMS (colección `shop`,
+  campo `segmentAttribute`).
+- **Respaldo:** si un producto no tiene marca en Marcas, el sitio busca un atributo con el nombre de
+  `shop.catalog.brandAttribute` (por defecto `Marca`). No hace falta crearlo.
 
-1. Productos → **Atributos** → crea `Marca` y `Segmento`. Deja el slug que propone Woo (`marca`, `segmento`).
-2. En cada atributo → **Configurar términos**: agrega las marcas (HP, Epson…) y los segmentos.
-   El orden de las pestañas de segmento se define en el CMS (`shop.catalog.segmentOrder`).
-3. Productos → **Categorías**: crea las categorías del catálogo. Cada una genera `/productos/categoria/<slug>`.
-4. Productos → **Etiquetas**: la primera etiqueta de un producto es la insignia de su tarjeta (ej. "Nuevo",
+1. Productos → **Marcas**: crea las marcas (HP, Epson…).
+2. Productos → **Atributos** → crea `Segmento`. Deja el slug que propone Woo (`segmento`).
+3. En `Segmento` → **Configurar términos**: agrega los segmentos (Home & Home Office, Small Business,
+   Enterprise…). El orden de las pestañas se define en el CMS (`shop.catalog.segmentOrder`).
+4. Productos → **Categorías**: crea las categorías del catálogo. Cada una genera `/productos/categoria/<slug>`.
+5. Productos → **Etiquetas**: la primera etiqueta de un producto es la insignia de su tarjeta (ej. "Nuevo",
    "Más vendido"). Si el producto está en oferta, la insignia es "Oferta".
-5. En cada producto → Datos del producto → **Atributos**: agrega `Marca` y `Segmento`, elige el término y
-   marca **Visible en la página de productos**.
+6. En cada producto:
+   - En la caja lateral **Marcas**, marca su marca.
+   - En Datos del producto → **Atributos**, agrega `Segmento`, elige el término y marca **Visible en la
+     página de productos**.
+   - Otros atributos que agregues (ej. Tecnología, Velocidad) aparecen como especificaciones en la ficha.
 
 Otros datos que lee el sitio desde el producto:
 
@@ -79,7 +86,7 @@ Otros datos que lee el sitio desde el producto:
 | Productos relacionados o la misma categoría | "Te puede interesar" |
 | Ficha técnica (paso 6) | Botón "Descargar ficha técnica" |
 
-Antes del primer deploy, carga al menos **un producto de prueba** publicado, con marca, segmento, categoría y foto.
+Antes del primer deploy, carga al menos **un producto de prueba** publicado, con marca (en Marcas), segmento, categoría y foto.
 
 ## 5. Claves REST de solo lectura
 
@@ -159,25 +166,25 @@ Cualquier evento firmado de producto redespliega: el sitio no muestra precio ni 
 | Cambio en WooCommerce | Se ve en el sitio |
 |---|---|
 | Producto creado, editado, eliminado o restaurado (nombre, fotos, descripción, ficha técnica, atributos, oferta, destacado…) | Cuando termina el redeploy (unos minutos) |
-| Categoría, etiqueta o término de atributo creado, renombrado o eliminado | Cuando termina el redeploy, con el mu-plugin de abajo |
+| Marca, categoría, etiqueta o término de atributo creado, renombrado o eliminado | Cuando termina el redeploy, con el mu-plugin de abajo |
 
 Si un webhook aparece **Desactivado**, Woo tuvo varias entregas fallidas seguidas. Revisa los registros
 (WooCommerce → Estado → Registros, fuente `webhooks-delivery`), corrige y vuelve a activarlo. Mientras tanto,
 el rebuild diario mantiene el catálogo al día.
 
-### mu-plugin de rebuild al editar categorías, etiquetas y atributos
+### mu-plugin de rebuild al editar marcas, categorías, etiquetas y atributos
 
 WooCommerce no tiene webhooks de términos: renombrar una marca o borrar una categoría no toca los productos y
-no dispara nada. `quality-term-rebuild.php` escucha la creación, edición y borrado de términos de `product_cat`,
-`product_tag` y de cualquier atributo global (`pa_marca`, `pa_segmento`…). 60 segundos después manda a
+no dispara nada. `quality-term-rebuild.php` escucha la creación, edición y borrado de términos de `product_brand`,
+`product_cat`, `product_tag` y de cualquier atributo global (`pa_segmento`…). 60 segundos después manda a
 `rebuild-hook.php` un aviso con el tema `product_term.updated`. Los cambios seguidos dentro de esa ventana salen en un solo deploy.
 
 No se configura nada: el plugin toma la URL de entrega y el secreto del primer webhook **activo** de la tabla
 de arriba. Si los cuatro están desactivados o borrados, no avisa.
 
 1. Copia `wordpress/mu-plugins/quality-term-rebuild.php` a `wp-content/mu-plugins/`.
-2. Plugins → **Imprescindibles**: debe aparecer "Quality · Rebuild al editar categorías, etiquetas y atributos".
-3. Comprobación: renombra dos términos de `Marca` en menos de un minuto. En WooCommerce → Estado → Acciones
+2. Plugins → **Imprescindibles**: debe aparecer "Quality · Rebuild al editar marcas, categorías, etiquetas y atributos".
+3. Comprobación: renombra dos marcas en menos de un minuto. En WooCommerce → Estado → Acciones
    programadas, grupo `quality-term-rebuild`, hay **una sola** acción `quality_term_rebuild_deliver`, que queda
    **Completada** al minuto. En GitHub → Actions aparece un solo "Deploy a producción" con evento
    `repository_dispatch`. Si la acción queda **Fallida**, su registro trae la respuesta de `rebuild-hook.php`.

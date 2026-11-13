@@ -163,9 +163,11 @@ cotización. Las rutas son `/productos`, `/productos/<slug>` y
 - Precios y stock no se muestran. “Ver cotización” lleva a
   `/contacto?requerimiento=<mensaje>`; el formulario precarga cualquier campo
   cuyo `name` coincida con un parámetro de la URL.
-- Marca y segmento son **atributos** de WooCommerce (por defecto `Marca` y
-  `Segmento`, configurables en la colección `shop`). Las pestañas de segmento
-  siguen `shop.catalog.segmentOrder`.
+- La marca sale de la taxonomía nativa **Marcas** de Woo (`product_brand`, campo
+  `brands` de la REST; `brandOf` en `catalog.ts`). Sin marca nativa, usa el
+  atributo de `shop.catalog.brandAttribute` (por defecto `Marca`; así funciona el
+  catálogo de muestra). El segmento es un **atributo** (`Segmento`, configurable
+  en `shop`). Las pestañas de segmento siguen `shop.catalog.segmentOrder`.
 - Etiqueta de la tarjeta: “Oferta” si el producto está en oferta; si no, la
   primera etiqueta (tag) del producto (ej. “Nuevo”, “Más vendido”).
 - Destacados del inicio: productos marcados como destacados en Woo; si no hay,
@@ -204,7 +206,7 @@ guía de configuración: `wordpress/README.md`.
   El mismo workflow corre en cada push a `main` y todos los días a las 04:00 de Lima.
   Woo no tiene webhooks de términos: `wordpress/mu-plugins/quality-term-rebuild.php`
   avisa con el tema `product_term.updated` un minuto después de cambiar un término
-  de `product_cat`, `product_tag` o de un atributo `pa_*`, y agrupa los cambios
+  de `product_brand`, `product_cat`, `product_tag` o de un atributo `pa_*`, y agrupa los cambios
   seguidos en un deploy. Usa la URL y el secreto del primer webhook activo hacia
   `rebuild-hook.php`. Los mu-plugins se suben a mano: el deploy no toca WordPress.
 - **Deploy** — `deploy.yml` falla sin los secrets de Woo, corre `typecheck` y
