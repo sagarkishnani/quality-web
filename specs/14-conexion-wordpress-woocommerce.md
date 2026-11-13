@@ -9,7 +9,7 @@
 
 El catálogo ya se arma desde la REST de Woo en build (`src/lib/woo/rest.ts`), pero nunca se conectó a una tienda real: todos los builds usan `WOO_SAMPLE_CATALOG=true`. Faltan cuatro piezas:
 
-- **Tienda.** WordPress ya está instalado en `tienda.qualitysumprintpe.com`, pero sin WooCommerce, sin HTTPS forzado, sin claves REST y sin atributos `Marca` y `Segmento`.
+- **Tienda.** WordPress ya está instalado en `tienda.qualitysumprintpe.com`, pero sin WooCommerce, sin HTTPS forzado, sin claves REST, sin marcas cargadas y sin el atributo `Segmento`.
 - **Deploy.** Solo existe el staging de Amplify. `qualitysumprintpe.com` está vacío y no hay workflow que publique ahí.
 - **Rebuild.** Los productos se compilan en build. Sin un disparador, un producto nuevo no aparece hasta un deploy manual.
 - **Ficha técnica.** La URL del PDF se carga a mano como campo personalizado `ficha_tecnica`, y es fácil equivocarse.
@@ -37,9 +37,10 @@ Flujo de rebuild:
 
 **Entra:**
 
-- Guía `wordpress/README.md`, en orden: SSL y HTTPS forzado del subdominio, instalación de WooCommerce, ajustes mínimos sin venta, atributos `Marca` y `Segmento`, claves REST de solo lectura, mu-plugins, webhooks, token de GitHub, `woo-config.php`, secrets de GitHub, Amplify y verificación de punta a punta.
+- Guía `wordpress/README.md`, en orden: SSL y HTTPS forzado del subdominio, instalación de WooCommerce, ajustes mínimos sin venta, marcas nativas y atributo `Segmento`, claves REST de solo lectura, mu-plugins, webhooks, token de GitHub, `woo-config.php`, secrets de GitHub, Amplify y verificación de punta a punta.
 - mu-plugin `wordpress/mu-plugins/quality-product-fields.php`: caja "Ficha técnica (PDF)" en la edición del producto, que elige un PDF de Medios y guarda su URL en el meta `ficha_tecnica`.
-- mu-plugin `wordpress/mu-plugins/quality-term-rebuild.php`: avisa a `rebuild-hook.php` al crear, editar o borrar términos de `product_cat`, `product_tag` y de cualquier atributo global (`pa_*`).
+- mu-plugin `wordpress/mu-plugins/quality-term-rebuild.php`: avisa a `rebuild-hook.php` al crear, editar o borrar términos de `product_cat`, `product_tag`, `product_brand` y de cualquier atributo global (`pa_*`).
+- La marca del catálogo sale de **Productos → Marcas** (taxonomía nativa `product_brand`, campo `brands` de la REST v3). Si un producto no tiene marca nativa, se usa el atributo de `shop.catalog.brandAttribute`.
 - Endpoint `public/rebuild-hook.php`, adaptado del de ERES, sin la huella de producto: cualquier evento válido redespliega.
 - Claves nuevas en `woo-config.example.php`: `webhook_secret`, `github_repo` y `github_token`.
 - Workflow `.github/workflows/deploy.yml`: push a `main`, `repository_dispatch` (`woo-catalog-changed`) y cron diario. Hace build contra el Woo real, `typecheck`, `check:standard`, rsync por SSH y una prueba de humo.
@@ -69,7 +70,10 @@ Lo que aparece del lado de WordPress y del servidor:
 'ficha_tecnica' => 'https://tienda.qualitysumprintpe.com/wp-content/uploads/2026/11/ficha.pdf'
 
 // Taxonomías que vigila quality-term-rebuild.php
-['product_cat', 'product_tag', 'pa_*']   // pa_marca, pa_segmento…
+['product_cat', 'product_tag', 'product_brand', 'pa_*']   // pa_segmento…
+
+// WooProduct (src/lib/woo/types.ts) suma el campo nativo de marcas de Woo 9.6+
+brands?: { id: number; name: string; slug: string }[]
 
 // public_html/woo-config.php (fuera de git; plantilla woo-config.example.php)
 return [
@@ -112,10 +116,10 @@ El rsync de producción **nunca** toca:
 
 ## Plan de implementación
 
-1. **Guía, primera parte.** Crear `wordpress/README.md` con: cómo encaja todo (tabla de topología), SSL y "Force HTTPS Redirect" del subdominio en cPanel, instalación de WooCommerce, ajustes sin venta (sin métodos de pago, "Disuadir a los motores de búsqueda"), atributos globales `Marca` y `Segmento`, y claves REST de solo lectura (una para producción y otra para Amplify).
+1. **Guía, primera parte.** Crear `wordpress/README.md` con: cómo encaja todo (tabla de topología), SSL y "Force HTTPS Redirect" del subdominio en cPanel, instalación de WooCommerce, ajustes sin venta (sin métodos de pago, "Disuadir a los motores de búsqueda"), marcas en Productos → Marcas, atributo global `Segmento`, y claves REST de solo lectura (una para producción y otra para Amplify).
 2. **Ficha técnica.** Crear `wordpress/mu-plugins/quality-product-fields.php`: una caja en el producto con un botón que abre Medios filtrado a PDF y guarda la URL en `ficha_tecnica`. Valida `http`/`https` al guardar y lo expone en la REST. Agregar a la guía cómo subirlo a `wp-content/mu-plugins/`. Prueba manual: guardar un PDF y verlo en `meta_data` de `/wp-json/wc/v3/products/<id>`.
 3. **Endpoint de rebuild.** Adaptar `public/rebuild-hook.php` de ERES: lee `woo-config.php`, verifica `X-WC-Webhook-Signature` con `webhook_secret`, responde `200` al ping de verificación de Woo y dispara `repository_dispatch` sin huella. Agregar las tres claves nuevas a `woo-config.example.php`.
-4. **Rebuild por términos.** Crear `wordpress/mu-plugins/quality-term-rebuild.php` a partir de `eres-term-rebuild.php`. Vigila `product_cat`, `product_tag` y `pa_*`, agrupa los cambios en 60 s y usa la URL y el secreto del primer webhook activo hacia `rebuild-hook.php`.
+4. **Rebuild por términos.** Crear `wordpress/mu-plugins/quality-term-rebuild.php` a partir de `eres-term-rebuild.php`. Vigila `product_cat`, `product_tag`, `product_brand` y `pa_*`, agrupa los cambios en 60 s y usa la URL y el secreto del primer webhook activo hacia `rebuild-hook.php`.
 5. **Workflow de deploy.** Crear `.github/workflows/deploy.yml` con:
    - Disparadores: push a `main`, `repository_dispatch` (`woo-catalog-changed`), cron `0 9 * * *` y `workflow_dispatch`.
    - `concurrency` para no solapar deploys.
@@ -128,6 +132,7 @@ El rsync de producción **nunca** toca:
    - Secrets de GitHub y variables de Amplify.
    - Verificación de punta a punta: editar el producto de prueba → ver el run en Actions → ver el cambio en el sitio.
 8. **Documentación del repo.** Actualizar la sección **Catálogo de WooCommerce** de `CLAUDE.md` (topología, rebuild, mu-plugins, secretos, exclusiones del rsync) y agregar "Despliegue" al `README.md`.
+9. **Marca nativa.** Agregar `brands` a `WooProduct` y hacer que `toCatalogItem` (`src/lib/woo/catalog.ts`) tome la marca de ahí, con el atributo de `brandAttribute` como respaldo. Sumar `product_brand` a `quality-term-rebuild.php` y ajustar la guía y `CLAUDE.md`.
 
 ## Criterios de aceptación
 
@@ -136,7 +141,8 @@ El rsync de producción **nunca** toca:
 - [ ] Elegir un PDF en "Ficha técnica (PDF)" guarda su URL en `ficha_tecnica`, y la ficha del sitio muestra "Descargar ficha técnica" tras el rebuild.
 - [ ] Un `POST` a `rebuild-hook.php` sin firma o con una firma inválida responde `401` y no dispara ningún workflow.
 - [ ] Editar un producto en Woo dispara `deploy.yml` por `repository_dispatch` en menos de 2 minutos.
-- [ ] Renombrar un término de `Marca` dispara un solo deploy, aunque se editen varios términos dentro de 60 s.
+- [ ] Un producto con marca en Productos → Marcas la muestra en su tarjeta y en el filtro de marca del catálogo.
+- [ ] Renombrar una marca dispara un solo deploy, aunque se editen varios términos dentro de 60 s.
 - [ ] El build de `deploy.yml` no lleva `<meta name="x-sample-catalog">` y `check:standard` pasa sin errores.
 - [ ] Tras un deploy, `https://tienda.qualitysumprintpe.com/wp-admin/` sigue funcionando, y `woo-config.php`, `site-config.php` y `data/` siguen en el servidor.
 - [ ] `https://qualitysumprintpe.com/no-existe` responde `404` con la página de Astro.
@@ -151,7 +157,11 @@ El rsync de producción **nunca** toca:
 - **No:** `FTP-Deploy-Action` como en `quality` (spec 01). Queda como alternativa si el plan de cPanel no trae SSH.
 - **Sí:** rebuild completo: webhooks de producto + términos + cron diario, igual que ERES.
 - **No:** huella de producto. Su razón en ERES era no redesplegar por stock o ventas, y aquí eso no se muestra.
-- **Sí:** el término de rebuild vigila `pa_*` y `product_tag`, no `product_brand`. En Quality la marca es un atributo y la etiqueta pinta la insignia de la tarjeta.
+- **Sí:** la marca sale de la taxonomía nativa **Marcas** (`product_brand`), no de un atributo. WooCommerce ya trae ese menú y duplicarlo como atributo confunde a quien carga productos. Cambio acordado durante la configuración (2026-11-13).
+- **Sí:** el atributo de `shop.catalog.brandAttribute` queda como respaldo cuando un producto no tiene marca nativa. Así el catálogo de muestra sigue funcionando y no hay que tocar el schema de Tina.
+- **No:** atributo global `Marca`. Lo reemplaza la taxonomía nativa.
+- **Sí:** `Segmento` sigue siendo atributo global. WooCommerce no tiene una taxonomía nativa para eso, y las categorías ya cumplen otra función.
+- **Sí:** el rebuild por términos vigila `product_cat`, `product_tag`, `product_brand` y `pa_*`. La etiqueta pinta la insignia de la tarjeta.
 - **Sí:** `woo-api.php`, `wooClient.ts` y `StockRefresher.astro` se quedan, porque pueden usarse pronto.
 - **Sí:** staging de Amplify contra el Woo real, con claves propias. Muestra lo mismo que se publicará, y una clave revocada no tumba ambos ambientes.
 - **No:** catálogo de muestra en staging.
