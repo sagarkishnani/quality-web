@@ -47,6 +47,11 @@ export function attributeValue(product: WooProduct, attributeName: string): stri
   return attribute?.options.join(", ") ?? "";
 }
 
+export function brandOf(product: WooProduct, brandAttribute: string): string {
+  const nativeBrands = (product.brands ?? []).map((brand) => brand.name).filter(Boolean);
+  return nativeBrands.length ? nativeBrands.join(", ") : attributeValue(product, brandAttribute);
+}
+
 export function badgeOf(product: WooProduct): string {
   if (product.on_sale) return "Oferta";
   return product.tags[0]?.name ?? "";
@@ -73,7 +78,7 @@ export function toCatalogItem(product: WooProduct, attributes: CatalogAttributes
     id: product.id,
     name: product.name,
     slug: product.slug,
-    brand: attributeValue(product, attributes.brand),
+    brand: brandOf(product, attributes.brand),
     segment,
     segmentSlug: slugify(segment),
     category: category?.name ?? "",

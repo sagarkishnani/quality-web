@@ -34,6 +34,7 @@ export interface WooProduct {
   featured: boolean;
   categories: WooTermRef[];
   tags: WooTermRef[];
+  brands?: WooTermRef[];
   images: WooImage[];
   attributes: { name: string; options: string[] }[];
   related_ids: number[];
