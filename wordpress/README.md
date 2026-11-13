@@ -101,3 +101,20 @@ Se crean **dos pares**: uno para producción y otro para el staging de Amplify. 
    - `curl -s -o /dev/null -w '%{http_code}' -u ck_…:cs_… -X POST https://tienda.qualitysumprintpe.com/wp-json/wc/v3/products` responde `401` o `403`.
 
 Nunca uses claves con permiso de escritura. Si una clave se filtra, revócala en esa misma pantalla y crea otra.
+
+## 6. mu-plugin de la ficha técnica
+
+`quality-product-fields.php` agrega el campo **Ficha técnica (PDF)** en Datos del producto → General.
+El botón **Elegir PDF** abre Medios filtrado a PDF y guarda la URL completa del archivo en el meta
+`ficha_tecnica`. Solo acepta URLs `http` o `https`; vacío, borra el meta y el botón desaparece del sitio.
+
+1. Copia `wordpress/mu-plugins/quality-product-fields.php` a `wp-content/mu-plugins/` del WordPress
+   (cPanel → Administrador de archivos → `public_html/tienda.qualitysumprintpe.com/wp-content/`; crea
+   la carpeta `mu-plugins` si no existe).
+2. Plugins → **Imprescindibles**: debe aparecer "Quality · Ficha técnica del producto". Los mu-plugins no se
+   activan: se cargan solos.
+3. Comprobación: en el producto de prueba, elige un PDF y actualiza. Luego:
+   `curl -s -u ck_…:cs_… https://tienda.qualitysumprintpe.com/wp-json/wc/v3/products/<id>` trae en
+   `meta_data` un objeto con `"key": "ficha_tecnica"` y la URL del PDF.
+
+El deploy no toca WordPress: cada versión nueva de un mu-plugin se sube a mano.
