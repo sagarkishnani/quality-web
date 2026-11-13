@@ -6,3 +6,7 @@ ErrorDocument 404 /404.html
   RewriteCond %{HTTP:X-Forwarded-Proto} !=https
   RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 </IfModule>
+
+<Files ".ftp-deploy-sync-state.json">
+  Require all denied
+</Files>
