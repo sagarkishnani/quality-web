@@ -328,7 +328,7 @@ export default function ProductCatalogReact({ items, segments, productsPath, lab
                   value={term}
                   onChange={(event) => setTerm(event.target.value)}
                   placeholder={labels.searchPlaceholder}
-                  className="h-12 w-full bg-transparent text-body-sm placeholder:text-content-subtle focus:outline-none"
+                  className="h-12 w-full bg-transparent text-body-sm placeholder:text-content-subtle focus:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
                 />
               </label>
               <div className="flex gap-3 lg:contents">
