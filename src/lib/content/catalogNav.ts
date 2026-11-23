@@ -26,7 +26,7 @@ export async function loadCatalogNav(): Promise<CatalogNav> {
     segments: orderedSegments(items, segmentOrder).map((s) => ({ label: s.label, href: `${root}?segmento=${s.slug}` })),
     categories: facetOptions(items.map((i) => i.category)).map((c) => ({
       label: c.label,
-      href: `${root}/categoria/${items.find((i) => i.category === c.label)?.categorySlug ?? c.slug}`,
+      href: `${root}?categoria=${items.find((i) => i.category === c.label)?.categorySlug ?? c.slug}`,
     })),
     brands: facetOptions(items.map((i) => i.brand)).map((b) => ({ label: b.label, href: `${root}?marca=${b.slug}` })),
     products: items.slice(0, 60).map((i) => ({ label: `${i.brand} ${i.name}`.trim(), href: `${root}/${i.slug}` })),
